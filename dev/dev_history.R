@@ -1,11 +1,11 @@
 # Prepare for CRAN ----
 
+# Update dependencies in DESCRIPTION
+attachment::att_amend_desc()
+
 # Check manual
 devtools::document();
 devtools::build_manual(path = paste0(getwd(), "/dev"))
-
-# Update dependencies in DESCRIPTION
-attachment::att_amend_desc()
 
 # Run tests and examples
 devtools::test()
