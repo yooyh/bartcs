@@ -7,3 +7,4 @@
 
 dev
 ^data-raw$
+^\.github$
