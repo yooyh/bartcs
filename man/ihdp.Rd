@@ -17,7 +17,7 @@ which study the effect of home visits on cognitive test scores for infants.
 \details{
 This dataset was first used by Hill (2011),
 then used by others researchers
-(Shilita et al. 2016, Louizos et al. 2017).
+(Shalit et al. 2017, Louizos et al. 2017).
 
 Our version of dataset is a the dataset used by
 Louizos et al. (2017).
