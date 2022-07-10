@@ -7,10 +7,10 @@
 gelman_rubin(x)
 }
 \arguments{
-\item{x}{\code{bartcs} object}
+\item{x}{A \code{bartcs} object.}
 }
 \value{
-Gelman-Rubin diagnostic value
+Gelman-Rubin diagnostic value.
 }
 \description{
 \code{gelman_rubin()} computes Gelman-Rubin diagnostic for \code{bartcs} objects.

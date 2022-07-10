@@ -2,9 +2,9 @@
 #'
 #' `gelman_rubin()` computes Gelman-Rubin diagnostic for `bartcs` objects.
 #'
-#' @param x \code{bartcs} object
+#' @param x A `bartcs` object.
 #'
-#' @return Gelman-Rubin diagnostic value
+#' @return Gelman-Rubin diagnostic value.
 #' @export
 gelman_rubin <- function(x) {
   UseMethod("gelman_rubin")
