@@ -81,12 +81,12 @@ A terminal node of depth \code{d} will split with
 probability of \code{alpha * (1 + d)^(-beta)}.}
 
 \item{nu, q}{Values to calibrate hyperparameter of sigma prior.
-Default setting is \verb{(nu, q) = (3, 0.95)} from Chipman et al. 2010}
+Default setting is \verb{(nu, q) = (3, 0.95)} from Chipman et al. (2010).}
 
 \item{dir_alpha}{Hyperparameter of Dirichlet prior for selection probabilities.}
 
 \item{boot_size}{Number of bootstrap sample size.
-Bootstrap samples will be used to compute potential outcomes \eqn{(Y(1)} and \eqn{(Y(0)}.}
+Bootstrap samples will be used to compute potential outcomes \eqn{Y(1)} and \eqn{Y(0)}.}
 
 \item{parallel}{If \code{TRUE}, model fitting will be parallelized
 with respect to \code{n = nrow(X)}.
@@ -98,11 +98,11 @@ If \code{FALSE}, message will be suppressed.}
 \value{
 \code{bartcs} object is a list with following components.
 
-\item{ATE}{Posterior samples of average treatment effect \eqn{(Y(1) - Y(0))}.}
-\item{Y1}{Posterior samples of potential outcome \eqn{Y(1)}.}
-\item{Y0}{Posterior samples of potential outcome \eqn{Y(0)}.}
-\item{var_prob}{Posterior inclusion probability of each variable.}
-\item{chains}{Result of each MCMC chain.
+\item{ATE}{Aggregated posterior samples of average treatment effect \eqn{(Y(1) - Y(0))}.}
+\item{Y1}{Aggregated posterior samples of potential outcome \eqn{Y(1)}.}
+\item{Y0}{Aggregated posterior samples of potential outcome \eqn{Y(0)}.}
+\item{var_prob}{Aggregated posterior inclusion probability of each variable.}
+\item{chains}{A list of results from each MCMC chain.
 Each list element consists of followings.}
 \itemize{
 \item \code{ATE}        Posterior sample of average treatment effect \eqn{(Y(1) - Y(0))}.
@@ -111,10 +111,10 @@ Each list element consists of followings.}
 \item \code{var_prob}   Posterior inclusion probability of each variable.
 \item \code{var_count}  Number of selection of each variable in each MCMC iteration.
 Its dimension is \code{num_post_sample * ncol(X)}.
-\item \code{sigma2_out} Posterior samples of sigma2 in the outcome model.
-\item \code{dir_alpha}  Posterior samples of dir_alpha.
+\item \code{sigma2_out} Posterior sample of \code{sigma2} in the outcome model.
+\item \code{dir_alpha}  Posterior sample of \code{dir_alpha.}
 }
-\item{model}{\code{sbart} or \code{mbart}}
+\item{model}{\code{sbart} or \code{mbart}.}
 \item{label}{Column names of \code{X}.}
 \item{params}{Parameters used in the model.}
 }
@@ -129,7 +129,7 @@ for estimating treatment effect with adjustment of confounders
 in the presence of a large set of potential confounders (Kim et al. 2022).
 
 The exposure model \eqn{E[A|X]} and the outcome model(s) \eqn{E[Y|A,X]} are
-linked together with a common Dirichlet prior accrues
+linked together with a common Dirichlet prior that accrues
 posterior selection probability to confounders (\eqn{X}) on the basis of
 association with both the exposure (\eqn{A}) and the outcome (\eqn{Y}).
 
@@ -139,14 +139,14 @@ fitting a single outcome model for the entire sample.
 \item \code{sbart()} specifies two \strong{"separate"} outcome models
 for two binary treatment levels.
 Thus, it fits three models:
-one exposure model and two separate outcomes for \eqn{A = 0, 1}.
+one exposure model and two separate outcome models for \eqn{A = 0, 1}.
 
 \item \code{mbart()} specifies a single \strong{"marginal"} outcome models.
 Thus, it fits two models:
 one exposure model and one outcome model for the entire sample.
 }
 
-All inferences are made with outcome models.
+All inferences are made with outcome model(s).
 }
 \references{
 Chipman, H. A., George, E. I., & McCulloch, R. E. (2010).
