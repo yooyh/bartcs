@@ -7,10 +7,10 @@
 \method{plot}{bartcs}(x, method = NULL, parameter = NULL, ...)
 }
 \arguments{
-\item{x}{bartcs object}
+\item{x}{A \code{bartcs} object.}
 
-\item{method}{\code{"pip"} for posterior inclusion probability plot
-or \code{"trace"} for trace plot.}
+\item{method}{"\code{pip}" for posterior inclusion probability plot
+or "\code{trace}" for trace plot.}
 
 \item{parameter}{Target of parameter for traceplot.}
 
@@ -25,21 +25,21 @@ posterior inclusion probability (pip) plot and trace plot.
 \subsection{PIP plot}{
 
 When a posterior sample is sampled during training,
-\code{sbart()} or \code{mbart()} also count
-which variable is included in the model and
+\code{sbart()} or \code{mbart()} also counts
+which variables are included in the model and
 compute pip for each variable.
 For \code{bartcs} object \code{x},
 this is stored in \code{x$var_count} and \code{x$var_prob} respectively.
 \code{plot(method = "pip")} uses this information and
-draw plot using \code{ggcharts::bar_chart()}.
+draws plot using \code{ggcharts::bar_chart()}.
 }
 
 \subsection{Traceplot}{
 
 Parameters are recorded for each MCMC iterations.
-Parameters include "\verb{ATE"}, \code{"Y1"}, \code{"Y0"}, \code{"dir_alpha"},
-and either \code{"sigma2_out"} from \code{mbart()}
-or \code{"sigma2_out1"} and \code{"sigma2_out0"} from \code{sbart()}.
+Parameters include "\code{ATE}", "\code{Y1}", "\code{Y0}", "\code{dir_alpha}",
+and either "\code{sigma2_out}" from \code{mbart()}
+or "\code{sigma2_out1}" and "\code{sigma2_out0}" from \code{sbart()}.
 Vertical line indicates burn-in.
 }
 }
