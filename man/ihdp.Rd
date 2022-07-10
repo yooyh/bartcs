@@ -16,13 +16,13 @@ which study the effect of home visits on cognitive test scores for infants.
 }
 \details{
 This dataset was first used by Hill (2011),
-then used by others researchers like
-Shilita et al (2016) and Louizos et al. (2017).
+then used by others researchers
+(Shilita et al. 2016, Louizos et al. 2017).
 
 Our version of dataset is a the dataset used by
 Louizos et al. (2017).
 This is the first realization of 10 generated datasets
-and you can find other realizations at from
+and you can find other realizations from
 \href{https://github.com/AMLab-Amsterdam/CEVAE}{here}.
 }
 \references{
