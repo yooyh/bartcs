@@ -116,7 +116,7 @@
 #' \doi{10.48550/arXiv.2203.11798}
 #'
 #' @return
-#' \code{bartcs} object is a list with following components.
+#' A `bartcs` object. A `bartcs` object is a list with following components.
 #'
 #' \item{ATE}{Aggregated posterior samples of average treatment effect \eqn{(Y(1) - Y(0))}.}
 #' \item{Y1}{Aggregated posterior samples of potential outcome \eqn{Y(1)}.}
@@ -125,14 +125,14 @@
 #' \item{chains}{A list of results from each MCMC chain.
 #'   Each list element consists of followings.}
 #'   \itemize{
-#'     \item \code{ATE}        Posterior sample of average treatment effect \eqn{(Y(1) - Y(0))}.
-#'     \item \code{Y1}         Posterior sample of potential outcome \eqn{Y(1)}.
-#'     \item \code{Y0}         Posterior sample of potential outcome \eqn{Y(0)}.
-#'     \item \code{var_prob}   Posterior inclusion probability of each variable.
-#'     \item \code{var_count}  Number of selection of each variable in each MCMC iteration.
+#'     \item `ATE`        Posterior sample of average treatment effect \eqn{(Y(1) - Y(0))}.
+#'     \item `Y1`         Posterior sample of potential outcome \eqn{Y(1)}.
+#'     \item `Y0`         Posterior sample of potential outcome \eqn{Y(0)}.
+#'     \item `var_prob`   Posterior inclusion probability of each variable.
+#'     \item `var_count`  Number of selection of each variable in each MCMC iteration.
 #'       Its dimension is `num_post_sample * ncol(X)`.
-#'     \item \code{sigma2_out} Posterior sample of `sigma2` in the outcome model.
-#'     \item \code{dir_alpha}  Posterior sample of `dir_alpha.`
+#'     \item `sigma2_out` Posterior sample of `sigma2` in the outcome model.
+#'     \item `dir_alpha`  Posterior sample of `dir_alpha.`
 #'   }
 #' \item{model}{`sbart` or `mbart`.}
 #' \item{label}{Column names of `X`.}

@@ -96,7 +96,7 @@ Parallelization is recommended for very high \code{n} only.}
 If \code{FALSE}, message will be suppressed.}
 }
 \value{
-\code{bartcs} object is a list with following components.
+A \code{bartcs} object. A \code{bartcs} object is a list with following components.
 
 \item{ATE}{Aggregated posterior samples of average treatment effect \eqn{(Y(1) - Y(0))}.}
 \item{Y1}{Aggregated posterior samples of potential outcome \eqn{Y(1)}.}
