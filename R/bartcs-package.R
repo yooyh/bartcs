@@ -16,7 +16,7 @@ NULL
 #' \enumerate{
 #'   \item Functions for fitting: `sbart()` and `mbart()`.
 #'   \item Functions for summary: `summary()`, `plot()` and `gelman_rubin()`.
-#'   \item Utility function for openMP: `count_omp_thread()`.
+#'   \item Utility function for OpenMP: `count_omp_thread()`.
 #' }
 #' 
 #' @references

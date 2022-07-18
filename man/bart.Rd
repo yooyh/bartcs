@@ -148,6 +148,29 @@ one exposure model and one outcome model for the entire sample.
 
 All inferences are made with outcome model(s).
 }
+\examples{
+data(ihdp, package = "bartcs")
+mbart(
+  Y               = ihdp$y_factual,
+  trt             = ihdp$treatment,
+  X               = ihdp[, 6:30],
+  num_tree        = 10,
+  num_chain       = 2,
+  num_post_sample = 20,
+  num_burn_in     = 10,
+  verbose         = FALSE
+)
+sbart(
+  Y               = ihdp$y_factual,
+  trt             = ihdp$treatment,
+  X               = ihdp[, 6:30],
+  num_tree        = 10,
+  num_chain       = 2,
+  num_post_sample = 20,
+  num_burn_in     = 10,
+  verbose         = FALSE
+)
+}
 \references{
 Chipman, H. A., George, E. I., & McCulloch, R. E. (2010).
 BART: Bayesian additive regression trees.

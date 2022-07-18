@@ -15,7 +15,7 @@ Functions in \code{bartcs} serve one of three purposes.
 \enumerate{
 \item Functions for fitting: \code{sbart()} and \code{mbart()}.
 \item Functions for summary: \code{summary()}, \code{plot()} and \code{gelman_rubin()}.
-\item Utility function for openMP: \code{count_omp_thread()}.
+\item Utility function for OpenMP: \code{count_omp_thread()}.
 }
 }
 \references{

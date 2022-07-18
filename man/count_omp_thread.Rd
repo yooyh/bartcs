@@ -2,12 +2,19 @@
 % Please edit documentation in R/RcppExports.R
 \name{count_omp_thread}
 \alias{count_omp_thread}
-\title{Count the number of openMP threads for parallel computation}
+\title{Count the number of OpenMP threads for parallel computation}
 \usage{
 count_omp_thread()
 }
+\value{
+Number of OpenMP thread(s).
+}
 \description{
-\code{count_omp_thread()} counts the number of openMP threads for
+\code{count_omp_thread()} counts the number of OpenMP threads for
 parallel computation.
-If it returns 1, openMP is not viable.
+If it returns 1, OpenMP is not viable.
+}
+\examples{
+count_omp_thread()
+
 }

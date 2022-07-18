@@ -86,7 +86,7 @@ plot(fit, method = "trace", "dir_alpha")
 count_omp_thread()
 ```
 
-Check whether openMP is supported. You need more than 1 thread for multi-threading. 
+Check whether OpenMP is supported. You need more than 1 thread for multi-threading. 
 Due to overhead of multi-threading, using parallelization will be not effective with small and moderate datasets.
 I recommend parallelization for data with size of at least 10,000.
 

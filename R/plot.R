@@ -3,14 +3,14 @@
 #' @description
 #' Two options are available:
 #'   posterior inclusion probability (pip) plot and trace plot.
-#' 
+#'
 #' @param x A `bartcs` object.
 #' @param method "`pip`" for posterior inclusion probability plot
 #'   or "`trace`" for trace plot.
 #' @param parameter Target of parameter for traceplot.
 #' @param ... Additional arguments for pip plot.
 #'   Check `?ggcharts::bar_chart` for possible arguments.
-#' 
+#'
 #' @details
 #' ## PIP plot
 #' When a posterior sample is sampled during training,
@@ -28,20 +28,34 @@
 #' and either "`sigma2_out`" from `mbart()`
 #' or "`sigma2_out1`" and "`sigma2_out0`" from `sbart()`.
 #' Vertical line indicates burn-in.
-#' 
-#' @examples
-#' # `x` is a bartcs object
 #'
-#' # # pip plot
-#' # plot(x, method = "pip")
-#' # plot(x, method = "pip", top_n = 10)
-#' # plot(x, method = "pip", threshold = 0.5)
+#' @return
+#' A `ggplot` object of either pip plot or trace plot.
+#'
+#' @examples
+#' data(ihdp, package = "bartcs")
+#' x <- mbart(
+#'   Y               = ihdp$y_factual,
+#'   trt             = ihdp$treatment,
+#'   X               = ihdp[, 6:30],
+#'   num_tree        = 10,
+#'   num_chain       = 2,
+#'   num_post_sample = 20,
+#'   num_burn_in     = 10,
+#'   verbose         = FALSE
+#' )
+#'
+#' # pip plot
+#' plot(x, method = "pip")
+#' plot(x, method = "pip", top_n = 10)
+#' plot(x, method = "pip", threshold = 0.5)
 #' # Check `?ggcharts::bar_chart` for other possible arguments.
 #'
-#' # # trace plot
-#' # plot(x, method = "trace")
-#' # plot(x, method = "trace", "Y1")
-#' # plot(x, method = "trace", "dir_alpha")
+#' # trace plot
+#' plot(x, method = "trace")
+#' plot(x, method = "trace", "Y1")
+#' plot(x, method = "trace", "dir_alpha")
+#'
 #' @exportS3Method
 plot.bartcs <- function(x, method = NULL, parameter = NULL, ...) {
   if (is.null(method))

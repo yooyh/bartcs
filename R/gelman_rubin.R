@@ -5,6 +5,21 @@
 #' @param x A `bartcs` object.
 #'
 #' @return Gelman-Rubin diagnostic value.
+#' @examples
+#' data(ihdp, package = "bartcs")
+#' x <- mbart(
+#'   Y               = ihdp$y_factual,
+#'   trt             = ihdp$treatment,
+#'   X               = ihdp[, 6:30],
+#'   num_tree        = 10,
+#'   num_chain       = 2,
+#'   num_post_sample = 20,
+#'   num_burn_in     = 10,
+#'   verbose         = FALSE
+#' )
+#'
+#' gelman_rubin(x)
+#'
 #' @export
 gelman_rubin <- function(x) {
   UseMethod("gelman_rubin")

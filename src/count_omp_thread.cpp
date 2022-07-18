@@ -6,11 +6,17 @@ using namespace Rcpp;
     #include <omp.h>
 #endif
 
-//' Count the number of openMP threads for parallel computation
+//' Count the number of OpenMP threads for parallel computation
 //'
-//' \code{count_omp_thread()} counts the number of openMP threads for
+//' \code{count_omp_thread()} counts the number of OpenMP threads for
 //' parallel computation.
-//' If it returns 1, openMP is not viable.
+//' If it returns 1, OpenMP is not viable.
+//'
+//' @return
+//' Number of OpenMP thread(s).
+//'
+//' @examples
+//' count_omp_thread()
 //'
 //' @export
 // [[Rcpp::export]]
