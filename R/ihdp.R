@@ -1,17 +1,28 @@
 #' Infant Health and Development Program Data
 #'
-#' Infant Health and Development Program (IHDP) is a randomized experiment from 1985 to 1988
-#'   which study the effect of home visits on cognitive test scores for infants.
+#' Infant Health and Development Program (IHDP) is a randomized experiment from
+#' 1985 to 1988 which studied the effect of home visits on cognitive test scores
+#' for infants.
 #'
-#' This dataset was first used by Hill (2011),
-#' then used by others researchers
+#' This dataset was first used by Hill (2011), then used by other researchers
 #' (Shalit et al. 2017, Louizos et al. 2017).
 #'
-#' Our version of dataset is a the dataset used by
-#' Louizos et al. (2017).
-#' This is the first realization of 10 generated datasets
-#' and you can find other realizations from
-#' \href{https://github.com/AMLab-Amsterdam/CEVAE}{here}.
+#' @source
+#' Our version of dataset is the dataset used by Louizos et al. (2017).
+#' This is the first realization of 10 generated datasets and you can find 
+#' other realizations from
+#' \url{https://github.com/AMLab-Amsterdam/CEVAE}.
+#'
+#' @format
+#' \describe{
+#'   \item{treatment}{Given treatment.}
+#'   \item{y_factual}{Observed outcome.}
+#'   \item{y_cfactual}{Potential outcome given the opposite treatment.}
+#'   \item{mu0}{Control conditional means.}
+#'   \item{mu1}{Treated conditional means.}
+#'   \item{X1 ~ X6}{Confounders with continuous values.}
+#'   \item{X7 ~ X25}{Confounders with binary values.}
+#' }
 #'
 #' @references
 #' Hill, J. L. (2011). Bayesian nonparametric modeling for causal inference.
