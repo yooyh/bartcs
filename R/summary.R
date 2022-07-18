@@ -1,3 +1,42 @@
+#' Summary for `bartcs` object
+#'
+#' @description
+#' Provide summary for `bartcs` object.
+#'
+#' @param object A `bartcs` object.
+#' @param ... Additional arguments. Not yet supported.
+#'
+#' @details
+#' `summary()` computes Gelman-Rubin diagnostic and
+#' 95% posterior credible interval for both
+#' aggregated outcome and individual outcomes from each chain.
+#'
+#' @return
+#' Provide list with following components.
+#'
+#' \item{model}{`sbart` or `mbart`.}
+#' \item{trt_value}{Treatment values for each treatment group:
+#'   `trt_treated` for treatment group and `trt_control` for control group.}
+#' \item{tree_params}{Parameters used for tree structure.}
+#' \item{chain_params}{Parameters used for MCMC chains.}
+#' \item{gelman_rubin}{Gelman-Rubin diagnostic value.}
+#' \item{outcome}{Summary of outcomes from the model. This includes
+#'   both aggregated outcome and individual outcomes from each chain.}
+#'
+#' @examples
+#' data(ihdp, package = "bartcs")
+#' x <- mbart(
+#'   Y               = ihdp$y_factual,
+#'   trt             = ihdp$treatment,
+#'   X               = ihdp[, 6:30],
+#'   num_tree        = 10,
+#'   num_chain       = 2,
+#'   num_post_sample = 20,
+#'   num_burn_in     = 10,
+#'   verbose         = FALSE
+#' )
+#' summary(x)
+#'
 #' @exportS3Method
 summary.bartcs <- function(object, ...) {
   estimand  <- c("ATE", "Y1", "Y0")
