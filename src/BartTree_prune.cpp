@@ -33,7 +33,9 @@ void BartTree::prune(const int t)
 
     int    num_left      = 0,   num_right      = 0;
     double residual_left = 0.0, residual_right = 0.0;
-    #pragma omp parallel for reduction(+ : num_left, num_right, residual_left, residual_right) if (parallel)
+    #ifdef _OPENMP
+        #pragma omp parallel for reduction(+ : num_left, num_right, residual_left, residual_right) if (parallel)
+    #endif
     for (int i = 0; i < NUM_OBS; i++)
     {
         const BartNode* assigned_node = assigned_nodes_[t][i];
@@ -94,7 +96,9 @@ void BartTree::prune(const int t)
     if (ratio > log(R::runif(0, 1)))
     {
         // update assigned nodes
-        #pragma omp parallel for if (parallel)
+        #ifdef _OPENMP
+            #pragma omp parallel for if (parallel)
+        #endif
         for (int i = 0; i < NUM_OBS; i++)
         {
             const BartNode* assigned_node = assigned_nodes_[t][i];

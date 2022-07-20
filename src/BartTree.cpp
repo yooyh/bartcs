@@ -11,14 +11,18 @@ double BartTree::findMinValue(const LogicalVector& obs_flag, const int prop_var_
     double    min_value  = __DBL_MAX__;
     if ((model == 2) && (prop_var_idx == TRT_IDX))
     {
-        #pragma omp parallel for if (parallel)
+        #ifdef _OPENMP
+            #pragma omp parallel for if (parallel)
+        #endif
         for (int i = 0; i < NUM_OBS; i++)
         {
             if (obs_flag(i))
             {
                 if (trt(i) < min_value)
                 {
-                    #pragma omp critical
+                    #ifdef _OPENMP
+                        #pragma omp critical
+                    #endif
                     min_value = trt(i);
                 }
             }
@@ -26,14 +30,18 @@ double BartTree::findMinValue(const LogicalVector& obs_flag, const int prop_var_
     }
     else
     {
-        #pragma omp parallel for if (parallel)
+        #ifdef _OPENMP
+            #pragma omp parallel for if (parallel)
+        #endif
         for (int i = 0; i < NUM_OBS; i++)
         {
             if (obs_flag(i))
             {
                 if (X(i, prop_var_idx) < min_value)
                 {
-                    #pragma omp critical
+                    #ifdef _OPENMP
+                        #pragma omp critical
+                    #endif
                     min_value = X(i, prop_var_idx);
                 }
             }
@@ -49,14 +57,18 @@ double BartTree::findMaxValue(const LogicalVector& obs_flag, const int prop_var_
     double    max_value  = __DBL_MIN__;
     if ((model == 2) && (prop_var_idx == TRT_IDX))
     {
-        #pragma omp parallel for if (parallel)
+        #ifdef _OPENMP
+            #pragma omp parallel for if (parallel)
+        #endif
         for (int i = 0; i < NUM_OBS; i++)
         {
             if (obs_flag(i))
             {
                 if (trt(i) > max_value)
                 {
-                    #pragma omp critical
+                    #ifdef _OPENMP
+                        #pragma omp critical
+                    #endif
                     max_value = trt(i);
                 }
             }
@@ -64,14 +76,18 @@ double BartTree::findMaxValue(const LogicalVector& obs_flag, const int prop_var_
     }
     else
     {
-        #pragma omp parallel for if (parallel)
+        #ifdef _OPENMP
+            #pragma omp parallel for if (parallel)
+        #endif
         for (int i = 0; i < NUM_OBS; i++)
         {
             if (obs_flag(i))
             {
                 if (X(i, prop_var_idx) > max_value)
                 {
-                    #pragma omp critical
+                    #ifdef _OPENMP
+                        #pragma omp critical
+                    #endif
                     max_value = X(i, prop_var_idx);
                 }
             }
@@ -130,7 +146,9 @@ int BartTree::findCutIdx(const int prop_var_idx, const int num_uniques, const do
 
     int cut_idx = -1;
     volatile bool found = false;
-    #pragma omp parallel for shared(found) if (parallel)
+    #ifdef _OPENMP
+        #pragma omp parallel for shared(found) if (parallel)
+    #endif
     for (int i = 0; i < NUM_OBS; i++)
     {
         if (found) continue;
@@ -198,7 +216,9 @@ void BartTree::updateFlag(
     const int TRT_IDX = X.ncol();
 
     volatile bool found = false;
-    #pragma omp parallel for shared(found) if (parallel)
+    #ifdef _OPENMP
+        #pragma omp parallel for shared(found) if (parallel)
+    #endif
     for (int i = baseline_idx; i < NUM_OBS; i++)
     {
         const BartNode* assigned_node = assigned_nodes_[t][i];
@@ -220,7 +240,9 @@ void BartTree::updateFlag(
                     if (var_flag(TRT_IDX)) continue;
                     if (trt(i) != trt(baseline_idx))
                     {
-                        #pragma omp atomic
+                        #ifdef _OPENMP
+                            #pragma omp atomic
+                        #endif
                         var_flag(TRT_IDX) |= true;
                     }
 
@@ -230,7 +252,9 @@ void BartTree::updateFlag(
                         if (var_flag(j)) continue;
                         if (X(i, j) != X(baseline_idx, j))
                         {
-                            #pragma omp atomic
+                            #ifdef _OPENMP
+                                #pragma omp atomic
+                            #endif
                             var_flag(j) |= true;
                         }
                     }
@@ -239,7 +263,9 @@ void BartTree::updateFlag(
             if (sum(var_flag) == var_flag.length())
             {
                 // all predictors has unique values
-                #pragma omp atomic
+                #ifdef _OPENMP
+                    #pragma omp atomic
+                #endif
                 found |= true;
             }
         }

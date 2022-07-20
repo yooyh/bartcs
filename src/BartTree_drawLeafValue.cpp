@@ -29,12 +29,16 @@ void BartTree::drawLeafValue(const int t)
         // for each node count and sum residual
         vector<int>    num_residual (NUM_TERMINAL_NODES, 0);
         vector<double> sum_residual (NUM_TERMINAL_NODES, 0.0);
-        #pragma omp parallel if (parallel)
+        #ifdef _OPENMP
+            #pragma omp parallel if (parallel)
+        #endif
         {
             // use local variables for multi-core computing
             vector<int>    num_residual_local (NUM_TERMINAL_NODES, 0);
             vector<double> sum_residual_local (NUM_TERMINAL_NODES, 0.0);
-            #pragma omp for
+            #ifdef _OPENMP
+                #pragma omp for
+            #endif
             for(int i = 0; i < NUM_OBS; i++)
             {
                 // find terminal node
@@ -48,7 +52,9 @@ void BartTree::drawLeafValue(const int t)
                     }
                 }
             }
-            #pragma omp critical
+            #ifdef _OPENMP
+                #pragma omp critical
+            #endif
             {
                 for (int j = 0; j < NUM_TERMINAL_NODES; j++) 
                 {
@@ -65,7 +71,9 @@ void BartTree::drawLeafValue(const int t)
             const double MU      = R::rnorm(MEAN, exp(0.5 * LOG_VAR));
             terminal_nodes[j]->setLeafValue(MU);
         }
-        #pragma omp parallel for if (parallel)
+        #ifdef _OPENMP
+            #pragma omp parallel for if (parallel)
+        #endif
         for(int i = 0; i < NUM_OBS; i++) 
         {
             leaf_values_(i, t) = assigned_nodes_[t][i]->getLeafValue();

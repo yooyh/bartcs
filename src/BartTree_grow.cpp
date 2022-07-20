@@ -14,7 +14,7 @@ void BartTree::grow(const int t)
     int       prop_var_idx = -1;
     int       prop_cut_idx = -1;
 
-    int num_terminal_nodes, num_uniques, num_new_singly;
+    int    num_terminal_nodes, num_uniques, num_new_singly;
     double rule, log_prop_prob;
 
     if (root_nodes_[t]->isTerminal())
@@ -131,7 +131,9 @@ void BartTree::grow(const int t)
     // calculate likelihood of current tree
     int    num_left      = 0,   num_right      = 0;
     double residual_left = 0.0, residual_right = 0.0;
-    #pragma omp parallel for reduction(+ : num_left, num_right, residual_left, residual_right) if (parallel)
+    #ifdef _OPENMP
+        #pragma omp parallel for reduction(+ : num_left, num_right, residual_left, residual_right) if (parallel)
+    #endif
     for (int i = 0; i < NUM_OBS; i++)
     {
         const BartNode* assigned_node = assigned_nodes_[t][i];
@@ -183,7 +185,9 @@ void BartTree::grow(const int t)
         prop_node->grow(prop_var_idx, prop_cut_idx);
 
         // update assigned nodes
-        #pragma omp parallel for if (parallel)
+        #ifdef _OPENMP
+            #pragma omp parallel for if (parallel)
+        #endif
         for (int i = 0; i < NUM_OBS; i++)
         {
             const BartNode* assigned_node = assigned_nodes_[t][i];

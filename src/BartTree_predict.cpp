@@ -12,7 +12,9 @@ double BartTree::predict(
     const int NUM_BOOT = boot_idx.length();
     double    res      = 0.0;
 
-    #pragma omp parallel for reduction(+ : res) if (parallel)
+    #ifdef _OPENMP
+        #pragma omp parallel for reduction(+ : res) if (parallel)
+    #endif
     for (int i = 0; i < NUM_BOOT; i++)
     {
         double temp = 0.0;
@@ -45,7 +47,9 @@ double BartTree::predict(
 
     double    res = 0.0;
 
-    #pragma omp parallel for reduction(+ : res) if (parallel)
+    #ifdef _OPENMP
+        #pragma omp parallel for reduction(+ : res) if (parallel)
+    #endif
     for (int i = 0; i < NUM_BOOT; i++)
     {
         double temp = 0.0;
