@@ -2,7 +2,6 @@
 #pragma once
 
 #include <Rcpp.h>
-#include <omp.h>
 #include "BartNode.h"
 
 using namespace Rcpp;

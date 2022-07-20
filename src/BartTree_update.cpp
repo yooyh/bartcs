@@ -158,7 +158,7 @@ void BartTree::updateVarProb(
     double ratio =
         prop_dir_lik
         + sum((post_dir_alpha + var_count_exp_max + var_count_out - 1.0) * log_var_prob)
-        - prop_dir_lik
+        - dir_lik
         - sum((post_dir_alpha + var_count_exp_max + var_count_out - 1.0) * log_prop_var_prob)
         ;
 
