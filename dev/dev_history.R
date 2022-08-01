@@ -36,6 +36,7 @@ rhub::check_on_windows(check_args = "--force-multiarch")
 rhub::check_on_solaris()
 # _win devel
 devtools::check_win_devel()
+devtools::check_mac_release()
 
 # Check reverse dependencies
 # remotes::install_github("r-lib/revdepcheck")
