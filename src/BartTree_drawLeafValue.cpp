@@ -7,12 +7,12 @@ using namespace std;
 // draw new leaf value for each terminal nodes
 void BartTree::drawLeafValue(const int t)
 {
-    const int NUM_OBS = X.nrow();
+    const int NUM_OBS = X_.nrow();
 
     if (root_nodes_[t]->isTerminal())
     {
         // tree with single node
-        const double LOG_VAR = log(sigma_mu) + log(sigma2_) - log(sigma2_ + NUM_OBS * sigma_mu);
+        const double LOG_VAR = log(sigma_mu_) + log(sigma2_) - log(sigma2_ + NUM_OBS * sigma_mu_);
         const double MEAN    = exp(LOG_VAR) * sum(residual_) / sigma2_;
 
         const double MU      = R::rnorm(MEAN, exp(0.5 * LOG_VAR));
@@ -30,7 +30,7 @@ void BartTree::drawLeafValue(const int t)
         vector<int>    num_residual (NUM_TERMINAL_NODES, 0);
         vector<double> sum_residual (NUM_TERMINAL_NODES, 0.0);
         #ifdef _OPENMP
-            #pragma omp parallel if (parallel)
+            #pragma omp parallel if (parallel_)
         #endif
         {
             // use local variables for multi-core computing
@@ -65,14 +65,14 @@ void BartTree::drawLeafValue(const int t)
         }
         for (int j = 0; j < NUM_TERMINAL_NODES; j++) 
         {
-            const double LOG_VAR = log(sigma_mu) + log(sigma2_) - log(sigma2_ + num_residual[j] * sigma_mu);
+            const double LOG_VAR = log(sigma_mu_) + log(sigma2_) - log(sigma2_ + num_residual[j] * sigma_mu_);
             const double MEAN    = exp(LOG_VAR) * sum_residual[j] / sigma2_;
 
             const double MU      = R::rnorm(MEAN, exp(0.5 * LOG_VAR));
             terminal_nodes[j]->setLeafValue(MU);
         }
         #ifdef _OPENMP
-            #pragma omp parallel for if (parallel)
+            #pragma omp parallel for if (parallel_)
         #endif
         for(int i = 0; i < NUM_OBS; i++) 
         {

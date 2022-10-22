@@ -6,7 +6,7 @@ using namespace std;
 
 void BartTree::prune(const int t)
 {
-    const int NUM_OBS = X.nrow();
+    const int NUM_OBS = X_.nrow();
     // const int NUM_VAR = X.ncol();
     // const int TRT_IDX = X.ncol();
 
@@ -34,7 +34,7 @@ void BartTree::prune(const int t)
     int    num_left      = 0,   num_right      = 0;
     double residual_left = 0.0, residual_right = 0.0;
     #ifdef _OPENMP
-        #pragma omp parallel for reduction(+ : num_left, num_right, residual_left, residual_right) if (parallel)
+        #pragma omp parallel for reduction(+ : num_left, num_right, residual_left, residual_right) if (parallel_)
     #endif
     for (int i = 0; i < NUM_OBS; i++)
     {
@@ -68,25 +68,25 @@ void BartTree::prune(const int t)
     int           num_uniques        = countUniqueValues(var_idx);
 
     double transition = 
-        log(step_prob(0))  - log(terminal_nodes.size() - 1) + log_prop_prob
-        - log(num_uniques) - log(step_prob(1))              + log(singly_nodes.size())
+        log(step_prob_(0))  - log(terminal_nodes.size() - 1) + log_prop_prob
+        - log(num_uniques) - log(step_prob_(1))              + log(singly_nodes.size())
     ;
 
     double likelihood = 
         - 0.5 * log(sigma2_)
-        - 0.5 * log(sigma2_ + sigma_mu * (num_left + num_right))
-        + 0.5 * log(sigma2_ + sigma_mu * num_left)
-        + 0.5 * log(sigma2_ + sigma_mu * num_right)
-        + (sigma_mu / (2*sigma2_)
-        * (- pow(residual_left,                   2) / (sigma2_ + sigma_mu *  num_left)
-           - pow(residual_right,                  2) / (sigma2_ + sigma_mu *  num_right)
-           + pow(residual_left + residual_right,  2) / (sigma2_ + sigma_mu * (num_left + num_right))))
+        - 0.5 * log(sigma2_ + sigma_mu_ * (num_left + num_right))
+        + 0.5 * log(sigma2_ + sigma_mu_ * num_left)
+        + 0.5 * log(sigma2_ + sigma_mu_ * num_right)
+        + (sigma_mu_ / (2*sigma2_)
+        * (- pow(residual_left,                   2) / (sigma2_ + sigma_mu_ *  num_left)
+           - pow(residual_right,                  2) / (sigma2_ + sigma_mu_ *  num_right)
+           + pow(residual_left + residual_right,  2) / (sigma2_ + sigma_mu_ * (num_left + num_right))))
     ;
 
     int depth = prop_node->getDepth();
     double structure = 
-        - log(alpha) - 2*log(1 - alpha / pow(2 + depth, beta))
-        + log(pow(1 + depth, beta) - alpha)
+        - log(alpha_) - 2*log(1 - alpha_ / pow(2 + depth, beta_))
+        + log(pow(1 + depth, beta_) - alpha_)
         - log_prop_prob
         + log(num_uniques)
     ;
@@ -97,7 +97,7 @@ void BartTree::prune(const int t)
     {
         // update assigned nodes
         #ifdef _OPENMP
-            #pragma omp parallel for if (parallel)
+            #pragma omp parallel for if (parallel_)
         #endif
         for (int i = 0; i < NUM_OBS; i++)
         {

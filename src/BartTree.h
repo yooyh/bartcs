@@ -18,21 +18,21 @@ class BartTree
     double                       sigma2_;
 
     // const variables
-    const int                    model;     // 0 : sep,  1 : mar_exp, 2 : mar_out
-    const NumericVector&         trt;
-    const NumericMatrix&         X;
-    const vector<NumericVector>& Xcut;
-    const NumericVector&         step_prob; // 0 : GROW, 1 : PRUNE,   2 : CHANGE
-    const int                    num_tree;
-    const double                 alpha;
-    const double                 beta;
-    const double                 sigma_mu;
-    const bool                   parallel;
+    const int                    model_;     // 0 : sep,  1 : mar_exp, 2 : mar_out
+    const NumericVector&         trt_;
+    const NumericMatrix&         X_;
+    const vector<NumericVector>& Xcut_;
+    const NumericVector&         step_prob_; // 0 : GROW, 1 : PRUNE,   2 : CHANGE
+    const int                    num_tree_;
+    const double                 alpha_;
+    const double                 beta_;
+    const double                 sigma_mu_;
+    const bool                   parallel_;
 
 public:
     ~BartTree()
     {
-        for (int t = 0; t < num_tree; t++)
+        for (int t = 0; t < num_tree_; t++)
         {
             delete root_nodes_[t];
         }
@@ -55,16 +55,16 @@ public:
         residual_(residual),
         var_prob_(var_prob),
         sigma2_(sigma2),
-        model(model),
-        trt(trt),
-        X(X),
-        Xcut(Xcut),
-        step_prob(step_prob),
-        num_tree(num_tree),
-        alpha(alpha),
-        beta(beta),
-        sigma_mu(sigma_mu),
-        parallel(parallel)
+        model_(model),
+        trt_(trt),
+        X_(X),
+        Xcut_(Xcut),
+        step_prob_(step_prob),
+        num_tree_(num_tree),
+        alpha_(alpha),
+        beta_(beta),
+        sigma_mu_(sigma_mu),
+        parallel_(parallel)
     {
         // initialize leaf_values_, root_nodes_ and assigned_nodes_
         leaf_values_ = NumericMatrix(X.nrow(), num_tree);
@@ -82,8 +82,8 @@ public:
         }
     };
 
-    inline bool isSeparateModel() const { return (model == 0); };
-    inline bool isMarginalModel() const { return (model); };
+    inline bool isSeparateModel() const { return (model_ == 0); };
+    inline bool isMarginalModel() const { return (model_); };
 
     // getters
     inline double        getSigma2()              const { return sigma2_; };
@@ -91,7 +91,7 @@ public:
     inline BartNode*     getRootNode(const int t) const { return root_nodes_[t]; };
     inline double        getXValue(const int obs_idx, const int var_idx) const
     {
-        return (var_idx == X.ncol()) ? trt(obs_idx) : X(obs_idx, var_idx);
+        return (var_idx == X_.ncol()) ? trt_(obs_idx) : X_(obs_idx, var_idx);
     };
     vector<BartNode*>    getTerminalNodes(const int t) const
     {

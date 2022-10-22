@@ -13,7 +13,7 @@ void BartTree::updateLatentVariable(NumericVector& latent_variable, const bool i
         for (int i = 0; i < fitted_values.length(); i++)
         {
             Ystar = R::rnorm(fitted_values(i), 1);
-            latent_variable(i)  = trt(i) * max(Ystar, 0.0) + (1 - trt(i)) * min(Ystar, 0.0);
+            latent_variable(i)  = trt_(i) * max(Ystar, 0.0) + (1 - trt_(i)) * min(Ystar, 0.0);
         }
     }
     else
@@ -41,7 +41,7 @@ void BartTree::updateSigma2(
     const double         nu,
     const double         lambda
 ) {
-    const int     NUM_OBS       = X.nrow();
+    const int     NUM_OBS       = X_.nrow();
     NumericVector fitted_values = rowSums(leaf_values_);
 
     const double  SHAPE         = nu / 2        + NUM_OBS / 2;

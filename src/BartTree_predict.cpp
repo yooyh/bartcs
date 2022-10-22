@@ -13,18 +13,18 @@ double BartTree::predict(
     double    res      = 0.0;
 
     #ifdef _OPENMP
-        #pragma omp parallel for reduction(+ : res) if (parallel)
+        #pragma omp parallel for reduction(+ : res) if (parallel_)
     #endif
     for (int i = 0; i < NUM_BOOT; i++)
     {
         double temp = 0.0;
-        for (int t = 0; t < num_tree; t++)
+        for (int t = 0; t < num_tree_; t++)
         {
             const BartNode* current_node = root_nodes_[t];
             while (!current_node->isTerminal())
             {
                 double value = boot_X(boot_idx(i), current_node->getVarIdx());
-                if (value < Xcut[current_node->getVarIdx()][current_node->getCutIdx()])
+                if (value < Xcut_[current_node->getVarIdx()][current_node->getCutIdx()])
                     current_node = current_node->getChildLeft();
                 else
                     current_node = current_node->getChildRight();
@@ -43,17 +43,17 @@ double BartTree::predict(
 ) {
     // predict function for marginal model
     const int NUM_BOOT = boot_idx.length();
-    const int TRT_IDX  = X.ncol();
+    const int TRT_IDX  = X_.ncol();
 
     double    res = 0.0;
 
     #ifdef _OPENMP
-        #pragma omp parallel for reduction(+ : res) if (parallel)
+        #pragma omp parallel for reduction(+ : res) if (parallel_)
     #endif
     for (int i = 0; i < NUM_BOOT; i++)
     {
         double temp = 0.0;
-        for (int t = 0; t < num_tree; t++)
+        for (int t = 0; t < num_tree_; t++)
         {
             const BartNode* current_node = root_nodes_[t];
             while (!current_node->isTerminal())
@@ -62,9 +62,9 @@ double BartTree::predict(
                 if (current_node->getVarIdx() == TRT_IDX)
                     value = trt_value;
                 else
-                    value = X(boot_idx(i), current_node->getVarIdx());
+                    value = X_(boot_idx(i), current_node->getVarIdx());
 
-                if (value < Xcut[current_node->getVarIdx()][current_node->getCutIdx()])
+                if (value < Xcut_[current_node->getVarIdx()][current_node->getCutIdx()])
                     current_node = current_node->getChildLeft();
                 else
                     current_node = current_node->getChildRight();
@@ -76,4 +76,3 @@ double BartTree::predict(
     res /= NUM_BOOT;
     return res;
 }
-

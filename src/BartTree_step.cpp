@@ -8,7 +8,7 @@ void BartTree::step(
     const NumericVector& latent_variable, 
     const bool           is_binary_trt
 ) {
-    for (int t = 0; t < num_tree; t++)
+    for (int t = 0; t < num_tree_; t++)
     {
         updateResidual(latent_variable, t);
         // select node for the step
@@ -19,7 +19,7 @@ void BartTree::step(
         }
         else
         {
-            int step = sample(3, 1, false, step_prob)(0);
+            int step = sample(3, 1, false, step_prob_)(0);
             switch (step)
             {
                 case 1:

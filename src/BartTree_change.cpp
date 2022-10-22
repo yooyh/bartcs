@@ -6,7 +6,7 @@ using namespace std;
 
 void BartTree::change(const int t)
 {
-    const int NUM_OBS = X.nrow();
+    const int NUM_OBS = X_.nrow();
     // const int NUM_VAR = X.ncol();
     // const int TRT_IDX = X.ncol();
 
@@ -56,7 +56,7 @@ void BartTree::change(const int t)
     int    num_left      = 0,   num_right      = 0,   prop_num_left      = 0,   prop_num_right      = 0;
     double residual_left = 0.0, residual_right = 0.0, prop_residual_left = 0.0, prop_residual_right = 0.0;
     #ifdef _OPENMP
-        #pragma omp parallel for reduction(+ : num_left, num_right, residual_left, residual_right, prop_num_left, prop_num_right, prop_residual_left, prop_residual_right) if (parallel)
+        #pragma omp parallel for reduction(+ : num_left, num_right, residual_left, residual_right, prop_num_left, prop_num_right, prop_residual_left, prop_residual_right) if (parallel_)
     #endif
     for (int i = 0; i < NUM_OBS; i++)
     {
@@ -90,15 +90,15 @@ void BartTree::change(const int t)
     }
 
     double likelihood = 
-        0.5 *   log(sigma2_ / sigma_mu + num_left)
-        + 0.5 * log(sigma2_ / sigma_mu + num_right)
-        - 0.5 * log(sigma2_ / sigma_mu + prop_num_left)
-        - 0.5 * log(sigma2_ / sigma_mu + prop_num_right)
+        0.5 *   log(sigma2_ / sigma_mu_ + num_left)
+        + 0.5 * log(sigma2_ / sigma_mu_ + num_right)
+        - 0.5 * log(sigma2_ / sigma_mu_ + prop_num_left)
+        - 0.5 * log(sigma2_ / sigma_mu_ + prop_num_right)
         + (0.5 / sigma2_
-        *(pow(prop_residual_left,  2) / (sigma2_ / sigma_mu + prop_num_left)
-        + pow(prop_residual_right, 2) / (sigma2_ / sigma_mu + prop_num_right)
-        - pow(residual_left,       2) / (sigma2_ / sigma_mu + num_left)
-        - pow(residual_right,      2) / (sigma2_ / sigma_mu + num_right)))
+        *(pow(prop_residual_left,  2) / (sigma2_ / sigma_mu_ + prop_num_left)
+        + pow(prop_residual_right, 2) / (sigma2_ / sigma_mu_ + prop_num_right)
+        - pow(residual_left,       2) / (sigma2_ / sigma_mu_ + num_left)
+        - pow(residual_right,      2) / (sigma2_ / sigma_mu_ + num_right)))
     ;
 
     if (likelihood > log(R::runif(0, 1)))
@@ -107,7 +107,7 @@ void BartTree::change(const int t)
 
         // update assigned nodes
         #ifdef _OPENMP
-            #pragma omp parallel for if (parallel)
+            #pragma omp parallel for if (parallel_)
         #endif
         for (int i = 0; i < NUM_OBS; i++) 
         {
@@ -123,5 +123,3 @@ void BartTree::change(const int t)
         }
     }
 }
-
-

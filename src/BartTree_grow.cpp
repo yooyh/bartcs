@@ -6,9 +6,9 @@ using namespace std;
 
 void BartTree::grow(const int t)
 {
-    const int NUM_OBS      = X.nrow();
-    const int NUM_VAR      = X.ncol();
-    const int TRT_IDX      = X.ncol();
+    const int NUM_OBS      = X_.nrow();
+    const int NUM_VAR      = X_.ncol();
+    const int TRT_IDX      = X_.ncol();
 
     BartNode* prop_node    = nullptr;
     int       prop_var_idx = -1;
@@ -23,7 +23,7 @@ void BartTree::grow(const int t)
         prop_node          = root_nodes_[t];
         num_terminal_nodes = 1;
 
-        switch (model)
+        switch (model_)
         {
             // 0 : sep model
             // 1 : marginal exposure model
@@ -50,11 +50,11 @@ void BartTree::grow(const int t)
                 break;
         }
 
-        num_uniques    = Xcut[prop_var_idx].length();
+        num_uniques    = Xcut_[prop_var_idx].length();
         num_new_singly = 1; // number of singly nodes in new tree
         log_prop_prob  = log(var_prob_(prop_var_idx));
 
-        double min_cutpoint = min(Xcut[prop_var_idx]);
+        double min_cutpoint = min(Xcut_[prop_var_idx]);
         switch (num_uniques)
         {
             case 1: 
@@ -63,7 +63,7 @@ void BartTree::grow(const int t)
             
             case 2:
                 // binary variable
-                rule         = max(Xcut[prop_var_idx]);
+                rule         = max(Xcut_[prop_var_idx]);
                 prop_cut_idx = 1;
                 break;
 
@@ -72,8 +72,8 @@ void BartTree::grow(const int t)
                 do
                 {
                     // select rule but it should not be min(Xcut)
-                    prop_cut_idx = sample(Xcut[prop_var_idx].length(), 1)(0) - 1;
-                    rule         = Xcut[prop_var_idx](prop_cut_idx);
+                    prop_cut_idx = sample(Xcut_[prop_var_idx].length(), 1)(0) - 1;
+                    rule         = Xcut_[prop_var_idx](prop_cut_idx);
                 }
                 while (rule == min_cutpoint);
         }
@@ -132,7 +132,7 @@ void BartTree::grow(const int t)
     int    num_left      = 0,   num_right      = 0;
     double residual_left = 0.0, residual_right = 0.0;
     #ifdef _OPENMP
-        #pragma omp parallel for reduction(+ : num_left, num_right, residual_left, residual_right) if (parallel)
+        #pragma omp parallel for reduction(+ : num_left, num_right, residual_left, residual_right) if (parallel_)
     #endif
     for (int i = 0; i < NUM_OBS; i++)
     {
@@ -154,25 +154,25 @@ void BartTree::grow(const int t)
     }
 
     double transition = 
-        log(step_prob(1))      + log(num_terminal_nodes) - log_prop_prob
-        + log(num_uniques - 1) - log(step_prob(0))       - log(num_new_singly)
+        log(step_prob_(1))      + log(num_terminal_nodes) - log_prop_prob
+        + log(num_uniques - 1) - log(step_prob_(0))       - log(num_new_singly)
     ;
 
     double likelihood = 
         0.5 *   log(sigma2_) 
-        + 0.5 * log(sigma2_ + sigma_mu * (num_left + num_right))
-        - 0.5 * log(sigma2_ + sigma_mu * num_left)
-        - 0.5 * log(sigma2_ + sigma_mu * num_right)
-        + (sigma_mu / (2 * sigma2_)
-        *(pow(residual_left,                  2) / (sigma2_ + sigma_mu *  num_left)
-        + pow(residual_right,                 2) / (sigma2_ + sigma_mu *  num_right)
-        - pow(residual_left + residual_right, 2) / (sigma2_ + sigma_mu * (num_left + num_right))))
+        + 0.5 * log(sigma2_ + sigma_mu_ * (num_left + num_right))
+        - 0.5 * log(sigma2_ + sigma_mu_ * num_left)
+        - 0.5 * log(sigma2_ + sigma_mu_ * num_right)
+        + (sigma_mu_ / (2 * sigma2_)
+        *(pow(residual_left,                  2) / (sigma2_ + sigma_mu_ *  num_left)
+        + pow(residual_right,                 2) / (sigma2_ + sigma_mu_ *  num_right)
+        - pow(residual_left + residual_right, 2) / (sigma2_ + sigma_mu_ * (num_left + num_right))))
     ;
 
     int depth = prop_node->getDepth();
     double structure = (
-        log(alpha) + 2*log(1 - alpha / pow(2 + depth, beta))
-        - log(pow(1 + depth, beta) - alpha)
+        log(alpha_) + 2*log(1 - alpha_ / pow(2 + depth, beta_))
+        - log(pow(1 + depth, beta_) - alpha_)
         + log_prop_prob
         - log(num_uniques - 1)
     );
@@ -186,7 +186,7 @@ void BartTree::grow(const int t)
 
         // update assigned nodes
         #ifdef _OPENMP
-            #pragma omp parallel for if (parallel)
+            #pragma omp parallel for if (parallel_)
         #endif
         for (int i = 0; i < NUM_OBS; i++)
         {
