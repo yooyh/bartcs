@@ -114,8 +114,8 @@ public:
     void drawLeafValue(const int t);
 
     // predict methods
-    double predict(const IntegerVector& boot_idx, const NumericMatrix& X);
-    double predict(const IntegerVector& boot_idx, const double trt_value);
+    double predict(const NumericMatrix& X);
+    double predict(const double trt_value);
 
     // update methods
     void updateFlag(

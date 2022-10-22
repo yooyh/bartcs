@@ -163,8 +163,8 @@ void fit_mbart(
                 var_count(res_idx, _) = var_count_out;
                 
                 // predict effect and potential outcomes
-                Y1(res_idx) = outcome.predict(boot_idx, trt_treated);
-                Y0(res_idx) = outcome.predict(boot_idx, trt_control);
+                Y1(res_idx) = outcome.predict(trt_treated);
+                Y0(res_idx) = outcome.predict(trt_control);
                 if (res_idx == num_post_sample)
                     break;
                 res_idx++;

@@ -183,8 +183,8 @@ void fit_sbart(
                 var_count(res_idx, _) = var_count_out1 + var_count_out0;
 
                 // predict effect and potential outcomes
-                Y1(res_idx)  = outcome1.predict(boot_idx, X);
-                Y0(res_idx)  = outcome0.predict(boot_idx, X);
+                Y1(res_idx)  = outcome1.predict(X);
+                Y0(res_idx)  = outcome0.predict(X);
                 if (res_idx == num_post_sample)
                     break;
                 res_idx++;
