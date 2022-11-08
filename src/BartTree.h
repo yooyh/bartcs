@@ -136,10 +136,10 @@ public:
     );
     void updateDirAlpha(double& dir_alpha);
     void updateVarProb(
+        NumericVector& var_count_exp,
+        const NumericVector& var_count_out,
         const Function&      rdirichlet,
-        const NumericVector& post_dir_alpha,
-        const NumericVector& var_count_exp,
-        const NumericVector& var_count_out
+        const NumericVector& post_dir_alpha
     );
 
     // util methods

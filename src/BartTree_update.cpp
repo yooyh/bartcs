@@ -13,7 +13,7 @@ void BartTree::updateLatentVariable(NumericVector& latent_variable, const bool i
         for (int i = 0; i < fitted_values.length(); i++)
         {
             Ystar = R::rnorm(fitted_values(i), 1);
-            latent_variable(i)  = trt_(i) * max(Ystar, 0.0) + (1 - trt_(i)) * min(Ystar, 0.0);
+            latent_variable(i) = trt_(i) * max(Ystar, 0.0) + (1 - trt_(i)) * min(Ystar, 0.0);
         }
     }
     else
@@ -102,20 +102,24 @@ void BartTree::updateDirAlpha(double& dir_alpha)
 
 // update var_prob for marginal model
 void BartTree::updateVarProb(
-    const Function& rdirichlet,
-    const NumericVector& post_dir_alpha,
-    const NumericVector& var_count_exp,
-    const NumericVector& var_count_out
+    NumericVector& var_count_exp,
+    const NumericVector& var_count_out,
+    const Function&      rdirichlet,
+    const NumericVector& post_dir_alpha
 ) {
     // this p is not X.ncol() in marginal model !!
     const int NUM_VAR = var_prob_.length();
     const int TRT_IDX = NUM_VAR - 1;
 
-    // Assign max(var_count_exp) to var_count_exp(TRT_IDX)
-    NumericVector var_count_exp_max = clone(var_count_exp);
-    var_count_exp_max.push_back(max(var_count_exp));
+    // Assign var_count_out(TRT_IDX) to var_count_exp(TRT_IDX)
+    // 
+    // During probability update, we assume TRT counts of exposure model equal
+    // TRT counts of outcome model since exposure model does not include TRT 
+    // in the model.
+    // i.e. var_count_exp(TRT_IDX) = var_count_out(TRT_IDX)
+    var_count_exp.push_back(var_count_out(TRT_IDX));
 
-    NumericVector alpha         = post_dir_alpha + var_count_exp_max + var_count_out;
+    NumericVector alpha         = post_dir_alpha + var_count_exp + var_count_out;
     NumericVector prop_var_prob = rdirichlet(1, alpha);
 
     // change probability into log form
@@ -150,16 +154,16 @@ void BartTree::updateVarProb(
     double dir_lik      = sum(var_count_exp) * (- log(1 - var_prob_(TRT_IDX)));
     for (int i = 0; i < NUM_VAR; i++)
     {
-        double temp   = var_count_exp_max(i) + var_count_out(i) + post_dir_alpha(i);
+        double temp   = var_count_exp(i) + var_count_out(i) + post_dir_alpha(i);
         prop_dir_lik += temp * log_prop_var_prob(i);
         dir_lik      += temp * log_var_prob(i);
     }
 
     double ratio =
         prop_dir_lik
-        + sum((post_dir_alpha + var_count_exp_max + var_count_out - 1.0) * log_var_prob)
+        + sum((post_dir_alpha + var_count_exp + var_count_out - 1.0) * log_var_prob)
         - dir_lik
-        - sum((post_dir_alpha + var_count_exp_max + var_count_out - 1.0) * log_prop_var_prob)
+        - sum((post_dir_alpha + var_count_exp + var_count_out - 1.0) * log_prop_var_prob)
         ;
 
     if (ratio > log(R::runif(0,1)))

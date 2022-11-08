@@ -151,7 +151,7 @@ void fit_mbart(
         
         // MH algorithm to update inclusion probabilities
         exposure.updateVarProb(
-            rdirichlet, post_dir_alpha, var_count_exp, var_count_out
+            var_count_exp, var_count_out, rdirichlet, post_dir_alpha 
         );
         
         // sample E[Y(1) - Y(0)]
