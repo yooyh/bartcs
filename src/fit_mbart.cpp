@@ -1,5 +1,6 @@
 #include <Rcpp.h>
 #include "BartTree.h"
+#include "MCMCUtils.h"
 #include "ProgressBar.h"
 
 using namespace Rcpp;
@@ -143,16 +144,14 @@ void fit_mbart(
         NumericVector var_count_out =  outcome.countSelectedVariables();
         
         // MH to update dir_alpha
-        exposure.updateDirAlpha(dir_alpha);
+        updateDirAlpha(dir_alpha, var_prob);
         dir_alpha_hist(iter) = dir_alpha;
         
         // then update post_dir_alpha
         post_dir_alpha = rep(dir_alpha / (NUM_VAR + 1), NUM_VAR + 1);
         
         // MH algorithm to update inclusion probabilities
-        exposure.updateVarProb(
-            var_count_exp, var_count_out, rdirichlet, post_dir_alpha 
-        );
+        updateVarProb(var_prob, var_count_exp, var_count_out, rdirichlet, post_dir_alpha);
         
         // sample E[Y(1) - Y(0)]
         if (iter > num_burn_in) 
