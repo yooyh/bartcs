@@ -134,6 +134,13 @@ public:
         const double         nu,
         const double         lambda
     );
+    void updateDirAlpha(double& dir_alpha);
+    void updateVarProb(
+        NumericVector& var_count_exp,
+        const NumericVector& var_count_out,
+        const Function&      rdirichlet,
+        const NumericVector& post_dir_alpha
+    );
 
     // util methods
     double        findMinValue(const LogicalVector& obs_flag, const int prop_var_idx);

@@ -1,6 +1,5 @@
 #include <Rcpp.h>
 #include "BartTree.h"
-#include "MCMCUtils.h"
 #include "ProgressBar.h"
 
 using namespace Rcpp;
@@ -165,7 +164,7 @@ void fit_sbart(
         else
         {
             // use MH algorithm to update dir_alpha
-            updateDirAlpha(dir_alpha, var_prob);
+            exposure.updateDirAlpha(dir_alpha);
 
             // then update post_dir_alpha
             post_dir_alpha = rep(dir_alpha / NUM_VAR, NUM_VAR) + var_count_exp + var_count_out1 + var_count_out0;
