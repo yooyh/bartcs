@@ -157,6 +157,7 @@ void fit_mbart(
         // sample E[Y(1) - Y(0)]
         if (iter > num_burn_in) 
         {
+            thin_count++;
             if (thin_count == num_thin)
             {
                 // record selected variables
@@ -169,10 +170,6 @@ void fit_mbart(
                     break;
                 res_idx++;
                 thin_count = 0;
-            } 
-            else 
-            {
-                thin_count++;
             }
         }
     // end of an MCMC iteration

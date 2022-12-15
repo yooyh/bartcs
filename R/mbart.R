@@ -8,7 +8,7 @@ mbart <- function(
   num_tree        = 50,
   num_chain       = 4,
   num_burn_in     = 100,
-  num_thin        = 0,
+  num_thin        = 1,
   num_post_sample = 100,
   step_prob       = c(0.28, 0.28, 0.44),
   alpha           = 0.95,
@@ -98,7 +98,7 @@ mbart <- function(
 
   # ---- run MCMC and save result of each chain ----
   chains         <- list()
-  num_chain_iter <- num_burn_in + (num_thin + 1) * num_post_sample
+  num_chain_iter <- num_burn_in + num_thin * num_post_sample
   if (verbose) {
     cat(
       "\n",

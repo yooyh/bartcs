@@ -22,8 +22,8 @@ check_input <- function(
   num_tree        = 50,
   num_chain       = 4,
   num_burn_in     = 250,
-  num_thin        = 0,
-  num_post_sample = 1000,
+  num_thin        = 1,
+  num_post_sample = 100,
   step_prob       = c(0.28, 0.28, 0.44),
   alpha           = 0.95,
   beta            = 2,
@@ -95,11 +95,11 @@ check_input <- function(
   if (num_burn_in < 0)
     stop("`num_burn_in` must be non-negative.")
 
-  if (num_thin < 0)
-    stop("`num_thin` must be non-negative.")
+  if (num_thin < 1)
+    stop("`num_thin` must be greater than 1.")
 
-  if (num_post_sample < 0)
-    stop("`num_post_sample` must be greater than 0.")
+  if (num_post_sample < 1)
+    stop("`num_post_sample` must be greater than 1.")
 
   if (alpha < 0 || alpha > 1)
     stop("`alpha` must be between 0 and 1.")
