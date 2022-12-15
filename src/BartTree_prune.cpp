@@ -65,7 +65,7 @@ void BartTree::prune(const int t)
 
     NumericVector flagged_var_prob   = var_prob_[var_flag];
     double        log_prop_prob      = log(var_prob_(var_idx)) - log(sum(flagged_var_prob));
-    int           num_uniques        = countUniqueValues(var_idx);
+    int           num_uniques        = countUniqueValues(prop_node, var_idx, t, false);
 
     double transition = 
         log(step_prob_(0))  - log(terminal_nodes.size() - 1) + log_prop_prob

@@ -114,7 +114,7 @@ void BartTree::grow(const int t)
         prop_var_idx = sample(var_prob_.length(), 1, false, flagged_var_prob)(0) - 1;
 
         // count unique values of chosen predictor
-        num_uniques  = countUniqueValues(prop_var_idx);
+        num_uniques  = countUniqueValues(prop_node, prop_var_idx, t, true);
         if (num_uniques == 1)
             return;
 

@@ -147,7 +147,7 @@ public:
     double        findMaxValue(const LogicalVector& obs_flag, const int prop_var_idx);
     double        proposeRule( const LogicalVector& obs_flag, const int prop_var_idx, const int num_uniques);
     int           findCutIdx(const int prop_var_idx, const int num_uniques, const double rule);
-    int           countUniqueValues(const int prop_var_idx);
+    int           countUniqueValues(const BartNode* prop_node, const int prop_var_idx, const int t, const bool is_grow);
     int           countSinglyFromProposedTree(const BartNode* prop_node, const int t);
     NumericVector countSelectedVariables();
 };

@@ -45,7 +45,7 @@ void BartTree::change(const int t)
     int prop_var_idx = sample(var_prob_.length(), 1, false, flagged_var_prob)(0) - 1;
 
     // count unique values of chosen predictor
-    int num_uniques  = countUniqueValues(prop_var_idx);
+    int num_uniques  = countUniqueValues(prop_node, prop_var_idx, t, false);
     if (num_uniques == 1)
         return;
 

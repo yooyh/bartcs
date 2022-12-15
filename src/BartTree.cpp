@@ -161,23 +161,21 @@ int BartTree::findCutIdx(const int prop_var_idx, const int num_uniques, const do
     return cut_idx;
 }
 
-int BartTree::countUniqueValues(const int prop_var_idx)
+int BartTree::countUniqueValues(const BartNode* prop_node, const int prop_var_idx, const int t, const bool is_grow)
 {
     const int NUM_OBS = X_.nrow();
     map<double, bool> map_uniques;
-    if (prop_var_idx == X_.ncol())
+    for (int i = 0; i < NUM_OBS; i++)
     {
-        // is treatment
-        for (int i = 0; i < NUM_OBS; i++)
+        const BartNode* assigned_node = assigned_nodes_[t][i];
+        bool cond = is_grow ? assigned_node == prop_node : assigned_node->getParent() == prop_node;
+        if (cond)
         {
-            map_uniques[trt_(i)] = true;
-        }
-    }
-    else
-    {
-        for (int i = 0; i < NUM_OBS; i++)
-        {
-            map_uniques[X_(i, prop_var_idx)] = true;
+            if (prop_var_idx == X_.ncol())
+                // is treatment
+                map_uniques[trt_(i)] = true;
+            else
+                map_uniques[X_(i, prop_var_idx)] = true;
         }
     }
     
