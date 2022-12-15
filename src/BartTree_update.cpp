@@ -107,9 +107,8 @@ void BartTree::updateVarProb(
     const Function&      rdirichlet,
     const NumericVector& post_dir_alpha
 ) {
-    // this p is not X.ncol() in marginal model !!
-    const int NUM_VAR = var_prob_.length();
-    const int TRT_IDX = NUM_VAR - 1;
+    const int NUM_VAR = X_.ncol();
+    const int TRT_IDX = X_.ncol();
 
     // Assign var_count_out(TRT_IDX) to var_count_exp(TRT_IDX)
     // 
@@ -123,7 +122,7 @@ void BartTree::updateVarProb(
     NumericVector prop_var_prob = rdirichlet(1, alpha);
 
     // change probability into log form
-    NumericVector log_var_prob(NUM_VAR), log_prop_var_prob(NUM_VAR);
+    NumericVector log_var_prob(NUM_VAR + 1), log_prop_var_prob(NUM_VAR + 1);
     {
         const double LB     = pow(0.1, 300);
         const double LOG_LB = -300 * log(10);
@@ -150,11 +149,13 @@ void BartTree::updateVarProb(
         }
     }
 
-    double prop_dir_lik = sum(var_count_exp) * (- log(1 - prop_var_prob(TRT_IDX)));
-    double dir_lik      = sum(var_count_exp) * (- log(1 - var_prob_(TRT_IDX)));
+    double sum_exp = sum(var_count_exp) - var_count_exp(TRT_IDX);
+
+    double prop_dir_lik = sum_exp * (- log(1 - prop_var_prob(TRT_IDX)));
+    double dir_lik      = sum_exp * (- log(1 - var_prob_(TRT_IDX)));
     for (int i = 0; i < NUM_VAR; i++)
     {
-        double temp   = var_count_exp(i) + var_count_out(i) + post_dir_alpha(i);
+        double temp   = var_count_exp(i) + var_count_out(i) + post_dir_alpha(i) - 1.0;
         prop_dir_lik += temp * log_prop_var_prob(i);
         dir_lik      += temp * log_var_prob(i);
     }
