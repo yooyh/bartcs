@@ -121,12 +121,13 @@ void BartTree::updateVarProb(
     NumericVector alpha         = post_dir_alpha + var_count_exp + var_count_out;
     NumericVector prop_var_prob = rdirichlet(1, alpha);
 
+
     // change probability into log form
     NumericVector log_var_prob(NUM_VAR + 1), log_prop_var_prob(NUM_VAR + 1);
     {
         const double LB     = pow(0.1, 300);
         const double LOG_LB = -300 * log(10);
-        for (int i = 0; i < NUM_VAR; i++)
+        for (int i = 0; i < NUM_VAR + 1; i++)
         {
             // logarize var_prob
             if (var_prob_(i) > LB)
@@ -152,13 +153,15 @@ void BartTree::updateVarProb(
     double sum_exp = sum(var_count_exp) - var_count_exp(TRT_IDX);
 
     double prop_dir_lik = sum_exp * (- log(1 - prop_var_prob(TRT_IDX)));
-    double dir_lik      = sum_exp * (- log(1 - var_prob_(TRT_IDX)));
+    double dir_lik      = sum_exp * (- log(1 -     var_prob_(TRT_IDX)));
     for (int i = 0; i < NUM_VAR; i++)
     {
         double temp   = var_count_exp(i) + var_count_out(i) + post_dir_alpha(i) - 1.0;
         prop_dir_lik += temp * log_prop_var_prob(i);
         dir_lik      += temp * log_var_prob(i);
     }
+    prop_dir_lik += (var_count_out(TRT_IDX) + post_dir_alpha(TRT_IDX) - 1.0) * log_prop_var_prob(TRT_IDX);
+    dir_lik      += (var_count_out(TRT_IDX) + post_dir_alpha(TRT_IDX) - 1.0) * log_var_prob(TRT_IDX);
 
     double ratio =
         prop_dir_lik
