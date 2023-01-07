@@ -12,13 +12,13 @@ void BartTree::drawLeafValue(const int t)
     if (root_nodes_[t]->isTerminal())
     {
         // tree with single node
-        const double LOG_VAR = - log(1 / sigma_mu_ + NUM_OBS / sigma2_);
-        const double MEAN    = exp(LOG_VAR) * sum(residual_) / sigma2_;
+        const double VAR   = 1 / (1/sigma_mu_ + NUM_OBS / sigma2_);
+        const double MEAN  = VAR * sum(residual_) / sigma2_;
 
-        const double MU      = R::rnorm(MEAN, exp(0.5 * LOG_VAR));
+        const double MU    = R::rnorm(MEAN, sqrt(VAR));
 
         root_nodes_[t]->setLeafValue(MU);
-        leaf_values_(_, t)   = rep(MU, NUM_OBS);
+        leaf_values_(_, t) = rep(MU, NUM_OBS);
     }
     else
     {
@@ -65,10 +65,10 @@ void BartTree::drawLeafValue(const int t)
         }
         for (int j = 0; j < NUM_TERMINAL_NODES; j++) 
         {
-            const double LOG_VAR = - log(1 / sigma_mu_ + num_residual[j] / sigma2_);
-            const double MEAN    = exp(LOG_VAR) * sum_residual[j] / sigma2_;
+            const double VAR  = 1 / (1/sigma_mu_ + num_residual[j] / sigma2_);
+            const double MEAN = VAR * sum_residual[j] / sigma2_;
 
-            const double MU      = R::rnorm(MEAN, exp(0.5 * LOG_VAR));
+            const double MU   = R::rnorm(MEAN, sqrt(VAR));
             terminal_nodes[j]->setLeafValue(MU);
         }
         #ifdef _OPENMP
