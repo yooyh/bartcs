@@ -50,8 +50,6 @@ mbart <- function(
     X <- as.matrix(X)
 
   # shift and rescale to [-0.5, 0.5]
-  Y_mean <- mean(Y)
-  Y      <- Y - Y_mean
   Y_max  <- max(Y)
   Y_min  <- min(Y)
   Y      <- (Y - Y_min) / (Y_max - Y_min) - 0.5
@@ -140,8 +138,8 @@ mbart <- function(
     var_prob <- colMeans(ifelse(var_count > 1, 1, 0))
 
     # rescale result
-    Y1  <- (Y1  + 0.5) * (Y_max - Y_min) + Y_min + Y_mean
-    Y0  <- (Y0  + 0.5) * (Y_max - Y_min) + Y_min + Y_mean
+    Y1  <- (Y1 + 0.5) * (Y_max - Y_min) + Y_min
+    Y0  <- (Y0 + 0.5) * (Y_max - Y_min) + Y_min
     ATE <-  Y1 - Y0
 
     chains[[chain_idx]] <- list(
