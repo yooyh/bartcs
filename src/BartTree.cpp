@@ -144,8 +144,8 @@ int BartTree::findCutIdx(const int prop_var_idx, const int num_uniques, const do
 
     const int NUM_OBS = Xcut_[prop_var_idx].length();
 
-    int cut_idx = -1;
-    volatile bool found = false;
+    int           cut_idx = -1;
+    volatile bool found   = false;
     #ifdef _OPENMP
         #pragma omp parallel for shared(found) if (parallel_)
     #endif
@@ -168,7 +168,7 @@ int BartTree::countUniqueValues(const BartNode* prop_node, const int prop_var_id
     for (int i = 0; i < NUM_OBS; i++)
     {
         const BartNode* assigned_node = assigned_nodes_[t][i];
-        bool cond = is_grow ? assigned_node == prop_node : assigned_node->getParent() == prop_node;
+        bool  cond = is_grow ? assigned_node == prop_node : assigned_node->getParent() == prop_node;
         if (cond)
         {
             if (prop_var_idx == X_.ncol())
@@ -195,9 +195,7 @@ NumericVector BartTree::countSelectedVariables()
 {
     NumericVector res(var_prob_.length());
     for (int t = 0; t < num_tree_; t++)
-    {
         root_nodes_[t]->countSelectedVariables(res);
-    }
     return res;
 }
 

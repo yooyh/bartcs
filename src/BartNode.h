@@ -27,7 +27,7 @@ public:
         }
     }
 
-    inline double    getLeafValue()  const { return leaf_value_;   }
+    inline double    getLeafValue()  const { return leaf_value_; }
     inline int       getVarIdx()     const { return var_idx_; }
     inline int       getCutIdx()     const { return cut_idx_; }
     inline BartNode* getParent()     const { return parent_; }
@@ -37,10 +37,7 @@ public:
     inline void setLeafValue(double leaf_value) { leaf_value_ = leaf_value; }
 
     inline bool isRoot()     const { return parent_ == nullptr; }
-    inline bool isTerminal() const 
-    {
-        return (child_left_ == nullptr) && (child_right_ == nullptr);
-    }
+    inline bool isTerminal() const { return (child_left_ == nullptr) && (child_right_ == nullptr); }
     inline bool isSingly()   const
     {
         if (child_left_ == nullptr || child_right_ == nullptr)
@@ -75,7 +72,7 @@ public:
         cut_idx_              = prop_cut_idx;
         child_left_           = new BartNode();
         child_right_          = new BartNode();
-        child_left_->parent_  = this;
+        child_left_ ->parent_ = this;
         child_right_->parent_ = this;
     }
 
@@ -106,7 +103,7 @@ public:
         else
         {
             res(var_idx_) += 1;
-            if (child_left_)  child_left_->countSelectedVariables(res);
+            if (child_left_)  child_left_ ->countSelectedVariables(res);
             if (child_right_) child_right_->countSelectedVariables(res);
         }
     }
@@ -120,7 +117,7 @@ public:
         }
         else
         {
-            if (child_left_)  child_left_->getTerminalNodes(res);
+            if (child_left_)  child_left_ ->getTerminalNodes(res);
             if (child_right_) child_right_->getTerminalNodes(res);
         }
     }
@@ -134,7 +131,7 @@ public:
         }
         else
         {
-            if (child_left_)  child_left_->getSinglyNodes(res);
+            if (child_left_)  child_left_ ->getSinglyNodes(res);
             if (child_right_) child_right_->getSinglyNodes(res);
         }
     }

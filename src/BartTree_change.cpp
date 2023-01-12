@@ -7,8 +7,6 @@ using namespace std;
 void BartTree::change(const int t)
 {
     const int NUM_OBS = X_.nrow();
-    // const int NUM_VAR = X.ncol();
-    // const int TRT_IDX = X.ncol();
 
     // propose a singly node to change
     vector<BartNode*> singly_nodes = getSinglyNodes(t);
@@ -32,15 +30,14 @@ void BartTree::change(const int t)
     updateFlag(obs_flag, var_flag, baseline_idx, prop_node, t, false);
 
     if ((sum(obs_flag) == 1) || (sum(var_flag) == 0))
-    {
         // there is no predictor with unique values
         return;
-    }
 
     NumericVector flagged_var_prob = clone(var_prob_);
     for (int i = 0; i < flagged_var_prob.length(); i++)
     {
-        if (!var_flag(i)) flagged_var_prob(i) = 0;
+        if (!var_flag(i)) 
+            flagged_var_prob(i) = 0;
     }
     int prop_var_idx = sample(var_prob_.length(), 1, false, flagged_var_prob)(0) - 1;
 
@@ -77,7 +74,8 @@ void BartTree::change(const int t)
             }
             // compute new likelihood
             double value = getXValue(i, prop_var_idx);
-            if (value < rule) {
+            if (value < rule) 
+            {
                 prop_num_left       += 1;
                 prop_residual_left  += residual_(i);
             }
@@ -90,7 +88,7 @@ void BartTree::change(const int t)
     }
 
     double likelihood = 
-        0.5 *   log(sigma2_ / sigma_mu_ + num_left)
+          0.5 * log(sigma2_ / sigma_mu_ + num_left)
         + 0.5 * log(sigma2_ / sigma_mu_ + num_right)
         - 0.5 * log(sigma2_ / sigma_mu_ + prop_num_left)
         - 0.5 * log(sigma2_ / sigma_mu_ + prop_num_right)

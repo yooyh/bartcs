@@ -50,9 +50,9 @@ mbart <- function(
     X <- as.matrix(X)
 
   # shift and rescale to [-0.5, 0.5]
-  Y_max  <- max(Y)
-  Y_min  <- min(Y)
-  Y      <- (Y - Y_min) / (Y_max - Y_min) - 0.5
+  Y_max <- max(Y)
+  Y_min <- min(Y)
+  Y     <- (Y - Y_min) / (Y_max - Y_min) - 0.5
 
   # initialize bootstrap sample size and parallel
   if (is.null(boot_size))
@@ -109,8 +109,8 @@ mbart <- function(
   for (chain_idx in seq_len(num_chain)) {
     # placeholder for MCMC samples
     # Y1 and Y0 are potential outcomes. ATE = Y1 - Y0
-    Y1  <- vector(mode = "numeric", length = num_post_sample)
-    Y0  <- vector(mode = "numeric", length = num_post_sample)
+    Y1 <- vector(mode = "numeric", length = num_post_sample)
+    Y0 <- vector(mode = "numeric", length = num_post_sample)
 
     # placeholder for inclusion probabilities and initialize var_prob
     var_count <- matrix(0, nrow = num_post_sample, ncol = p + 1)

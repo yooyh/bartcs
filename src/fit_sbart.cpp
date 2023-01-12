@@ -67,7 +67,7 @@ void fit_sbart(
     {
         const double MEAN = R::qnorm(mean(trt), 0, 1, true, false);
         const double SD   = 1.0;
-        latent_variable = Rcpp::rnorm(NUM_OBS, MEAN, SD);
+        latent_variable   = Rcpp::rnorm(NUM_OBS, MEAN, SD);
     }
 
     // initialize parameters

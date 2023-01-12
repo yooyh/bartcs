@@ -150,9 +150,7 @@ void fit_mbart(
         post_dir_alpha = rep(dir_alpha / (NUM_VAR + 1), NUM_VAR + 1);
         
         // MH algorithm to update inclusion probabilities
-        exposure.updateVarProb(
-            var_count_exp, var_count_out, rdirichlet, post_dir_alpha 
-        );
+        exposure.updateVarProb(var_count_exp, var_count_out, rdirichlet, post_dir_alpha);
         
         // sample E[Y(1) - Y(0)]
         if (iter > num_burn_in) 

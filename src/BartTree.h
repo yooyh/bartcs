@@ -33,9 +33,7 @@ public:
     ~BartTree()
     {
         for (int t = 0; t < num_tree_; t++)
-        {
             delete root_nodes_[t];
-        }
     };
     BartTree(
         NumericVector&               residual,
@@ -71,15 +69,11 @@ public:
 
         root_nodes_.resize(num_tree);
         for (int t = 0; t < num_tree; t++)
-        {
             root_nodes_[t] = new BartNode();
-        }
 
         assigned_nodes_.resize(num_tree);
         for (int t = 0; t < num_tree; t++)
-        {
             assigned_nodes_[t] = vector<BartNode*> (X.nrow(), root_nodes_[t]);
-        }
     };
 
     inline bool isSeparateModel() const { return (model_ == 0); };
@@ -136,7 +130,7 @@ public:
     );
     void updateDirAlpha(double& dir_alpha);
     void updateVarProb(
-        NumericVector& var_count_exp,
+        NumericVector&       var_count_exp,
         const NumericVector& var_count_out,
         const Function&      rdirichlet,
         const NumericVector& post_dir_alpha

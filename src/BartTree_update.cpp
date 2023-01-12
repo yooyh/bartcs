@@ -20,9 +20,7 @@ void BartTree::updateLatentVariable(NumericVector& latent_variable, const bool i
     {
         NumericVector fitted_values = rowSums(leaf_values_);
         for (int i = 0; i < fitted_values.length(); i++)
-        {
             latent_variable(i) = R::rnorm(fitted_values(i), sigma2_);
-        }
     }
 }
 
@@ -30,9 +28,7 @@ void BartTree::updateResidual(const NumericVector& latent_variable, const int t)
 {
     NumericVector fitted_values = rowSums(leaf_values_);
     for (int i = 0; i < fitted_values.length(); i++)
-    {
         residual_(i) = latent_variable(i) - (fitted_values(i) - leaf_values_(i, t));
-    }
 }
 
 void BartTree::updateSigma2(
@@ -62,14 +58,10 @@ void BartTree::updateDirAlpha(double& dir_alpha)
         const double LOG_LB = -300*log(10);
         for (int i = 0; i < NUM_VAR; i++)
         {
-            if(var_prob_(i) > LB) 
-            {
+            if(var_prob_(i) > LB)
                 log_var_prob(i) = log(var_prob_(i));
-            }
             else
-            {
                 log_var_prob(i) = LOG_LB;
-            }
         }
     }
 
@@ -77,13 +69,13 @@ void BartTree::updateDirAlpha(double& dir_alpha)
         sum(log_var_prob * (rep(prop_dir_alpha/NUM_VAR, NUM_VAR) - 1))
         + lgamma(sum(rep(prop_dir_alpha/NUM_VAR, NUM_VAR)))
         - sum(lgamma(rep(prop_dir_alpha/NUM_VAR, NUM_VAR)))
-        ;
+    ;
 
     double likelihood =
         sum(log_var_prob * (rep(dir_alpha/NUM_VAR, NUM_VAR) - 1))
         + lgamma(sum(rep(dir_alpha/NUM_VAR, NUM_VAR)))
         - sum(lgamma(rep(dir_alpha/NUM_VAR, NUM_VAR)))
-        ;
+    ;
 
     double ratio =
         prop_likelihood
@@ -92,12 +84,10 @@ void BartTree::updateDirAlpha(double& dir_alpha)
         - likelihood
         + 0.5 * log(dir_alpha)
         + 1.5 * log(NUM_VAR + dir_alpha)
-        ;
+    ;
 
     if (ratio > log(R::runif(0,1)))
-    {
         dir_alpha = prop_dir_alpha;
-    }
 }
 
 // update var_prob for marginal model
@@ -116,6 +106,7 @@ void BartTree::updateVarProb(
     // TRT counts of outcome model since exposure model does not include TRT 
     // in the model.
     // i.e. var_count_exp(TRT_IDX) = var_count_out(TRT_IDX)
+    double sum_exp = sum(var_count_exp);
     var_count_exp.push_back(var_count_out(TRT_IDX));
 
     NumericVector alpha         = post_dir_alpha + var_count_exp + var_count_out;
@@ -131,26 +122,17 @@ void BartTree::updateVarProb(
         {
             // logarize var_prob
             if (var_prob_(i) > LB)
-            {
                 log_var_prob(i) = log(var_prob_(i));
-            }
             else
-            {
                 log_var_prob(i) = LOG_LB;
-            }
+            
             // logarize prop_var_prob
             if (prop_var_prob(i) > LB)
-            {
                 log_prop_var_prob(i) = log(prop_var_prob(i));
-            }
             else
-            {
                 log_prop_var_prob(i) = LOG_LB;
-            }
         }
     }
-
-    double sum_exp = sum(var_count_exp) - var_count_exp(TRT_IDX);
 
     double prop_dir_lik = sum_exp * (- log(1 - prop_var_prob(TRT_IDX)));
     double dir_lik      = sum_exp * (- log(1 -     var_prob_(TRT_IDX)));
@@ -168,10 +150,8 @@ void BartTree::updateVarProb(
         + sum((post_dir_alpha + var_count_exp + var_count_out - 1.0) * log_var_prob)
         - dir_lik
         - sum((post_dir_alpha + var_count_exp + var_count_out - 1.0) * log_prop_var_prob)
-        ;
-
+    ;
+        
     if (ratio > log(R::runif(0,1)))
-    {
         var_prob_ = clone(prop_var_prob);
-    }
 }

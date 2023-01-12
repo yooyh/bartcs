@@ -64,9 +64,9 @@ sbart <- function(
     X <- as.matrix(X)
 
   # shift and rescale to [-0.5, 0.5]
-  Y_max  <- max(Y)
-  Y_min  <- min(Y)
-  Y      <- (Y - Y_min) / (Y_max - Y_min) - 0.5
+  Y_max <- max(Y)
+  Y_min <- min(Y)
+  Y     <- (Y - Y_min) / (Y_max - Y_min) - 0.5
 
   # initialize bootstrap sample size and parallel
   if (is.null(boot_size))

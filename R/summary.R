@@ -83,13 +83,13 @@ summary.bartcs <- function(object, ...) {
     est <- estimand[i]
     outcome[(idx + 1):(idx + num_chain), 3:ncol(outcome)] <- t(vapply(
       seq_len(num_chain),
-      function(chain_idx) t(c(
+      function(chain_idx) {t(c(
         stats::quantile(object$chains[[chain_idx]][[est]],
                         probs = c(0.025, 0.25)),
         mean(object$chains[[chain_idx]][[est]]),
         stats::quantile(object$chains[[chain_idx]][[est]],
                         probs = c(0.5, 0.75, 0.975))
-      )),
+      ))},
       numeric(6)
     ))
     outcome[idx + num_chain + 1, 3:ncol(outcome)] <- c(

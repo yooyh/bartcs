@@ -7,8 +7,6 @@ using namespace std;
 void BartTree::prune(const int t)
 {
     const int NUM_OBS = X_.nrow();
-    // const int NUM_VAR = X.ncol();
-    // const int TRT_IDX = X.ncol();
 
     // propose a singly node to prune
     vector<BartNode*> singly_nodes = getSinglyNodes(t);
@@ -43,8 +41,8 @@ void BartTree::prune(const int t)
         {
             if (assigned_node == prop_node->getChildLeft())
             {
-                num_left      += 1;
-                residual_left += residual_(i);
+                num_left       += 1;
+                residual_left  += residual_(i);
             }
             else
             {
@@ -55,10 +53,8 @@ void BartTree::prune(const int t)
     }
 
     if ((sum(obs_flag) == 1) || (sum(var_flag) == 0))
-    {
         // there is no predictor with unique values
         return;
-    }
 
     // find leaf node for computation of transition
     vector<BartNode*> terminal_nodes = getTerminalNodes(t);
@@ -68,8 +64,8 @@ void BartTree::prune(const int t)
     int           num_uniques        = countUniqueValues(prop_node, var_idx, t, false);
 
     double transition = 
-        log(step_prob_(0))  - log(terminal_nodes.size() - 1) + log_prop_prob
-        - log(num_uniques) - log(step_prob_(1))              + log(singly_nodes.size())
+          log(step_prob_(0)) - log(terminal_nodes.size() - 1) + log_prop_prob
+        - log(num_uniques)   - log(step_prob_(1))             + log(singly_nodes.size())
     ;
 
     double likelihood = 

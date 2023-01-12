@@ -75,8 +75,6 @@ void BartTree::drawLeafValue(const int t)
             #pragma omp parallel for if (parallel_)
         #endif
         for(int i = 0; i < NUM_OBS; i++) 
-        {
             leaf_values_(i, t) = assigned_nodes_[t][i]->getLeafValue();
-        }
     }
 }

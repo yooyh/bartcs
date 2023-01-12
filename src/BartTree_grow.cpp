@@ -6,9 +6,8 @@ using namespace std;
 
 void BartTree::grow(const int t)
 {
-    const int NUM_OBS      = X_.nrow();
-    const int NUM_VAR      = X_.ncol();
-    const int TRT_IDX      = X_.ncol();
+    const int NUM_OBS = X_.nrow();
+    const int NUM_VAR = X_.ncol();
 
     BartNode* prop_node    = nullptr;
     int       prop_var_idx = -1;
@@ -35,11 +34,10 @@ void BartTree::grow(const int t)
                 // mar exposure model
                 // in marginal model, last index of var_prob indicate TRT.
                 // In marginal exposure model, we do not use TRT.
-                do
                 {
-                    prop_var_idx = sample(NUM_VAR + 1, 1, false, var_prob_)(0) - 1;
-                } 
-                while (prop_var_idx == TRT_IDX);
+                    NumericVector prob = var_prob_[Range(0, NUM_VAR - 1)];
+                    prop_var_idx = sample(NUM_VAR, 1, false, prob)(0) - 1;
+                }
                 break;
 
             case 2: 
@@ -100,16 +98,15 @@ void BartTree::grow(const int t)
         updateFlag(obs_flag, var_flag, baseline_idx, prop_node, t, true);
 
         if ((sum(obs_flag) == 1) || (sum(var_flag) == 0))
-        {
             // there is no predictor with unique values
             return;
-        }
 
         // sample predictor with unique values
         NumericVector flagged_var_prob = clone(var_prob_);
         for (int i = 0; i < flagged_var_prob.length(); i++)
         {
-            if (!var_flag(i)) flagged_var_prob(i) = 0;
+            if (!var_flag(i)) 
+                flagged_var_prob(i) = 0;
         }
         prop_var_idx = sample(var_prob_.length(), 1, false, flagged_var_prob)(0) - 1;
 
@@ -154,12 +151,12 @@ void BartTree::grow(const int t)
     }
 
     double transition = 
-        log(step_prob_(1))      + log(num_terminal_nodes) - log_prop_prob
-        + log(num_uniques - 1) - log(step_prob_(0))       - log(num_new_singly)
+          log(step_prob_(1))   + log(num_terminal_nodes) - log_prop_prob
+        + log(num_uniques - 1) - log(step_prob_(0))      - log(num_new_singly)
     ;
 
     double likelihood = 
-        0.5 *   log(sigma2_) 
+          0.5 * log(sigma2_) 
         + 0.5 * log(sigma2_ + sigma_mu_ * (num_left + num_right))
         - 0.5 * log(sigma2_ + sigma_mu_ * num_left)
         - 0.5 * log(sigma2_ + sigma_mu_ * num_right)
@@ -171,7 +168,7 @@ void BartTree::grow(const int t)
 
     int depth = prop_node->getDepth();
     double structure = (
-        log(alpha_) + 2*log(1 - alpha_ / pow(2 + depth, beta_))
+          log(alpha_) + 2*log(1 - alpha_ / pow(2 + depth, beta_))
         - log(pow(1 + depth, beta_) - alpha_)
         + log_prop_prob
         - log(num_uniques - 1)
