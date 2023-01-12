@@ -135,7 +135,7 @@ mbart <- function(
     )
 
     # post-processing for each MCMC chain
-    var_prob <- colMeans(ifelse(var_count > 1, 1, 0))
+    var_prob <- colMeans(ifelse(var_count > 0, 1, 0))
 
     # rescale result
     Y1  <- (Y1 + 0.5) * (Y_max - Y_min) + Y_min
