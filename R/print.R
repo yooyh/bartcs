@@ -1,7 +1,7 @@
 #' @exportS3Method
 print.bartcs <- function(x, ...) {
   cat(
-    "`bartcs` fit by `", x$model, "()`",
+    "`bartcs` fit by `", x$model, "_bart()`",
     "\n\n", sep = ""
   )
 

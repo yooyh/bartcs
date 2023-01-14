@@ -138,7 +138,7 @@ sbart <- function(
     dir_alpha_hist[1]   <- dir_alpha
 
     # call Rcpp implementation
-    fit_sbart(
+    fit_separate(
       Y1, Y0, var_count, var_prob,
       sigma2_out1_hist, sigma2_out0_hist, dir_alpha_hist,
       Y_treated, Y_control, trt,
@@ -164,7 +164,7 @@ sbart <- function(
       var_prob    = var_prob,
       sigma2_out1 = sigma2_out1_hist,
       sigma2_out0 = sigma2_out0_hist,
-      dir_alpha   = dir_alpha_hist
+      alpha   = dir_alpha_hist
     )
   }
 
@@ -192,7 +192,7 @@ sbart <- function(
       ATE = ATE, Y1 = Y1, Y0 = Y0,
       var_prob = var_prob,
       chains   = chains,
-      model    = "sbart",
+      model    = "separate",
       label    = colnames(X),
       params   = list(
         trt_treated     = trt_treated,

@@ -7,7 +7,7 @@
 #'   and to estimate average treatment effect \eqn{(Y(1) - Y(0))}.
 #'
 #' @usage
-#' sbart(
+#' separate_bart(
 #'   Y, trt, X,
 #'   trt_treated     = 1,
 #'   trt_control     = 0,
@@ -27,7 +27,7 @@
 #'   verbose         = TRUE
 #' )
 #'
-#' mbart(
+#' single_bart(
 #'   Y, trt, X,
 #'   trt_treated     = 1,
 #'   trt_control     = 0,
@@ -80,7 +80,7 @@
 #'   If `FALSE`, message will be suppressed.
 #'
 #' @details
-#' `sbart()` and `mbart()` fit an exposure model and outcome model(s)
+#' `separate_bart()` and `single_bart()` fit an exposure model and outcome model(s)
 #' for estimating treatment effect with adjustment of confounders
 #' in the presence of a large set of potential confounders (Kim et al. 2022).
 #'
@@ -92,12 +92,12 @@
 #' There is a distinction between fitting each outcome model for the treated and control groups and
 #' fitting a single outcome model for the entire sample.
 #' \itemize{
-#'   \item `sbart()` specifies two **"separate"** outcome models
+#'   \item `separate_bart()` specifies two **"separate"** outcome models
 #'     for two binary treatment levels.
 #'     Thus, it fits three models:
 #'       one exposure model and two separate outcome models for \eqn{A = 0, 1}.
 #'
-#'   \item `mbart()` specifies a single **"marginal"** outcome models.
+#'   \item `single_bart()` specifies a **"single"** marginal outcome models.
 #'     Thus, it fits two models:
 #'       one exposure model and one outcome model for the entire sample.
 #' }
@@ -134,13 +134,13 @@
 #'     \item `sigma2_out` Posterior sample of `sigma2` in the outcome model.
 #'     \item `dir_alpha`  Posterior sample of `dir_alpha.`
 #'   }
-#' \item{model}{`sbart` or `mbart`.}
+#' \item{model}{`separate` or `single`.}
 #' \item{label}{Column names of `X`.}
 #' \item{params}{Parameters used in the model.}
 #'
 #' @examples
 #' data(ihdp, package = "bartcs")
-#' mbart(
+#' single_bart(
 #'   Y               = ihdp$y_factual,
 #'   trt             = ihdp$treatment,
 #'   X               = ihdp[, 6:30],
@@ -150,7 +150,7 @@
 #'   num_burn_in     = 10,
 #'   verbose         = FALSE
 #' )
-#' sbart(
+#' separate_bart(
 #'   Y               = ihdp$y_factual,
 #'   trt             = ihdp$treatment,
 #'   X               = ihdp[, 6:30],

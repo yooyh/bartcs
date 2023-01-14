@@ -28,7 +28,7 @@ posterior inclusion probability (pip) plot and trace plot.
 \subsection{PIP plot}{
 
 When a posterior sample is sampled during training,
-\code{sbart()} or \code{mbart()} also counts
+\code{separate_bart()} or \code{single_bart()} also counts
 which variables are included in the model and
 compute pip for each variable.
 For \code{bartcs} object \code{x},
@@ -40,15 +40,15 @@ draws plot using \code{ggcharts::bar_chart()}.
 \subsection{Traceplot}{
 
 Parameters are recorded for each MCMC iterations.
-Parameters include "\code{ATE}", "\code{Y1}", "\code{Y0}", "\code{dir_alpha}",
-and either "\code{sigma2_out}" from \code{mbart()}
-or "\code{sigma2_out1}" and "\code{sigma2_out0}" from \code{sbart()}.
+Parameters include "\code{ATE}", "\code{Y1}", "\code{Y0}", "\code{alpha}",
+and either "\code{sigma2_out}" from \code{single_bart()}
+or "\code{sigma2_out1}" and "\code{sigma2_out0}" from \code{separate_bart()}.
 Vertical line indicates burn-in.
 }
 }
 \examples{
 data(ihdp, package = "bartcs")
-x <- mbart(
+x <- single_bart(
   Y               = ihdp$y_factual,
   trt             = ihdp$treatment,
   X               = ihdp[, 6:30],
@@ -68,6 +68,6 @@ plot(x, method = "pip", threshold = 0.5)
 # trace plot
 plot(x, method = "trace")
 plot(x, method = "trace", "Y1")
-plot(x, method = "trace", "dir_alpha")
+plot(x, method = "trace", "alpha")
 
 }

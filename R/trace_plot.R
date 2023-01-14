@@ -2,14 +2,14 @@ trace_plot <- function(x, parameter) {
   if (length(parameter) != 1)
     stop("`trace_plot` can take single parameter.\n")
 
-  if (x$model == "mbart" && parameter %in% c("sigma2_out1", "sigma2_out0")) {
+  if (x$model == "single" && parameter %in% c("sigma2_out1", "sigma2_out0")) {
     message(
       "Current parameter is", parameter, ". Did you mean `sigma2_out`?, \n",
       "  Proceeding with `sigma2_out`..."
     )
     parameter <- "sigma2_out"
   }
-  if (x$model == "sbart" && parameter == "sigma2_out") {
+  if (x$model == "separate" && parameter == "sigma2_out") {
     message(
       "There are `sigma2_out1` and `sigma2_out0`.\n",
       "  Proceeding with `sigma2_out1`..."
@@ -18,9 +18,9 @@ trace_plot <- function(x, parameter) {
   }
 
   outcome <- c("ATE", "Y1", "Y0")
-  if (x$model == "sbart")
+  if (x$model == "separate")
     params <- c("sigma2_out1", "sigma2_out0", "alpha")
-  else if (x$model == "mbart")
+  else if (x$model == "single")
     params <- c("sigma2_out", "alpha")
 
 

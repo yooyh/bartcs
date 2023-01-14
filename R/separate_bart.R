@@ -1,7 +1,7 @@
 #' @rdname bart
 #' @usage NULL
 #' @export
-mbart <- function(
+separate_bart <- function(
   Y, trt, X,
   trt_treated     = 1,
   trt_control     = 0,
@@ -29,6 +29,20 @@ mbart <- function(
     step_prob, alpha, beta, nu, q,
     dir_alpha, verbose
   )
+
+  if (length(unique(trt)) != 2)
+    stop(
+      "`trt` must be binary vector.\n",
+      "  For non-binary `trt`, try `mbart()` instead."
+    )
+  is_binary_trt <- isTRUE(
+    all.equal(sort(unique(trt)), sort(c(trt_treated, trt_control)))
+  )
+  if (!is_binary_trt)
+    stop(
+      "`trt_treated` or `trt_control` must be value of `trt`.\n",
+      "  For other values, try `mbart()` instead."
+    )
 
 
   # ---- data preprocessing ----
@@ -65,33 +79,32 @@ mbart <- function(
     colnames(X) <- paste0("X", seq_len(p))
 
 
-  # ---- mbart specific preprocessing step ----
-  # check whether it is binary treatment
-  is_binary_trt <- isTRUE(
-    all.equal(sort(unique(trt)), sort(c(trt_treated, trt_control)))
-  )
+  # ---- specific preprocessing step for separate model ----
+  is_binary_trt <- TRUE
+
+  # separate data with respect to treatment
+  Y_treated <- Y[trt == trt_treated]
+  Y_control <- Y[trt == trt_control]
+  X_treated <- X[trt == trt_treated, ]
+  X_control <- X[trt == trt_control, ]
 
 
   # ---- calculate lambda before MCMC iterations ----
-  sigma2_exp <- ifelse(is_binary_trt, 1, stats::var(Y))
-  sigma2_out <- stats::var(Y)
-  if (is_binary_trt) {
-    lambda_exp <- 0 # arbitrary value
-  } else {
-    f <- function(lambda) {
-      invgamma::qinvgamma(
-        q, nu / 2, rate = lambda * nu / 2, lower.tail = TRUE, log.p = FALSE
-      ) - sqrt(sigma2_exp)
-    }
-    lambda_exp <- rootSolve::uniroot.all(f, c(0.1^5, 10))
+  sigma2_out1 <- stats::var(Y_treated)
+  sigma2_out0 <- stats::var(Y_control)
+  f <- function(lambda) {
+    invgamma::qinvgamma(
+      q, nu / 2, rate = lambda * nu / 2, lower.tail = TRUE, log.p = FALSE
+    ) - sqrt(sigma2_out1)
   }
+  lambda_out1 <- rootSolve::uniroot.all(f, c(0.1^5, 10))
 
   f <- function(lambda) {
     invgamma::qinvgamma(
       q, nu / 2, rate = lambda * nu / 2, lower.tail = TRUE, log.p = FALSE
-    ) - sqrt(sigma2_out)
+    ) - sqrt(sigma2_out0)
   }
-  lambda_out <- rootSolve::uniroot.all(f, c(0.1^5, 10))
+  lambda_out0 <- rootSolve::uniroot.all(f, c(0.1^5, 10))
 
 
   # ---- run MCMC and save result of each chain ----
@@ -109,32 +122,35 @@ mbart <- function(
   for (chain_idx in seq_len(num_chain)) {
     # placeholder for MCMC samples
     # Y1 and Y0 are potential outcomes. ATE = Y1 - Y0
-    Y1 <- vector(mode = "numeric", length = num_post_sample)
-    Y0 <- vector(mode = "numeric", length = num_post_sample)
+    Y1  <- vector(mode = "numeric", length = num_post_sample)
+    Y0  <- vector(mode = "numeric", length = num_post_sample)
 
     # placeholder for inclusion probabilities and initialize var_prob
-    var_count <- matrix(0, nrow = num_post_sample, ncol = p + 1)
-    var_prob  <- MCMCpack::rdirichlet(1, rep(dir_alpha, p + 1))
+    var_count <- matrix(0, nrow = num_post_sample, ncol = p)
+    var_prob  <- MCMCpack::rdirichlet(1, rep(dir_alpha, p))
 
     # placeholder for parameters
-    sigma2_out_hist    <- vector(mode = "numeric", length = num_chain_iter + 1)
-    dir_alpha_hist     <- vector(mode = "numeric", length = num_chain_iter + 1)
-    sigma2_out_hist[1] <- stats::var(Y)
-    dir_alpha_hist[1]  <- dir_alpha
+    sigma2_out1_hist    <- vector(mode = "numeric", length = num_chain_iter + 1)
+    sigma2_out0_hist    <- vector(mode = "numeric", length = num_chain_iter + 1)
+    dir_alpha_hist      <- vector(mode = "numeric", length = num_chain_iter + 1)
+    sigma2_out1_hist[1] <- sigma2_out1
+    sigma2_out0_hist[1] <- sigma2_out0
+    dir_alpha_hist[1]   <- dir_alpha
 
     # call Rcpp implementation
-    fit_single(
+    fit_separate(
       Y1, Y0, var_count, var_prob,
-      sigma2_exp, sigma2_out_hist, dir_alpha_hist,
-      Y, trt, X, trt_treated, trt_control,
+      sigma2_out1_hist, sigma2_out0_hist, dir_alpha_hist,
+      Y_treated, Y_control, trt,
+      X, X_treated, X_control,
       chain_idx, num_chain,
       num_chain_iter, num_burn_in, num_thin, num_post_sample,
       num_tree, step_prob, alpha, beta,
-      nu, lambda_exp, lambda_out,
+      nu, lambda_out1, lambda_out0,
       boot_size, is_binary_trt, parallel, verbose
     )
 
-    # post-processing for each MCMC chain
+    # post-processing after MCMC
     var_prob <- colMeans(ifelse(var_count > 0, 1, 0))
 
     # rescale result
@@ -144,10 +160,11 @@ mbart <- function(
 
     chains[[chain_idx]] <- list(
       ATE = ATE, Y1 = Y1, Y0 = Y0,
-      var_count  = var_count,
-      var_prob   = var_prob,
-      sigma2_out = sigma2_out_hist,
-      alpha  = dir_alpha_hist
+      var_count   = var_count,
+      var_prob    = var_prob,
+      sigma2_out1 = sigma2_out1_hist,
+      sigma2_out0 = sigma2_out0_hist,
+      alpha   = dir_alpha_hist
     )
   }
 
@@ -157,7 +174,7 @@ mbart <- function(
 
   # merge result
   ATE <- Y1 <- Y0 <- NULL
-  var_prob <- vector(mode = "numeric", length = p + 1)
+  var_prob <- vector(mode = "numeric", length = p)
   for (chain_idx in seq_len(num_chain)) {
     ATE <- c(ATE, chains[[chain_idx]]$ATE)
     Y1  <- c(Y1,  chains[[chain_idx]]$Y1)
@@ -165,7 +182,7 @@ mbart <- function(
     var_prob <- var_prob + chains[[chain_idx]]$var_prob
   }
   var_prob        <- var_prob / num_chain
-  names(var_prob) <- c(colnames(X), "trt")
+  names(var_prob) <- colnames(X)
 
   cat("\n")
 
@@ -175,8 +192,8 @@ mbart <- function(
       ATE = ATE, Y1 = Y1, Y0 = Y0,
       var_prob = var_prob,
       chains   = chains,
-      model    = "single",
-      label    = c(colnames(X), "trt"),
+      model    = "separate",
+      label    = colnames(X),
       params   = list(
         trt_treated     = trt_treated,
         trt_control     = trt_control,

@@ -14,7 +14,7 @@
 #' @return
 #' Provide list with following components.
 #'
-#' \item{model}{`sbart` or `mbart`.}
+#' \item{model}{`separate_bart` or `single_bart`.}
 #' \item{trt_value}{Treatment values for each treatment group:
 #'   `trt_treated` for treatment group and `trt_control` for control group.}
 #' \item{tree_params}{Parameters used for tree structure.}
@@ -25,7 +25,7 @@
 #'
 #' @examples
 #' data(ihdp, package = "bartcs")
-#' x <- mbart(
+#' x <- single_bart(
 #'   Y               = ihdp$y_factual,
 #'   trt             = ihdp$treatment,
 #'   X               = ihdp[, 6:30],
@@ -108,7 +108,7 @@ summary.bartcs <- function(object, ...) {
 print.bartcs_summary <- function(x, ...) {
   width = 6
   cat(
-    "`bartcs` fit by `", x$model, "()`", "\n",
+    "`bartcs` fit by `", x$model, "_bart()`", "\n",
     "\n", sep = ""
   )
   cat(

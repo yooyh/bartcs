@@ -14,7 +14,7 @@ fct_to_dummy <- function(X) {
   X[, -fct_idx]
 }
 
-# test inputs for sbart and mbart
+# test inputs for separate_bart() and single_bart()
 check_input <- function(
   Y, trt, X,
   trt_treated     = 1,

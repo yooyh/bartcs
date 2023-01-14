@@ -14,7 +14,7 @@ NULL
 #'
 #' Functions in `bartcs` serve one of three purposes.
 #' \enumerate{
-#'   \item Functions for fitting: `sbart()` and `mbart()`.
+#'   \item Functions for fitting: `separate_bart()` and `single_bart()`.
 #'   \item Functions for summary: `summary()`, `plot()` and `gelman_rubin()`.
 #'   \item Utility function for OpenMP: `count_omp_thread()`.
 #' }

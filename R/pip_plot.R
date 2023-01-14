@@ -4,10 +4,10 @@ pip_plot <- function(x, ...) {
 
   df <- data.frame(label = label, var_prob = var_prob)
 
-  if (x$model == "sbart")
+  if (x$model == "separate")
     title <- "PIP (Separate Model)"
-  else if (x$model == "mbart")
-    title <- "PIP (Marginal Model)"
+  else if (x$model == "single")
+    title <- "PIP (Single Model)"
 
   ggcharts::bar_chart(df, label, var_prob, ...) +
     ggplot2::labs(

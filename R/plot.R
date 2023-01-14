@@ -14,7 +14,7 @@
 #' @details
 #' ## PIP plot
 #' When a posterior sample is sampled during training,
-#' `sbart()` or `mbart()` also counts
+#' `separate_bart()` or `single_bart()` also counts
 #' which variables are included in the model and
 #' compute pip for each variable.
 #' For `bartcs` object `x`,
@@ -24,9 +24,9 @@
 #'
 #' ## Traceplot
 #' Parameters are recorded for each MCMC iterations.
-#' Parameters include "`ATE`", "`Y1`", "`Y0`", "`dir_alpha`",
-#' and either "`sigma2_out`" from `mbart()`
-#' or "`sigma2_out1`" and "`sigma2_out0`" from `sbart()`.
+#' Parameters include "`ATE`", "`Y1`", "`Y0`", "`alpha`",
+#' and either "`sigma2_out`" from `single_bart()`
+#' or "`sigma2_out1`" and "`sigma2_out0`" from `separate_bart()`.
 #' Vertical line indicates burn-in.
 #'
 #' @return
@@ -34,7 +34,7 @@
 #'
 #' @examples
 #' data(ihdp, package = "bartcs")
-#' x <- mbart(
+#' x <- single_bart(
 #'   Y               = ihdp$y_factual,
 #'   trt             = ihdp$treatment,
 #'   X               = ihdp[, 6:30],
@@ -54,7 +54,7 @@
 #' # trace plot
 #' plot(x, method = "trace")
 #' plot(x, method = "trace", "Y1")
-#' plot(x, method = "trace", "dir_alpha")
+#' plot(x, method = "trace", "alpha")
 #'
 #' @exportS3Method
 plot.bartcs <- function(x, method = NULL, parameter = NULL, ...) {

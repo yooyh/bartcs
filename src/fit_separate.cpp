@@ -9,7 +9,7 @@ using namespace std;
 // [[Rcpp::plugins(openmp)]]
 
 // [[Rcpp::export]]
-void fit_sbart(
+void fit_separate(
     NumericVector&       Y1,
     NumericVector&       Y0,
     NumericMatrix&       var_count,

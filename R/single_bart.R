@@ -1,7 +1,7 @@
 #' @rdname bart
 #' @usage NULL
 #' @export
-mbart <- function(
+single_bart <- function(
   Y, trt, X,
   trt_treated     = 1,
   trt_control     = 0,
@@ -65,7 +65,7 @@ mbart <- function(
     colnames(X) <- paste0("X", seq_len(p))
 
 
-  # ---- mbart specific preprocessing step ----
+  # ---- specific preprocessing step for single model ----
   # check whether it is binary treatment
   is_binary_trt <- isTRUE(
     all.equal(sort(unique(trt)), sort(c(trt_treated, trt_control)))

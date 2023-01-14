@@ -31,7 +31,7 @@ The dataset includes 6 continuous and 19 binary covariates with simulated outcom
 ```{r load and fit}
 data(ihdp, package = "bartcs")
 
-fit <- mbart(
+fit <- single_bart(
   Y               = ihdp$y_factual,
   trt             = ihdp$treatment,
   X               = ihdp[, 6:30],
@@ -76,8 +76,8 @@ With `trace_plot()`, you can visually check trace of effects or other parameters
 plot(fit, method = "trace")
 ```
 
-```{r trace plots dir_alpha}
-plot(fit, method = "trace", "dir_alpha")
+```{r trace plots alpha}
+plot(fit, method = "trace", "alpha")
 ```
 
 ## Multi-threading
@@ -98,7 +98,7 @@ idx  <- sample(nrow(ihdp), 2e4, TRUE)
 ihdp <- ihdp[idx, ]
 
 microbenchmark::microbenchmark(
-  simple_mbart = mbart(
+  simple_mbart = single_bart(
     Y               = ihdp$y_factual,
     trt             = ihdp$treatment,
     X               = ihdp[, 6:30],
@@ -109,7 +109,7 @@ microbenchmark::microbenchmark(
     verbose         = FALSE,
     parallel        = FALSE
   ),
-  parallel_mbart = mbart(
+  parallel_mbart = single_bart(
     Y               = ihdp$y_factual,
     trt             = ihdp$treatment,
     X               = ihdp[, 6:30],
