@@ -12,24 +12,25 @@
 \item{...}{Additional arguments. Not yet supported.}
 }
 \value{
-Provide list with following components.
+Provide list with the following components
 
 \item{model}{\code{separate_bart} or \code{single_bart}.}
 \item{trt_value}{Treatment values for each treatment group:
-\code{trt_treated} for treatment group and \code{trt_control} for control group.}
-\item{tree_params}{Parameters used for tree structure.}
-\item{chain_params}{Parameters used for MCMC chains.}
+\code{trt_treated} for the treatment group and \code{trt_control} for
+the control group.}
+\item{tree_params}{Parameters for the tree structure.}
+\item{chain_params}{Parameters for MCMC chains.}
 \item{gelman_rubin}{Gelman-Rubin diagnostic value.}
 \item{outcome}{Summary of outcomes from the model. This includes
-both aggregated outcome and individual outcomes from each chain.}
+both aggregated outcome and individual outcomes from each MCMC chain.}
 }
 \description{
 Provide summary for \code{bartcs} object.
 }
 \details{
-\code{summary()} computes Gelman-Rubin diagnostic and
-95\% posterior credible interval for both
-aggregated outcome and individual outcomes from each chain.
+\code{summary()} provides the Gelman-Rubin diagnostic value and
+95\% posterior credible interval for both aggregated outcome and
+individual outcomes from each MCMC chain.
 }
 \examples{
 data(ihdp, package = "bartcs")

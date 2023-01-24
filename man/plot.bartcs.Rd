@@ -12,7 +12,7 @@
 \item{method}{"\code{pip}" for posterior inclusion probability plot
 or "\code{trace}" for trace plot.}
 
-\item{parameter}{Target of parameter for traceplot.}
+\item{parameter}{Parameter for traceplot.}
 
 \item{...}{Additional arguments for pip plot.
 Check \code{?ggcharts::bar_chart} for possible arguments.}

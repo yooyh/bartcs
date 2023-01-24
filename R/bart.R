@@ -22,8 +22,7 @@
 #'   nu              = 3,
 #'   q               = 0.95,
 #'   dir_alpha       = 5,
-#'   boot_size       = NULL,
-#'   parallel        = NULL,
+#'   parallel        = FALSE,
 #'   verbose         = TRUE
 #' )
 #'
@@ -42,40 +41,47 @@
 #'   nu              = 3,
 #'   q               = 0.95,
 #'   dir_alpha       = 5,
-#'   boot_size       = NULL,
-#'   parallel        = NULL,
+#'   parallel        = FALSE,
 #'   verbose         = TRUE
 #' )
 #'
-#' @param Y Outcome variable.
-#' @param trt Treatment variable.
-#' @param X Potential confounders.
-#' @param trt_treated Value of `trt` for treated group.
-#' @param trt_control Value of `trt` for control group.
-#' @param num_tree Number of trees in BART model.
+#' @param Y A vector of outcome values.
+#' @param trt A vector of treatment values. Binary treatment works for both model
+#'   and continous treatment works for single_bart().
+#' @param X A matrix of potential confounders.
+#' @param trt_treated Value of `trt` for the treated group.
+#'   The default value is set to 1.
+#' @param trt_control Value of `trt` for the control group.
+#'   The default value is set to 0.
+#' @param num_tree Number of trees in BART model. The default value is set to 100.
 #' @param num_chain Number of MCMC chains.
-#'   Need to set `num_chain > 1` for Gelman-Rubin diagnostic.
+#'   Need to set `num_chain > 1` for the Gelman-Rubin diagnostic.
+#'   The default value is set to 4.
 #' @param num_burn_in Number of MCMC samples to be discarded per chain
 #'   as initial burn-in periods.
+#'   The default value is set to 100.
 #' @param num_thin Number of thinning per chain.
 #'   One in every `num_thin` samples are selected.
+#'   The default value is set to 1.
 #' @param num_post_sample Final number of posterior samples per chain.
 #'   Number of MCMC iterations per chain is
 #'   `burn_in + num_thin * num_post_sample`.
+#'   The default value is set to 100.
 #' @param step_prob A vector of tree alteration probabilities (GROW, PRUNE, CHANGE).
 #'   Each alteration is proposed to change the tree structure.
-#'   Default setting is `(0.28, 0.28, 0.44)`.
+#'   The default setting is `(0.28, 0.28, 0.44)`.
 #' @param alpha,beta Hyperparameters for tree regularization prior.
 #'   A terminal node of depth `d` will split with
 #'   probability of `alpha * (1 + d)^(-beta)`.
+#'   The default setting is `(alpha, beta) = (0.95, 2)` from Chipman et al. (2010).
 #' @param nu,q Values to calibrate hyperparameter of sigma prior.
-#'   Default setting is `(nu, q) = (3, 0.95)` from Chipman et al. (2010).
+#'   The default setting is `(nu, q) = (3, 0.95)` from Chipman et al. (2010).
 #' @param dir_alpha Hyperparameter of Dirichlet prior for selection probabilities.
-#' @param boot_size Number of bootstrap sample size.
-#'   Bootstrap samples will be used to compute potential outcomes \eqn{Y(1)} and \eqn{Y(0)}.
+#'   The default value is 5.
 #' @param parallel If `TRUE`, model fitting will be parallelized
-#'   with respect to `n = nrow(X)`.
+#'   with respect to `N = nrow(X)`.
 #'   Parallelization is recommended for very high `n` only.
+#'   The default setting is FALSE.
 #' @param verbose If `TRUE`, message will be printed during training.
 #'   If `FALSE`, message will be suppressed.
 #'
@@ -86,18 +92,19 @@
 #'
 #' The exposure model \eqn{E[A|X]} and the outcome model(s) \eqn{E[Y|A,X]} are
 #' linked together with a common Dirichlet prior that accrues
-#' posterior selection probability to confounders (\eqn{X}) on the basis of
-#' association with both the exposure (\eqn{A}) and the outcome (\eqn{Y}).
+#' posterior selection probabilities to the corresponding confounders (\eqn{X}) 
+#' on the basis of association with both the exposure (\eqn{A}) and the 
+#' outcome (\eqn{Y}).
 #'
-#' There is a distinction between fitting each outcome model for the treated and control groups and
-#' fitting a single outcome model for the entire sample.
+#' There is a distinction between fitting separate outcome models for the treated 
+#' and control groups and fitting a single outcome model for both groups.
 #' \itemize{
 #'   \item `separate_bart()` specifies two **"separate"** outcome models
 #'     for two binary treatment levels.
 #'     Thus, it fits three models:
 #'       one exposure model and two separate outcome models for \eqn{A = 0, 1}.
 #'
-#'   \item `single_bart()` specifies a **"single"** marginal outcome models.
+#'   \item `single_bart()` specifies one **"single"** outcome models.
 #'     Thus, it fits two models:
 #'       one exposure model and one outcome model for the entire sample.
 #' }
@@ -116,18 +123,18 @@
 #' \doi{10.48550/arXiv.2203.11798}
 #'
 #' @return
-#' A `bartcs` object. A `bartcs` object is a list with following components.
+#' A `bartcs` object. A list object contains the following components.
 #'
-#' \item{ATE}{Aggregated posterior samples of average treatment effect \eqn{(Y(1) - Y(0))}.}
-#' \item{Y1}{Aggregated posterior samples of potential outcome \eqn{Y(1)}.}
-#' \item{Y0}{Aggregated posterior samples of potential outcome \eqn{Y(0)}.}
+#' \item{ATE}{Aggregated posterior samples of average treatment effect \eqn{(Y_i(1) - Y_i(0))}.}
+#' \item{Y1}{Aggregated posterior samples of potential outcome \eqn{Y_i(1)} for \eqn{i = 1, \ldots, n}.}
+#' \item{Y0}{Aggregated posterior samples of potential outcome \eqn{Y_i(0)} for \eqn{i = 1, \ldots, n}.}
 #' \item{var_prob}{Aggregated posterior inclusion probability of each variable.}
 #' \item{chains}{A list of results from each MCMC chain.
-#'   Each list element consists of followings.}
+#'   Each list element contains the following items.}
 #'   \itemize{
-#'     \item `ATE`        Posterior sample of average treatment effect \eqn{(Y(1) - Y(0))}.
-#'     \item `Y1`         Posterior sample of potential outcome \eqn{Y(1)}.
-#'     \item `Y0`         Posterior sample of potential outcome \eqn{Y(0)}.
+#'     \item `ATE`        Posterior sample of average treatment effect \eqn{(Y_i(1) - Y_i(0))}.
+#'     \item `Y1`         Posterior sample of potential outcome \eqn{Y_i(1)} for \eqn{i = 1, \ldots, n}.
+#'     \item `Y0`         Posterior sample of potential outcome \eqn{Y_i(0)} for \eqn{i = 1, \ldots, n}.
 #'     \item `var_prob`   Posterior inclusion probability of each variable.
 #'     \item `var_count`  Number of selection of each variable in each MCMC iteration.
 #'       Its dimension is `num_post_sample * ncol(X)`.

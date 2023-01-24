@@ -16,8 +16,7 @@ mbart <- function(
   nu              = 3,
   q               = 0.95,
   dir_alpha       = 5,
-  boot_size       = NULL,
-  parallel        = NULL,
+  parallel        = FALSE,
   verbose         = TRUE
 ) {
 
@@ -53,12 +52,6 @@ mbart <- function(
   Y_max <- max(Y)
   Y_min <- min(Y)
   Y     <- (Y - Y_min) / (Y_max - Y_min) - 0.5
-
-  # initialize bootstrap sample size and parallel
-  if (is.null(boot_size))
-    boot_size <- 2 * n
-  if (is.null(parallel))
-    parallel <- ifelse(n < 15e4, TRUE, FALSE)
 
   # assign variable names if there are no name
   if (is.null(colnames(X)))
@@ -131,7 +124,7 @@ mbart <- function(
       num_chain_iter, num_burn_in, num_thin, num_post_sample,
       num_tree, step_prob, alpha, beta,
       nu, lambda_exp, lambda_out,
-      boot_size, is_binary_trt, parallel, verbose
+      is_binary_trt, parallel, verbose
     )
 
     # post-processing for each MCMC chain

@@ -1,6 +1,12 @@
 #' Gelman-Rubin diagnostic for \code{bartcs} objects.
 #'
-#' `gelman_rubin()` computes Gelman-Rubin diagnostic for `bartcs` objects.
+#' `gelman_rubin()` computes Gelman-Rubin dignostic (1992) for monitoring
+#' covergence of MCMC outputs when num_chain > 1.
+#' 
+#' @references
+#' Gelman, A and Rubin, DB (1992)
+#' Inference from iterative simulation using multiple sequences.
+#' *Statistical Science*, 7, 457-511.
 #'
 #' @param x A `bartcs` object.
 #'

@@ -5,6 +5,8 @@ attachment::att_amend_desc()
 
 # Check manual
 devtools::document();
+# tinytex::install_tinytex()
+# brew install texlive
 devtools::build_manual(path = paste0(getwd(), "/dev"))
 
 # Run tests and examples

@@ -7,21 +7,22 @@
 #' @param ... Additional arguments. Not yet supported.
 #'
 #' @details
-#' `summary()` computes Gelman-Rubin diagnostic and
-#' 95% posterior credible interval for both
-#' aggregated outcome and individual outcomes from each chain.
+#' `summary()` provides the Gelman-Rubin diagnostic value and
+#' 95% posterior credible interval for both aggregated outcome and
+#' individual outcomes from each MCMC chain.
 #'
 #' @return
-#' Provide list with following components.
+#' Provide list with the following components
 #'
 #' \item{model}{`separate_bart` or `single_bart`.}
 #' \item{trt_value}{Treatment values for each treatment group:
-#'   `trt_treated` for treatment group and `trt_control` for control group.}
-#' \item{tree_params}{Parameters used for tree structure.}
-#' \item{chain_params}{Parameters used for MCMC chains.}
+#'   `trt_treated` for the treatment group and `trt_control` for
+#' the control group.}
+#' \item{tree_params}{Parameters for the tree structure.}
+#' \item{chain_params}{Parameters for MCMC chains.}
 #' \item{gelman_rubin}{Gelman-Rubin diagnostic value.}
 #' \item{outcome}{Summary of outcomes from the model. This includes
-#'   both aggregated outcome and individual outcomes from each chain.}
+#'   both aggregated outcome and individual outcomes from each MCMC chain.}
 #'
 #' @examples
 #' data(ihdp, package = "bartcs")

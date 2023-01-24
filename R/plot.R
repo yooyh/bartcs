@@ -7,7 +7,7 @@
 #' @param x A `bartcs` object.
 #' @param method "`pip`" for posterior inclusion probability plot
 #'   or "`trace`" for trace plot.
-#' @param parameter Target of parameter for traceplot.
+#' @param parameter Parameter for traceplot.
 #' @param ... Additional arguments for pip plot.
 #'   Check `?ggcharts::bar_chart` for possible arguments.
 #'

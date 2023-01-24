@@ -35,7 +35,6 @@ void fit_single(
         const double         nu,
         const double         lambda_exp,
         const double         lambda_out,
-        const int            boot_size,
         const bool           is_binary_trt,
         const bool           parallel,
         const bool           verbose
@@ -109,8 +108,6 @@ void fit_single(
         2, trt, X, Xcut, step_prob, num_tree, // const variables 1
         alpha, beta, sigma_mu_out, parallel   // const variables 2
     );
-    
-    IntegerVector boot_idx = sample(NUM_OBS, boot_size, true) - 1;
     
     int thin_count = 0, res_idx = 0;
 

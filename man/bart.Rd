@@ -24,8 +24,7 @@ separate_bart(
   nu              = 3,
   q               = 0.95,
   dir_alpha       = 5,
-  boot_size       = NULL,
-  parallel        = NULL,
+  parallel        = FALSE,
   verbose         = TRUE
 )
 
@@ -44,73 +43,79 @@ single_bart(
   nu              = 3,
   q               = 0.95,
   dir_alpha       = 5,
-  boot_size       = NULL,
-  parallel        = NULL,
+  parallel        = FALSE,
   verbose         = TRUE
 )
 }
 \arguments{
-\item{Y}{Outcome variable.}
+\item{Y}{A vector of outcome values.}
 
-\item{trt}{Treatment variable.}
+\item{trt}{A vector of treatment values. Binary treatment works for both model
+and continous treatment works for single_bart().}
 
-\item{X}{Potential confounders.}
+\item{X}{A matrix of potential confounders.}
 
-\item{trt_treated}{Value of \code{trt} for treated group.}
+\item{trt_treated}{Value of \code{trt} for the treated group.
+The default value is set to 1.}
 
-\item{trt_control}{Value of \code{trt} for control group.}
+\item{trt_control}{Value of \code{trt} for the control group.
+The default value is set to 0.}
 
-\item{num_tree}{Number of trees in BART model.}
+\item{num_tree}{Number of trees in BART model. The default value is set to 100.}
 
 \item{num_chain}{Number of MCMC chains.
-Need to set \code{num_chain > 1} for Gelman-Rubin diagnostic.}
+Need to set \code{num_chain > 1} for the Gelman-Rubin diagnostic.
+The default value is set to 4.}
 
 \item{num_burn_in}{Number of MCMC samples to be discarded per chain
-as initial burn-in periods.}
+as initial burn-in periods.
+The default value is set to 100.}
 
 \item{num_thin}{Number of thinning per chain.
-One in every \code{num_thin} samples are selected.}
+One in every \code{num_thin} samples are selected.
+The default value is set to 1.}
 
 \item{num_post_sample}{Final number of posterior samples per chain.
 Number of MCMC iterations per chain is
-\code{burn_in + num_thin * num_post_sample}.}
+\code{burn_in + num_thin * num_post_sample}.
+The default value is set to 100.}
 
 \item{step_prob}{A vector of tree alteration probabilities (GROW, PRUNE, CHANGE).
 Each alteration is proposed to change the tree structure.
-Default setting is \verb{(0.28, 0.28, 0.44)}.}
+The default setting is \verb{(0.28, 0.28, 0.44)}.}
 
 \item{alpha, beta}{Hyperparameters for tree regularization prior.
 A terminal node of depth \code{d} will split with
-probability of \code{alpha * (1 + d)^(-beta)}.}
+probability of \code{alpha * (1 + d)^(-beta)}.
+The default setting is \verb{(alpha, beta) = (0.95, 2)} from Chipman et al. (2010).}
 
 \item{nu, q}{Values to calibrate hyperparameter of sigma prior.
-Default setting is \verb{(nu, q) = (3, 0.95)} from Chipman et al. (2010).}
+The default setting is \verb{(nu, q) = (3, 0.95)} from Chipman et al. (2010).}
 
-\item{dir_alpha}{Hyperparameter of Dirichlet prior for selection probabilities.}
-
-\item{boot_size}{Number of bootstrap sample size.
-Bootstrap samples will be used to compute potential outcomes \eqn{Y(1)} and \eqn{Y(0)}.}
+\item{dir_alpha}{Hyperparameter of Dirichlet prior for selection probabilities.
+The default value is 5.}
 
 \item{parallel}{If \code{TRUE}, model fitting will be parallelized
-with respect to \code{n = nrow(X)}.
-Parallelization is recommended for very high \code{n} only.}
+with respect to \code{N = nrow(X)}.
+Parallelization is recommended for very high \code{n} only.
+The default setting is FALSE.}
 
 \item{verbose}{If \code{TRUE}, message will be printed during training.
 If \code{FALSE}, message will be suppressed.}
 }
 \value{
-A \code{bartcs} object. A \code{bartcs} object is a list with following components.
+A \code{bartcs} object. A list object contains the following components.
 
-\item{ATE}{Aggregated posterior samples of average treatment effect \eqn{(Y(1) - Y(0))}.}
-\item{Y1}{Aggregated posterior samples of potential outcome \eqn{Y(1)}.}
-\item{Y0}{Aggregated posterior samples of potential outcome \eqn{Y(0)}.}
+\item{ATE}{Aggregated posterior samples of average treatment effect \eqn{(Y_i(1) - Y_i(0))}.}
+\item{Y1}{Aggregated posterior samples of potential outcome \eqn{Y_i(1)} for \eqn{i = 1, \ldots, n}.}
+\item{Y0}{Aggregated posterior samples of potential outcome \eqn{Y_i(0)} for \eqn{i = 1, \ldots, n}.}
 \item{var_prob}{Aggregated posterior inclusion probability of each variable.}
 \item{chains}{A list of results from each MCMC chain.
-Each list element consists of followings.}
+Each list element contains the following items.}
 \itemize{
-\item \code{ATE}        Posterior sample of average treatment effect \eqn{(Y(1) - Y(0))}.
-\item \code{Y1}         Posterior sample of potential outcome \eqn{Y(1)}.
-\item \code{Y0}         Posterior sample of potential outcome \eqn{Y(0)}.
+\item \code{ATE}        Posterior sample of average treatment effect \eqn{(Y_i(1) - Y_i(0))}.
+\item \code{Y1}         Posterior sample of potential outcome \eqn{Y_i(1)} for \eqn{i = 1, \ldots, n}.
+\item \code{Y0}         Posterior sample of potential outcome \eqn{Y_i(0)} for \eqn{i = 1, \ldots, n}.
 \item \code{var_prob}   Posterior inclusion probability of each variable.
 \item \code{var_count}  Number of selection of each variable in each MCMC iteration.
 Its dimension is \code{num_post_sample * ncol(X)}.
@@ -133,18 +138,19 @@ in the presence of a large set of potential confounders (Kim et al. 2022).
 
 The exposure model \eqn{E[A|X]} and the outcome model(s) \eqn{E[Y|A,X]} are
 linked together with a common Dirichlet prior that accrues
-posterior selection probability to confounders (\eqn{X}) on the basis of
-association with both the exposure (\eqn{A}) and the outcome (\eqn{Y}).
+posterior selection probabilities to the corresponding confounders (\eqn{X})
+on the basis of association with both the exposure (\eqn{A}) and the
+outcome (\eqn{Y}).
 
-There is a distinction between fitting each outcome model for the treated and control groups and
-fitting a single outcome model for the entire sample.
+There is a distinction between fitting separate outcome models for the treated
+and control groups and fitting a single outcome model for both groups.
 \itemize{
 \item \code{separate_bart()} specifies two \strong{"separate"} outcome models
 for two binary treatment levels.
 Thus, it fits three models:
 one exposure model and two separate outcome models for \eqn{A = 0, 1}.
 
-\item \code{single_bart()} specifies a \strong{"single"} marginal outcome models.
+\item \code{single_bart()} specifies one \strong{"single"} outcome models.
 Thus, it fits two models:
 one exposure model and one outcome model for the entire sample.
 }

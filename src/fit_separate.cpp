@@ -36,7 +36,6 @@ void fit_separate(
     const double         nu,
     const double         lambda_out1,
     const double         lambda_out0,
-    const int            boot_size,
     const bool           is_binary_trt,
     const bool           parallel,
     const bool           verbose
@@ -120,8 +119,6 @@ void fit_separate(
         0, trt, X_control, Xcut0, step_prob, num_tree, // const variables 1
         alpha, beta, sigma_mu_out0, parallel           // const variables 2
     );
-
-    IntegerVector boot_idx = sample(NUM_OBS, boot_size, true) - 1;
 
     int thin_count = 0, res_idx = 0;
     
