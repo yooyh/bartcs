@@ -92,7 +92,6 @@ single_bart <- function(
   num_chain_iter <- num_burn_in + num_thin * num_post_sample
   if (verbose) {
     cat(
-      "\n",
       "Fitting ", num_chain, " chains with ", num_chain_iter, " iters each...",
       "\n\n",
       sep = ""
@@ -159,8 +158,6 @@ single_bart <- function(
   }
   var_prob        <- var_prob / num_chain
   names(var_prob) <- c(colnames(X), "trt")
-
-  cat("\n")
 
   # return as bartcs object
   structure(

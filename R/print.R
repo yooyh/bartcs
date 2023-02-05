@@ -16,5 +16,4 @@ print.bartcs <- function(x, ...) {
   )
   colnames(df) <- c("mean", "2.5%", "97.5%")
   print(df)
-  cat("\n")
 }

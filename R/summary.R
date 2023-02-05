@@ -153,5 +153,4 @@ print.bartcs_summary <- function(x, ...) {
     "Outcome \n"
   )
   print(x$outcome, row.names = FALSE)
-  cat("\n")
 }
