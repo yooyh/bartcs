@@ -33,7 +33,7 @@ public:
             Rcout << "\rChain " << setw(chain_pad_) << chain_idx_ << ": 100% [";
             for (int i = 0; i < bar_width_; i++)
                 Rcout << "=";
-            Rcout << "] " << current_iter << "/" << total_iter_ << endl;
+            Rcout << "] " << current_iter << "/" << total_iter_ << "\n";
         }
         else
         {

@@ -18,11 +18,11 @@ count_omp_thread <- function() {
     .Call(`_bartcs_count_omp_thread`)
 }
 
-fit_separate <- function(Y1, Y0, var_count, var_prob, sigma2_out1_hist, sigma2_out0_hist, dir_alpha_hist, Y_treated, Y_control, trt, X, X_treated, X_control, chain_idx, num_chain, total_iter, num_burn_in, num_thin, num_post_sample, num_tree, step_prob, alpha, beta, nu, lambda_out1, lambda_out0, is_binary_trt, parallel, verbose) {
-    invisible(.Call(`_bartcs_fit_separate`, Y1, Y0, var_count, var_prob, sigma2_out1_hist, sigma2_out0_hist, dir_alpha_hist, Y_treated, Y_control, trt, X, X_treated, X_control, chain_idx, num_chain, total_iter, num_burn_in, num_thin, num_post_sample, num_tree, step_prob, alpha, beta, nu, lambda_out1, lambda_out0, is_binary_trt, parallel, verbose))
+cseparate_bart <- function(X_src, Y1_src, X1_src, Y0_src, X0_src, TRT_src, Y_min, Y_max, step_prob, num_chain, num_chain_iter, num_burn_in, num_thin, num_post_sample, num_tree, alpha, beta, nu, lambda_out1, lambda_out0, initial_dir_alpha, initial_sigma2_out1, initial_sigma2_out0, parallel, verbose) {
+    .Call(`_bartcs_cseparate_bart`, X_src, Y1_src, X1_src, Y0_src, X0_src, TRT_src, Y_min, Y_max, step_prob, num_chain, num_chain_iter, num_burn_in, num_thin, num_post_sample, num_tree, alpha, beta, nu, lambda_out1, lambda_out0, initial_dir_alpha, initial_sigma2_out1, initial_sigma2_out0, parallel, verbose)
 }
 
-fit_single <- function(Y1, Y0, var_count, var_prob, sigma2_exp, sigma2_out_hist, dir_alpha_hist, Y, trt, X, trt_treated, trt_control, chain_idx, num_chain, total_iter, num_burn_in, num_thin, num_post_sample, num_tree, step_prob, alpha, beta, nu, lambda_exp, lambda_out, is_binary_trt, parallel, verbose) {
-    invisible(.Call(`_bartcs_fit_single`, Y1, Y0, var_count, var_prob, sigma2_exp, sigma2_out_hist, dir_alpha_hist, Y, trt, X, trt_treated, trt_control, chain_idx, num_chain, total_iter, num_burn_in, num_thin, num_post_sample, num_tree, step_prob, alpha, beta, nu, lambda_exp, lambda_out, is_binary_trt, parallel, verbose))
+csingle_bart <- function(Y_src, X_src, TRT_src, trt_treated, trt_control, Y_min, Y_max, step_prob, num_chain, num_chain_iter, num_burn_in, num_thin, num_post_sample, num_tree, alpha, beta, nu, lambda_exp, lambda_out, initial_dir_alpha, initial_sigma2_exp, initial_sigma2_out, binary_trt, parallel, verbose) {
+    .Call(`_bartcs_csingle_bart`, Y_src, X_src, TRT_src, trt_treated, trt_control, Y_min, Y_max, step_prob, num_chain, num_chain_iter, num_burn_in, num_thin, num_post_sample, num_tree, alpha, beta, nu, lambda_exp, lambda_out, initial_dir_alpha, initial_sigma2_exp, initial_sigma2_out, binary_trt, parallel, verbose)
 }
 

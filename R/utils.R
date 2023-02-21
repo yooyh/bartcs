@@ -126,3 +126,8 @@ check_input <- function(
   if (length(step_prob) != 3)
     stop("Length of `step_prob` must be 3.")
 }
+
+tmp <- function() {
+  # arbitrary function to remove R CMD check.
+  MCMCpack::rdirichlet(1, 1)
+}
