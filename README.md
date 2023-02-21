@@ -2,7 +2,7 @@
 # bartcs
 
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/bartcs)](https://cran.r-project.org/web/packages/bartcs/index.html)
+[![CRAN status](https://www.r-pkg.org/badges/version/bartcs)](https://CRAN.R-project.org/package=bartcs)
 [![R-CMD-check](https://github.com/yooyh/bartcs/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/yooyh/bartcs/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
