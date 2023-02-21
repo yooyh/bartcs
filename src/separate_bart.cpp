@@ -1,9 +1,9 @@
 #include "Models.h"
 #include "ProgressBar.h"
 
-using namespace std;
+// [[Rcpp::plugins(cpp14, openmp)]]
 
-// [[Rcpp::plugins(openmp)]]
+using namespace std;
 
 // [[Rcpp::export]]
 Rcpp::List cseparate_bart(
