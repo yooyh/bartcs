@@ -75,6 +75,5 @@ public:
         double& ratio
     ) const;
     void fit(const Node& tree, vector<double>& res) const;
-    bool can_split(const Node* node) const;
     void get_vars(const Node* node, vector<int>& vars) const;
 };

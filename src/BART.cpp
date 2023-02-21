@@ -367,24 +367,6 @@ void BART::fit(
     }
 }
 
-// //does this terminal node have any variables it can split on.
-// bool BART::can_split(const Node* node) const
-// {
-//     int L,U;
-//     bool var_found = false; //have you found a variable you can split on
-//     int  var = 0;
-//     while (!var_found && (var < P)) 
-//     { 
-//         //invar: splitvar not found, vars left
-//         L = 0; 
-//         U = Xcut_[var].size()-1;
-//         node->find_region(var, &L, &U);
-//         if (U >= L) var_found=true;
-//         var++;
-//     }
-//     return var_found;
-// }
-
 //find variables n can split on, put their indices in vars
 void BART::get_vars(const Node* node, vector<int>& vars) const
 {
