@@ -48,7 +48,7 @@ You can get mean and 95% credible interval of average treatment effect (ATE) and
 
 ## Result
 
-Both `sbart()` and `mbart()` fits multiple MCMC chains. 
+Both `separate_bart()` and `single_bart()` fits multiple MCMC chains. 
 `summary()` provides result and Gelman-Rubin statistic to check convergence. 
 
 ```{r summary}
@@ -90,11 +90,11 @@ Check whether OpenMP is supported. You need more than 1 thread for multi-threadi
 Due to overhead of multi-threading, using parallelization will be not effective with small and moderate datasets.
 I recommend parallelization for data with size of at least 10,000.
 
-For comparison purpose, I will create dataset with 20,000 rows by bootstrapping from IHDP dataset.
+For comparison purpose, I will create dataset with 40,000 rows by bootstrapping from IHDP dataset.
 Then, for fast computation, I will set most parameters to 1.
 
 ```{r multi-threading performance}
-idx  <- sample(nrow(ihdp), 2e4, TRUE)
+idx  <- sample(nrow(ihdp), 4e4, TRUE)
 ihdp <- ihdp[idx, ]
 
 microbenchmark::microbenchmark(

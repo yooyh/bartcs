@@ -47,7 +47,8 @@
 #'
 #' @param Y A vector of outcome values.
 #' @param trt A vector of treatment values. Binary treatment works for both model
-#'   and continous treatment works for single_bart().
+#'   and continuous treatment works for single_bart(). For binary treatment,
+#'   use 1 to indicate the treated group and 0 for the control group.
 #' @param X A matrix of potential confounders.
 #' @param trt_treated Value of `trt` for the treated group.
 #'   The default value is set to 1.

@@ -8,7 +8,7 @@
 Fit Bayesian Regression Additive Trees (BART) models to
 select true confounders from a large set of potential confounders and
 to estimate average treatment effect. For more information, see
-Kim et al. (2022) \url{doi:10.48550/arXiv.2203.11798}.
+Kim et al. (2022) \doi{10.48550/arXiv.2203.11798}.
 }
 \details{
 Functions in \code{bartcs} serve one of three purposes.

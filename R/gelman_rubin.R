@@ -1,7 +1,7 @@
 #' Gelman-Rubin diagnostic for \code{bartcs} objects.
 #'
-#' `gelman_rubin()` computes Gelman-Rubin dignostic (1992) for monitoring
-#' covergence of MCMC outputs when num_chain > 1.
+#' `gelman_rubin()` computes Gelman-Rubin diagnostic (1992) for monitoring
+#' convergence of MCMC outputs when `num_chain` > 1.
 #' 
 #' @references
 #' Gelman, A and Rubin, DB (1992)
