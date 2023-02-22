@@ -153,7 +153,7 @@ Rcpp::List cseparate_bart(
             Named("var_prob")    = PIP,
             Named("sigma2_out1") = sigma2_out1_hist,
             Named("sigma2_out0") = sigma2_out0_hist,
-            Named("alpha")       = dir_alpha_hist
+            Named("dir_alpha")   = dir_alpha_hist
         );
     }
     return chains;

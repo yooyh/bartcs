@@ -145,7 +145,7 @@ Rcpp::List csingle_bart(
             Named("var_count")  = var_count,
             Named("var_prob")   = PIP,
             Named("sigma2_out") = sigma2_hist,
-            Named("alpha")      = dir_alpha_hist
+            Named("dir_alpha")  = dir_alpha_hist
         );
     }
     return chains;
