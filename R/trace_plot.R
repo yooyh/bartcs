@@ -16,12 +16,14 @@ trace_plot <- function(x, parameter) {
     )
     parameter <- "sigma2_out1"
   }
+  if (parameter == "alpha")
+    parameter <- "dir_alpha"
 
   outcome <- c("ATE", "Y1", "Y0")
   if (x$model == "separate")
-    params <- c("sigma2_out1", "sigma2_out0", "alpha")
+    params <- c("sigma2_out1", "sigma2_out0", "dir_alpha")
   else if (x$model == "single")
-    params <- c("sigma2_out", "alpha")
+    params <- c("sigma2_out", "dir_alpha")
 
 
   if (parameter %in% outcome) {
@@ -72,7 +74,7 @@ trace_plot <- function(x, parameter) {
       numeric(num_chain_iter)
     ))
 
-    ylab  <- ifelse(parameter == "alpha", "Alpha", "Sigma 2")
+    ylab  <- ifelse(parameter == "dir_alpha", "Alpha", "Sigma 2")
     title <- NULL
     if (parameter == "sigma2_out")
       title <- "Traceplot of Sigma2 of Outcome Model"
@@ -80,7 +82,7 @@ trace_plot <- function(x, parameter) {
       title <- "Traceplot of Sigma2 of Outcome Model 1"
     else if (parameter == "sigma2_out0")
       title <- "Traceplot of Sigma2 of Outcome Model 0"
-    else if (parameter == "alpha")
+    else if (parameter == "dir_alpha")
       title <- "Traceplot of Alpha"
 
 
@@ -100,7 +102,7 @@ trace_plot <- function(x, parameter) {
     stop(
       "There is no parameter named ", parameter, ". \n",
       "  Please try one of following parameters\n",
-      "  * `ATE`, `Y1`, `Y0`, `sigma2_out`, `sigma2_out1`, `sigma2_out0` or `alpha`."
+      "  * `ATE`, `Y1`, `Y0`, `sigma2_out`, `sigma2_out1`, `sigma2_out0` or `dir_alpha`."
     )
   }
 }
