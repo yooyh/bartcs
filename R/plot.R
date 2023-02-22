@@ -2,13 +2,13 @@
 #'
 #' @description
 #' Two options are available:
-#'   posterior inclusion probability (pip) plot and trace plot.
+#'   posterior inclusion probability (PIP) plot and trace plot.
 #'
 #' @param x A `bartcs` object.
 #' @param method "`pip`" for posterior inclusion probability plot
 #'   or "`trace`" for trace plot.
 #' @param parameter Parameter for traceplot.
-#' @param ... Additional arguments for pip plot.
+#' @param ... Additional arguments for PIP plot.
 #'   Check `?ggcharts::bar_chart` for possible arguments.
 #'
 #' @details
@@ -16,7 +16,7 @@
 #' When a posterior sample is sampled during training,
 #' `separate_bart()` or `single_bart()` also counts
 #' which variables are included in the model and
-#' compute pip for each variable.
+#' compute PIP for each variable.
 #' For `bartcs` object `x`,
 #' this is stored in `x$var_count` and `x$var_prob` respectively.
 #' `plot(method = "pip")` uses this information and
@@ -30,7 +30,7 @@
 #' Vertical line indicates burn-in.
 #'
 #' @return
-#' A `ggplot` object of either pip plot or trace plot.
+#' A `ggplot` object of either PIP plot or trace plot.
 #'
 #' @examples
 #' data(ihdp, package = "bartcs")
@@ -45,7 +45,7 @@
 #'   verbose         = FALSE
 #' )
 #'
-#' # pip plot
+#' # PIP plot
 #' plot(x, method = "pip")
 #' plot(x, method = "pip", top_n = 10)
 #' plot(x, method = "pip", threshold = 0.5)
@@ -61,7 +61,7 @@ plot.bartcs <- function(x, method = NULL, parameter = NULL, ...) {
   if (is.null(method))
     stop(
       "You must choose method.\n",
-      "  * For pip plot, set method = \"pip\".\n",
+      "  * For PIP plot, set method = \"pip\".\n",
       "  * For trace plot, set method = \"trace\".\n",
       "\nTry `?plot.bartcs` for more detail."
     )
