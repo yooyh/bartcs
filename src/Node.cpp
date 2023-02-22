@@ -105,6 +105,7 @@ void Node::get_singly_nodes(vector<Node*>& snodes)
 }
 void Node::find_region(int var, int* L, int* U) const
 {
+    // tree::rg() from BART package
     if (!parent_) return;
     if (parent_->var_ == var)        // does my parent use var?
     {
@@ -129,6 +130,7 @@ void Node::find_region(int var, int* L, int* U) const
 
 Node* Node::assigned_node(const vector<vector<double>>& Xcut, const vector<double>& x)
 {
+    // tree::bn() from BART package
     if (is_terminal()) return this;
     if (x[var_] < Xcut[var_][cut_])
         return left_ ->assigned_node(Xcut, x);
@@ -137,6 +139,7 @@ Node* Node::assigned_node(const vector<vector<double>>& Xcut, const vector<doubl
 }
 const Node* Node::assigned_node(const vector<vector<double>>& Xcut, const vector<double>& x) const
 {
+    // tree::bn() from BART package
     if (is_terminal()) return this;
     if (x[var_] < Xcut[var_][cut_])
         return left_->assigned_node(Xcut, x);
