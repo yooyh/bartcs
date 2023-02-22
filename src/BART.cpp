@@ -94,31 +94,6 @@ void BART::step(Node& tree)
 }
 
 // util functions
-void BART::get_SS(
-    const Node& tree, const Node* prop_node, const int var, const int cut,
-    int& nl, int& nr, double& rl, double& rr
-) const {
-    nl = 0; rl = 0.0;
-    nr = 0; rr = 0.0;
-    #ifdef _OPENMP
-        #pragma omp parallel for reduction(+ : nl, nr, rl, rr) if (parallel_)
-    #endif
-    for (int i = 0; i < N; i++)
-    {
-        auto node = tree.assigned_node(Xcut_, X_[i]);
-        if (node != prop_node) continue;
-        if (X_[i][var] < Xcut_[var][cut])
-        {
-            nl++;
-            rl += residual_[i];
-        }
-        else
-        {
-            nr++;
-            rr += residual_[i];
-        }
-    }
-}
 void BART::get_SS_grow(
     const Node& tree, const Node* prop_node, const int var, const int cut,
     int& nl, int& nr, double& rl, double& rr, int& n_unique

@@ -35,7 +35,6 @@ public:
     void init(const vector<double>& Y, double sigma2);
 
     // get, set
-    const vector<vector<double>>& X() const {return X_;}
     const double sigma2() const {return sigma2_;}
     const vector<int>& var_count() const {return var_count_;}
     double get_sigma_mu(const vector<double>& Y, const int n_tree) const;
@@ -51,10 +50,6 @@ public:
     void update_Z(vector<double>& Z, const Rcpp::NumericVector& TRT, const bool binary_trt);
 
     // util function
-    void get_SS(
-        const Node& tree, const Node* prop_node, const int var, const int cut,
-        int& nl, int& nr, double& rl, double& rr
-    ) const;
     void get_SS_grow(
         const Node& tree, const Node* prop_node, const int var, const int cut,
         int& nl, int& nr, double& rl, double& rr, int& n_unique
