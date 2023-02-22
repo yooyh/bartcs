@@ -7,7 +7,6 @@ Node::~Node()
     if (left_)  delete left_;
     if (right_) delete right_;
 }
-
 void Node::reset()
 {
     if (left_)  delete left_;
@@ -28,45 +27,11 @@ void Node::draw_mu(const int& n, const double& r, const double& sigma2, const do
 }
 
 // node functions
-int Node::node_id() const
-{
-    if (!parent_)
-        return 1;
-    if (this == parent_->left_)
-        return 2 * (parent_->node_id());
-    else
-        return 2 * (parent_->node_id()) + 1;
-}
-Node* Node::get_node(int node_id)
-{
-    if (this->node_id() == node_id)
-        return this;
-    if (left_)
-    {
-        auto node = left_->get_node(node_id);
-        if (node)
-            return node;
-    }
-    if (right_)
-    {
-        auto node = right_->get_node(node_id);
-        if (node)
-            return node;
-    }
-    return nullptr;
-}
 int Node::depth() const
 {
     if (!parent_) 
         return 0;
     return (1 + parent_->depth());
-}
-char Node::node_type() const
-{
-    if (!parent_) return 'r';
-    if (!left_)   return 't';
-    if (!(left_->left_) && !(right_->left_)) return 's';
-    return 'o';
 }
 bool Node::is_terminal() const {return !left_;}
 bool Node::is_singly() const
@@ -103,11 +68,10 @@ void Node::change(int var, int cut)
 }
 
 // tree functions
-int Node::size() const
+int Node::terminal_size() const
 {
-    if (is_terminal())
-        return 1;
-    return (1 + left_->size() + right_->size());
+    if (is_terminal()) return 1;
+    return left_->terminal_size() + right_->terminal_size();
 }
 int Node::singly_size() const
 {
@@ -116,10 +80,28 @@ int Node::singly_size() const
         return left_->singly_size() + right_->singly_size();
     return 1;
 }
-int Node::terminal_size() const
+void Node::get_terminal_nodes(vector<Node*>& tnodes)
 {
-    if (is_terminal()) return 1;
-    return left_->terminal_size() + right_->terminal_size();
+    if (is_terminal())
+    {
+        tnodes.push_back(this);
+        return;
+    }
+    left_ ->get_terminal_nodes(tnodes);
+    right_->get_terminal_nodes(tnodes);
+}
+void Node::get_singly_nodes(vector<Node*>& snodes)
+{
+    if (is_singly()) 
+    {
+        snodes.push_back(this);
+        return;
+    }
+    if (!is_terminal())
+    {
+        left_ ->get_singly_nodes(snodes);
+        right_->get_singly_nodes(snodes);
+    }   
 }
 void Node::find_region(int var, int* L, int* U) const
 {
@@ -143,48 +125,6 @@ void Node::find_region(int var, int* L, int* U) const
     {
         parent_->find_region(var, L, U);
     }
-}
-void Node::get_all_nodes(vector<Node*>& nodes)
-{
-    nodes.push_back(this);
-    if (!is_terminal())
-    {
-        left_ ->get_all_nodes(nodes);
-        right_->get_all_nodes(nodes);
-    }
-}
-void Node::get_all_nodes(vector<const Node*>& nodes) const
-{
-    nodes.push_back(this);
-    if (!is_terminal())
-    {
-        left_ ->get_all_nodes(nodes);
-        right_->get_all_nodes(nodes);
-    }
-}
-void Node::get_terminal_nodes(vector<Node*>& tnodes)
-{
-    if (is_terminal())
-    {
-        tnodes.push_back(this);
-        return;
-    }
-    left_ ->get_terminal_nodes(tnodes);
-    right_->get_terminal_nodes(tnodes);
-}
-
-void Node::get_singly_nodes(vector<Node*>& snodes)
-{
-    if (is_singly()) 
-    {
-        snodes.push_back(this);
-        return;
-    }
-    if (!is_terminal())
-    {
-        left_ ->get_singly_nodes(snodes);
-        right_->get_singly_nodes(snodes);
-    }   
 }
 
 Node* Node::assigned_node(const vector<vector<double>>& Xcut, const vector<double>& x)
