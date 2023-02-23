@@ -18,6 +18,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+set.seed(42)
 library(bartcs)
 ```
 
@@ -98,7 +99,7 @@ idx  <- sample(nrow(ihdp), 4e4, TRUE)
 ihdp <- ihdp[idx, ]
 
 microbenchmark::microbenchmark(
-  simple_mbart = single_bart(
+  simple = single_bart(
     Y               = ihdp$y_factual,
     trt             = ihdp$treatment,
     X               = ihdp[, 6:30],
@@ -109,7 +110,7 @@ microbenchmark::microbenchmark(
     verbose         = FALSE,
     parallel        = FALSE
   ),
-  parallel_mbart = single_bart(
+  parallel = single_bart(
     Y               = ihdp$y_factual,
     trt             = ihdp$treatment,
     X               = ihdp[, 6:30],
