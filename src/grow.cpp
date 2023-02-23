@@ -18,7 +18,7 @@ void BART::grow(Node& tree)
     if (vars.size() == 0) return;
 
     Rcpp::NumericVector flagged_prob (vars.size());
-    for (int i = 0; i < vars.size(); i++)
+    for (auto i = 0u; i < vars.size(); i++)
         flagged_prob(i) = prob_(vars[i]);
     
     int var = Rcpp::sample(vars.size(), 1, false, flagged_prob)(0) - 1;

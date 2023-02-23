@@ -295,7 +295,7 @@ void BART::draw_mu(Node& tree)
     vector<int>    NN (tnodes.size(), 0);
     vector<double> RR (tnodes.size(), 0.0);
     unordered_map<const Node*, int> node2id; // used unordered_map instead of map in allsuff()
-    for (int i = 0; i < tnodes.size(); i++)
+    for (auto i = 0u; i < tnodes.size(); i++)
         node2id[tnodes[i]] = i;
     
     for (int i = 0; i < N; i++)
@@ -306,7 +306,7 @@ void BART::draw_mu(Node& tree)
         RR[id] += residual_[i];
     }
 
-    for (int i = 0; i < tnodes.size(); i++)
+    for (auto i = 0u; i < tnodes.size(); i++)
         tnodes[i]->draw_mu(NN[i], RR[i], sigma2_, sigma_mu_);
 }
 

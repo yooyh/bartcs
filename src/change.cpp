@@ -16,7 +16,7 @@ void BART::change(Node& tree)
     get_vars(prop_node, vars);
 
     Rcpp::NumericVector flagged_prob (vars.size());
-    for (int i = 0; i < vars.size(); i++)
+    for (auto i = 0u; i < vars.size(); i++)
         flagged_prob(i) = prob_(vars[i]);
     
     int var = Rcpp::sample(vars.size(), 1, false, flagged_prob)(0) - 1;
