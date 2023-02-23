@@ -24,9 +24,10 @@
 #'
 #' ## Traceplot
 #' Parameters are recorded for each MCMC iterations.
-#' Parameters include "`ATE`", "`Y1`", "`Y0`", "`alpha`",
+#' Parameters include "`ATE`", "`Y1`", "`Y0`", "`dir_alpha`",
 #' and either "`sigma2_out`" from `single_bart()`
-#' or "`sigma2_out1`" and "`sigma2_out0`" from `separate_bart()`.
+#' or "`sigma2_out1`" and "`sigma2_out0`" from \cr 
+#' `separate_bart()`.
 #' Vertical line indicates burn-in.
 #'
 #' @return
@@ -54,7 +55,7 @@
 #' # trace plot
 #' plot(x, method = "trace")
 #' plot(x, method = "trace", "Y1")
-#' plot(x, method = "trace", "alpha")
+#' plot(x, method = "trace", "dir_alpha")
 #'
 #' @exportS3Method
 plot.bartcs <- function(x, method = NULL, parameter = NULL, ...) {

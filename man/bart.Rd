@@ -79,15 +79,16 @@ Number of MCMC iterations per chain is
 The default value is set to 100.}
 
 \item{step_prob}{A vector of tree alteration probabilities (GROW, PRUNE, CHANGE).
-Each alteration is proposed to change the tree structure.
+Each alteration is proposed to change the tree structure. \cr
 The default setting is \verb{(0.28, 0.28, 0.44)}.}
 
 \item{alpha, beta}{Hyperparameters for tree regularization prior.
 A terminal node of depth \code{d} will split with
-probability of \code{alpha * (1 + d)^(-beta)}.
-The default setting is \verb{(alpha, beta) = (0.95, 2)} from Chipman et al. (2010).}
+probability of \code{alpha * (1 + d)^(-beta)}. \cr
+The default setting is
+\verb{(alpha, beta) = (0.95, 2)} from Chipman et al. (2010).}
 
-\item{nu, q}{Values to calibrate hyperparameter of sigma prior.
+\item{nu, q}{Values to calibrate hyperparameter of sigma prior. \cr
 The default setting is \verb{(nu, q) = (3, 0.95)} from Chipman et al. (2010).}
 
 \item{dir_alpha}{Hyperparameter of Dirichlet prior for selection probabilities.
@@ -104,16 +105,16 @@ If \code{FALSE}, message will be suppressed.}
 \value{
 A \code{bartcs} object. A list object contains the following components.
 
-\item{ATE}{Aggregated posterior samples of average treatment effect \eqn{(Y_i(1) - Y_i(0))}.}
-\item{Y1}{Aggregated posterior samples of potential outcome \eqn{Y_i(1)} for \eqn{i = 1, \ldots, n}.}
-\item{Y0}{Aggregated posterior samples of potential outcome \eqn{Y_i(0)} for \eqn{i = 1, \ldots, n}.}
+\item{ATE}{Aggregated posterior samples of average treatment effect \eqn{E[Y(1) - Y(0)]}.}
+\item{Y1}{Aggregated posterior samples of potential outcome \eqn{E[Y(1)]}.}
+\item{Y0}{Aggregated posterior samples of potential outcome \eqn{E[Y(0)]}.}
 \item{var_prob}{Aggregated posterior inclusion probability of each variable.}
 \item{chains}{A list of results from each MCMC chain.
 Each list element contains the following items.}
 \itemize{
-\item \code{ATE}        Posterior sample of average treatment effect \eqn{(Y_i(1) - Y_i(0))}.
-\item \code{Y1}         Posterior sample of potential outcome \eqn{Y_i(1)} for \eqn{i = 1, \ldots, n}.
-\item \code{Y0}         Posterior sample of potential outcome \eqn{Y_i(0)} for \eqn{i = 1, \ldots, n}.
+\item \code{ATE}        Posterior sample of average treatment effect \eqn{E[Y(1) - Y(0)]}.
+\item \code{Y1}         Posterior sample of potential outcome \eqn{E[Y(1)]}.
+\item \code{Y0}         Posterior sample of potential outcome \eqn{E[Y(0)]}.
 \item \code{var_prob}   Posterior inclusion probability of each variable.
 \item \code{var_count}  Number of selection of each variable in each MCMC iteration.
 Its dimension is \code{num_post_sample * ncol(X)}.
@@ -127,12 +128,12 @@ Its dimension is \code{num_post_sample * ncol(X)}.
 \description{
 Fit Bayesian Regression Additive Trees (BART) models
 to select relevant confounders among a large set of potential confounders
-and to estimate average treatment effect \eqn{(Y(1) - Y(0))}.
+and to estimate average treatment effect \eqn{E[Y(1) - Y(0)]}.
 }
 \details{
 \code{separate_bart()} and \code{single_bart()} fit an exposure model and outcome model(s)
 for estimating treatment effect with adjustment of confounders
-in the presence of a large set of potential confounders (Kim et al. 2022).
+in the presence of a large set of potential confounders (Kim et al. 2023).
 
 The exposure model \eqn{E[A|X]} and the outcome model(s) \eqn{E[Y|A,X]} are
 linked together with a common Dirichlet prior that accrues
@@ -148,7 +149,7 @@ for two binary treatment levels.
 Thus, it fits three models:
 one exposure model and two separate outcome models for \eqn{A = 0, 1}.
 
-\item \code{single_bart()} specifies one \strong{"single"} outcome models.
+\item \code{single_bart()} specifies one \strong{"single"} outcome model.
 Thus, it fits two models:
 one exposure model and one outcome model for the entire sample.
 }
@@ -181,11 +182,10 @@ separate_bart(
 \references{
 Chipman, H. A., George, E. I., & McCulloch, R. E. (2010).
 BART: Bayesian additive regression trees.
-\emph{The Annals of Applied Statistics, 4}(1), 266-298.
+\emph{The Annals of Applied Statistics}, 4(1), 266-298.
 \doi{10.1214/09-AOAS285}
 
-Kim, C., Tec, M., & Zigler, C. M. (2022).
-Bayesian Nonparametric Adjustment of Confounding.
-\emph{arXiv preprint arXiv:2203.11798}.
-\doi{10.48550/arXiv.2203.11798}
+Kim, C., Tec, M., & Zigler, C. M. (2023).
+Bayesian Nonparametric Adjustment of Confounding, \emph{Biometrics}
+\doi{10.1111/biom.13833}
 }

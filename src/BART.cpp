@@ -288,7 +288,7 @@ void BART::get_ratio(
 // draw mu from each terminal nodes
 void BART::draw_mu(Node& tree)
 {
-    // allsuff() from BART package
+    // modified allsuff() from BART package
     vector<Node*> tnodes;
     tree.get_terminal_nodes(tnodes);
 
@@ -332,7 +332,7 @@ void BART::draw_sigma2(
 //fit tree and save at res
 void BART::fit(const Node& tree, vector<double>& res) const
 {
-    // fit() from BART package
+    // modified fit() from BART package
     #ifdef _OPENMP
         #pragma omp parallel for if (parallel_)
     #endif
@@ -346,7 +346,7 @@ void BART::fit(const Node& tree, vector<double>& res) const
 //find variables n can split on, put their indices in vars
 void BART::get_vars(const Node* node, vector<int>& vars) const
 {
-    // getgoodvars() from BART package
+    // modified getgoodvars() from BART package
     vars.clear();
     int L, U;
     for (int v = 0; v < P; v++) {//try each variable

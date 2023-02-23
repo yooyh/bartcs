@@ -35,12 +35,12 @@ This dataset was first used by Hill (2011), then used by other researchers
 }
 \references{
 Hill, J. L. (2011). Bayesian nonparametric modeling for causal inference.
-\emph{Journal of Computational and Graphical Statistics, 20}(1), 217-240.
+\emph{Journal of Computational and Graphical Statistics}, 20(1), 217-240.
 \doi{10.1198/jcgs.2010.08162}
 
 Louizos, C., Shalit, U., Mooij, J. M., Sontag, D., Zemel, R., & Welling, M. (2017).
 Causal effect inference with deep latent-variable models.
-\emph{Advances in neural information processing systems, 30}.
+\emph{Advances in neural information processing systems}, 30.
 \doi{10.48550/arXiv.1705.08821}
 \url{https://github.com/AMLab-Amsterdam/CEVAE}
 
