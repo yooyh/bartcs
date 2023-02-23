@@ -2,4 +2,4 @@
 
 0 errors | 0 warnings | 0 note
 
-* All OpenMP pragmas now have #ifdef _OPENMP conditions as recommended.
+There were no ERRORs, WARNINGs or NOTEs.
