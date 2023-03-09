@@ -1,8 +1,6 @@
 #include "Models.h"
 #include "ProgressBar.h"
 
-// [[Rcpp::plugins(cpp14, openmp)]]
-
 using namespace std;
 
 // [[Rcpp::export]]
