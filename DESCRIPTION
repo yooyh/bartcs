@@ -1,6 +1,6 @@
 Package: bartcs
 Title: Bayesian Additive Regression Trees for Confounder Selection
-Version: 1.0.0
+Version: 1.0.0.9000
 Authors@R: 
     person("Yeonghoon", "Yoo", , "yooyh.stat@gmail.com", role = c("aut", "cre"))
 Description: Fit Bayesian Regression Additive Trees (BART) models to
