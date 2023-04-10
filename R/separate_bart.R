@@ -50,7 +50,8 @@ separate_bart <- function(
 
   # check for factor variable then change it to dummy variables
   if (sum(vapply(X, is.factor, TRUE))) {
-    X <- fct_to_dummy(X)
+    colnames(X)[vapply(X, is.factor, TRUE)] <- paste0(colnames(X)[vapply(X, is.factor, TRUE)], "_")
+    X <- stats::model.matrix(~  ., X)[, -1]
     P <- ncol(X)
   }
 

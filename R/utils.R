@@ -1,19 +1,5 @@
 # utils.R
 
-# change factor variables to dummy variables
-fct_to_dummy <- function(X) {
-  fct_idx <- (seq_len(ncol(X)))[vapply(X, is.factor, TRUE)]
-
-  for (i in fct_idx) {
-    fct_levels <- levels(X[[i]])[-1]
-    for (level in fct_levels) {
-      var_name <- paste0(colnames(X)[i], "_", level, sep = "")
-      X[[var_name]] <- ifelse(X[[i]] == level, 1, 0)
-    }
-  }
-  X[, -fct_idx]
-}
-
 # test inputs for separate_bart() and single_bart()
 check_input <- function(
   Y, trt, X,
