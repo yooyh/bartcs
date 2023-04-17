@@ -125,23 +125,24 @@
 #'
 #' @return
 #' A `bartcs` object. A list object contains the following components.
-#'
-#' \item{ATE}{Aggregated posterior samples of average treatment effect \eqn{E[Y(1) - Y(0)]}.}
-#' \item{Y1}{Aggregated posterior samples of potential outcome \eqn{E[Y(1)]}.}
-#' \item{Y0}{Aggregated posterior samples of potential outcome \eqn{E[Y(0)]}.}
-#' \item{var_prob}{Aggregated posterior inclusion probability of each variable.}
-#' \item{chains}{A list of results from each MCMC chain.
-#'   Each list element contains the following items.}
+#' 
+#' \item{mcmc_outcome}{A `mcmc.list` object from \pkg{coda} package.
+#'   `mcmc_outcome` contains the following items.}
 #'   \itemize{
 #'     \item `ATE`        Posterior sample of average treatment effect \eqn{E[Y(1) - Y(0)]}.
 #'     \item `Y1`         Posterior sample of potential outcome \eqn{E[Y(1)]}.
 #'     \item `Y0`         Posterior sample of potential outcome \eqn{E[Y(0)]}.
-#'     \item `var_prob`   Posterior inclusion probability of each variable.
-#'     \item `var_count`  Number of selection of each variable in each MCMC iteration.
-#'       Its dimension is `num_post_sample * ncol(X)`.
-#'     \item `sigma2_out` Posterior sample of `sigma2` in the outcome model.
-#'     \item `dir_alpha`  Posterior sample of `dir_alpha.`
 #'   }
+#' \item{mcmc_param}{A `mcmc.list` object from \pkg{coda} package.
+#'   `mcmc_param` contains the following items.}
+#'   \itemize{
+#'     \item `dir_alpha`  Posterior sample of `dir_alpha.`
+#'     \item `sigma2_out` Posterior sample of `sigma2` in the outcome model.
+#'   }
+#' \item{var_prob}{Aggregated posterior inclusion probability of each variable.}
+#' \item{var_count}{Number of selection of each variable in each MCMC iteration.
+#'   Its dimension is `num_post_sample * ncol(X)`.}
+#' \item{chains}{A list of results from each MCMC chain.}
 #' \item{model}{`separate` or `single`.}
 #' \item{label}{Column names of `X`.}
 #' \item{params}{Parameters used in the model.}

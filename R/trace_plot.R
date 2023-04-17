@@ -35,7 +35,7 @@ trace_plot <- function(x, parameter) {
       iter   = rep(seq_len(num_post_sample), num_chain),
       chains = rep(paste0("chain", seq_len(num_chain)), each = num_post_sample)
     )
-    df[[parameter]] <- x[[parameter]]
+    df[[parameter]] <- do.call("rbind", x$mcmc_outcome)[, parameter]
 
     # draw plot
     if (parameter == "ATE") {
@@ -70,7 +70,7 @@ trace_plot <- function(x, parameter) {
     )
     df[[parameter]] <- as.vector(vapply(
       seq_len(num_chain),
-      function(chain_idx) x$chains[[chain_idx]][[parameter]],
+      function(chain_idx) x$mcmc_param[[chain_idx]][, parameter],
       numeric(num_chain_iter)
     ))
 

@@ -109,29 +109,36 @@ single_bart <- function(
 
 
   # ---- post processing ----
-  names(chains) <- paste0("chain", seq_len(num_chain))
-
-  # merge result
-  ATE <- Y1 <- Y0 <- NULL
+  mcmc_outcome <- list()
+  mcmc_param   <- list()
   var_prob <- vector(mode = "numeric", length = P + 1)
-  for (chain_idx in seq_len(num_chain)) {
-    ATE <- c(ATE, chains[[chain_idx]]$ATE)
-    Y1  <- c(Y1,  chains[[chain_idx]]$Y1)
-    Y0  <- c(Y0,  chains[[chain_idx]]$Y0)
-    var_prob <- var_prob + chains[[chain_idx]]$var_prob
+  for (chain in chains) {
+    mcmc_outcome[[length(mcmc_outcome) + 1]] <- coda::mcmc(
+      cbind(ATE = chain$ATE, Y1 = chain$Y1, Y0 = chain$Y0), 
+      start = num_burn_in + num_thin, end = num_chain_iter, thin = num_thin
+    )
+    mcmc_param[[length(mcmc_param) + 1]] <- coda::mcmc(
+      cbind(dir_alpha = chain$dir_alpha, sigma2_out = chain$sigma2_out)
+    )
+    var_prob <- var_prob + chain$var_prob
   }
+  mcmc_outcome    <- coda::mcmc.list(mcmc_outcome)
+  mcmc_param      <- coda::mcmc.list(mcmc_param)
   var_prob        <- var_prob / num_chain
   names(var_prob) <- c("trt", colnames(X))
+  var_count       <- lapply(chains, function(x) x$var_count)
 
   # return as bartcs object
   structure(
     list(
-      ATE = ATE, Y1 = Y1, Y0 = Y0,
-      var_prob = var_prob,
-      chains   = chains,
-      model    = "single",
-      label    = c("trt", colnames(X)),
-      params   = list(
+      mcmc_outcome = mcmc_outcome,
+      mcmc_param   = mcmc_param,
+      var_prob     = var_prob,
+      var_count    = var_count,
+      chains       = chains,
+      model        = "single",
+      label        = c("trt", colnames(X)),
+      params       = list(
         trt_treated     = trt_treated,
         trt_control     = trt_control,
         num_tree        = num_tree,

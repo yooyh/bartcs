@@ -5,14 +5,10 @@ print.bartcs <- function(x, ...) {
     "\n\n", sep = ""
   )
 
-  estimand <- c("ATE", "Y1", "Y0")
+  mat <- do.call("rbind", x$mcmc_outcome)
   df <- data.frame(
-    mean = vapply(estimand, function(est) mean(x[[est]]), numeric(1)),
-    ci   = t(vapply(
-      estimand,
-      function(est) stats::quantile(x[[est]], probs = c(0.025, 0.975)),
-      numeric(2)
-    ))
+    mu = apply(mat, 2, mean),
+    ci = t(apply(mat, 2, stats::quantile, c(0.025, 0.975)))
   )
   colnames(df) <- c("mean", "2.5%", "97.5%")
   print(df)

@@ -46,7 +46,7 @@ gelman_rubin.bartcs <- function(x) {
 
   # compute mean and variance of each sequence
   for (i in seq_len(num_chain)) {
-    estimand        <- x$chains[[i]]$ATE
+    estimand        <- x$mcmc_outcome[[i]][, 'ATE']
     num_post_sample <- x$params$num_post_sample
     seq_length      <- num_post_sample %/% 2
     first_half      <- 1:seq_length

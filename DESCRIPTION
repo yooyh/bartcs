@@ -13,6 +13,7 @@ BugReports: https://github.com/yooyh/bartcs/issues
 Depends: 
     R (>= 3.4.0)
 Imports: 
+    coda (>= 0.4.0),
     ggcharts,
     ggplot2,
     invgamma,
