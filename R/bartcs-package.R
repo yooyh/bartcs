@@ -15,7 +15,7 @@ NULL
 #' Functions in `bartcs` serve one of three purposes.
 #' \enumerate{
 #'   \item Functions for fitting: `separate_bart()` and `single_bart()`.
-#'   \item Functions for summary: `summary()`, `plot()` and `gelman_rubin()`.
+#'   \item Functions for summary: `summary()` and `plot()`.
 #'   \item Utility function for OpenMP: `count_omp_thread()`.
 #' }
 #' The code of BART model are based on the 'BART' package by 

@@ -7,9 +7,8 @@
 #' @param ... Additional arguments. Not yet supported.
 #'
 #' @details
-#' `summary()` provides the Gelman-Rubin diagnostic value and
-#' 95% posterior credible interval for both aggregated outcome and
-#' individual outcomes from each MCMC chain.
+#' `summary()` provides 95% posterior credible interval for both
+#' aggregated outcome and individual outcomes from each MCMC chain.
 #'
 #' @return
 #' Provide list with the following components
@@ -20,7 +19,6 @@
 #' the control group.}
 #' \item{tree_params}{Parameters for the tree structure.}
 #' \item{chain_params}{Parameters for MCMC chains.}
-#' \item{gelman_rubin}{Gelman-Rubin diagnostic value.}
 #' \item{outcome}{Summary of outcomes from the model. This includes
 #'   both aggregated outcome and individual outcomes from each MCMC chain.}
 #'
@@ -63,8 +61,6 @@ summary.bartcs <- function(object, ...) {
     num_burn_in     = object$params$num_burn_in,
     num_thin        = object$params$num_thin
   )
-
-  res$gelman_rubin <- gelman_rubin(object)
 
   outcome <- data.frame(
     estimand    = character(),
@@ -145,11 +141,6 @@ print.bartcs_summary <- function(x, ...) {
     "\n", sep = ""
   )
 
-  cat(
-    "Outcome Diagnostics\n",
-    "  Gelman-Rubin     : ", format(x$gelman_rubin, width = width), "\n",
-    "\n", sep = ""
-  )
   cat(
     "Outcome \n"
   )

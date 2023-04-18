@@ -14,7 +14,7 @@ Kim et al. (2023) \doi{10.1111/biom.13833}.
 Functions in \code{bartcs} serve one of three purposes.
 \enumerate{
 \item Functions for fitting: \code{separate_bart()} and \code{single_bart()}.
-\item Functions for summary: \code{summary()}, \code{plot()} and \code{gelman_rubin()}.
+\item Functions for summary: \code{summary()} and \code{plot()}.
 \item Utility function for OpenMP: \code{count_omp_thread()}.
 }
 The code of BART model are based on the 'BART' package by

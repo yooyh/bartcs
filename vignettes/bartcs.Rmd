@@ -65,7 +65,7 @@ True values of ATE, mu1 and mu0 all lies in 95% credible interval. Also, MSE bet
 ## Result
 
 Both `separate_bart()` and `single_bart()` fits multiple MCMC chains. 
-`summary()` provides result and Gelman-Rubin statistic to check convergence. 
+`summary()` provides result for each and aggregated chain. 
 
 ```{r summary}
 summary(fit)

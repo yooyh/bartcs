@@ -4,9 +4,9 @@ devtools::install()
 
 # load package and data
 library(bartcs)
+# install.packages("Matching")
 data("lalonde", package = "Matching")
 
-?sbart
 ?plot.bartcs
 count_omp_thread()
 
@@ -17,43 +17,41 @@ X   <- subset(lalonde, select = -c(re78, treat))
 # fit model ----
 # right call
 # call with data.frame
-mbart(Y = Y, trt = trt, X = X,
+single_bart(Y = Y, trt = trt, X = X,
       num_burn_in = 0, num_post_sample = 10)
 
 # call with tibble
-mbart(Y = Y, trt = trt, X = tibble::as_tibble(X),
+single_bart(Y = Y, trt = trt, X = tibble::as_tibble(X),
       num_burn_in = 0, num_post_sample = 10)
 
 # call with matrix
-mbart(Y = Y, trt = trt, X = as.matrix(X),
+single_bart(Y = Y, trt = trt, X = as.matrix(X),
       num_burn_in = 0, num_post_sample = 10)
 
 # errors
 # error types: wrong types
-mbart(Y = "Y", trt = trt, X = X)
-mbart(Y = Y, trt = "trt", X = X)
-mbart(Y = Y, trt = trt, X = "X")
-mbart(Y = Y, trt = trt, X = data.frame(foo = c("a", "b"), bar = 1:2))
-mbart(Y = Y, trt = trt, X = X, verbose = -1)
-mbart(Y = Y, trt = trt, X = X, num_tree = "many")
+single_bart(Y = "Y", trt = trt, X = X)
+single_bart(Y = Y, trt = "trt", X = X)
+single_bart(Y = Y, trt = trt, X = "X")
+single_bart(Y = Y, trt = trt, X = data.frame(foo = c("a", "b"), bar = 1:2))
+single_bart(Y = Y, trt = trt, X = X, verbose = -1)
+single_bart(Y = Y, trt = trt, X = X, num_tree = "many")
 
 # error types: wrong value
-mbart(Y = Y, trt = trt, X = X, num_tree = -100)             # wrong value
-mbart(Y = Y, trt = rep(1, 100), X = X)                      # wrong dimension
-mbart(Y = Y, trt = rep(1, length(Y)), X = X)                # wrong trt
-mbart(Y = Y, trt = trt, X = X, step_prob = c(1, 1, 1, 1))   # wrong step_prob
+single_bart(Y = Y, trt = trt, X = X, num_tree = -100)             # wrong value
+single_bart(Y = Y, trt = rep(1, 100), X = X)                      # wrong dimension
+single_bart(Y = Y, trt = rep(1, length(Y)), X = X)                # wrong trt
+single_bart(Y = Y, trt = trt, X = X, step_prob = c(1, 1, 1, 1))   # wrong step_prob
 
 
 # print and summary ----
 # normal case
-fit <- mbart(Y = Y, trt = trt, X = X)
+fit <- single_bart(Y = Y, trt = trt, X = X)
 fit
 summary(fit)
-gelman_rubin(fit)
 
 # when number of MCMC chain = 1 -> message and NA
-fit2 <- mbart(Y = Y, trt = trt, X = X, num_chain = 1)
-gelman_rubin(fit2)
+fit2 <- single_bart(Y = Y, trt = trt, X = X, num_chain = 1)
 summary(fit2)
 
 # data visualization ----

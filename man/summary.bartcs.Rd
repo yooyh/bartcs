@@ -20,7 +20,6 @@ Provide list with the following components
 the control group.}
 \item{tree_params}{Parameters for the tree structure.}
 \item{chain_params}{Parameters for MCMC chains.}
-\item{gelman_rubin}{Gelman-Rubin diagnostic value.}
 \item{outcome}{Summary of outcomes from the model. This includes
 both aggregated outcome and individual outcomes from each MCMC chain.}
 }
@@ -28,9 +27,8 @@ both aggregated outcome and individual outcomes from each MCMC chain.}
 Provide summary for \code{bartcs} object.
 }
 \details{
-\code{summary()} provides the Gelman-Rubin diagnostic value and
-95\% posterior credible interval for both aggregated outcome and
-individual outcomes from each MCMC chain.
+\code{summary()} provides 95\% posterior credible interval for both
+aggregated outcome and individual outcomes from each MCMC chain.
 }
 \examples{
 data(ihdp, package = "bartcs")
