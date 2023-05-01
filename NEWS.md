@@ -1,3 +1,7 @@
+# bartcs 1.1.0
+
+* Change output format to `mcmc.list` from `coda` package.
+
 # bartcs 1.0.0
 
 ## Changes
