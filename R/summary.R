@@ -81,15 +81,15 @@ summary.bartcs <- function(object, ...) {
     outcome[(idx + 1):(idx + num_chain), 3:ncol(outcome)] <- t(vapply(
       seq_len(num_chain),
       function(chain_idx) {t(c(
-        stats::quantile(object$mcmc_outcome[[chain_idx]][, est],
+        stats::quantile(object$mcmc_list[[chain_idx]][, est],
                         probs = c(0.025, 0.25)),
-        mean(object$mcmc_outcome[[chain_idx]][, i]),
-        stats::quantile(object$mcmc_outcome[[chain_idx]][, est],
+        mean(object$mcmc_list[[chain_idx]][, i]),
+        stats::quantile(object$mcmc_list[[chain_idx]][, est],
                         probs = c(0.5, 0.75, 0.975))
       ))},
       numeric(6)
     ))
-    mat <- do.call("rbind", object$mcmc_outcome)
+    mat <- do.call("rbind", object$mcmc_list[, 1:3])
     outcome[idx + num_chain + 1, 3:ncol(outcome)] <- c(
       stats::quantile(mat[, est], probs = c(0.025, 0.25)),
       mean(mat[, est]),

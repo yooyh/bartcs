@@ -76,14 +76,11 @@ Rcpp::List cseparate_bart(
 
         // create placeholder
         Rcpp::NumericVector POY1 (num_post_sample, 0.0), POY0 (num_post_sample, 0.0);
-        Rcpp::NumericVector sigma2_out1_hist (num_chain_iter + 1, 0.0);
-        Rcpp::NumericVector sigma2_out0_hist (num_chain_iter + 1, 0.0);
-        Rcpp::NumericVector dir_alpha_hist   (num_chain_iter + 1, 0.0);
+        Rcpp::NumericVector dir_alpha_hist   (num_post_sample, 0.0);
+        Rcpp::NumericVector sigma2_out1_hist (num_post_sample, 0.0);
+        Rcpp::NumericVector sigma2_out0_hist (num_post_sample, 0.0);
         Rcpp::IntegerMatrix var_count        (num_post_sample, P);
         Rcpp::NumericVector post_dir_alpha   (P, 1.0);
-        sigma2_out1_hist[0] = initial_sigma2_out1;
-        sigma2_out0_hist[0] = initial_sigma2_out0;
-        dir_alpha_hist[0]   = initial_dir_alpha;
 
         for (int iter = 1; iter <= num_chain_iter; iter++)
         {
@@ -102,20 +99,22 @@ Rcpp::List cseparate_bart(
             // update sigma
             outcome1.draw_sigma2(rinvgamma, Y1, nu, lambda_out1);
             outcome0.draw_sigma2(rinvgamma, Y0, nu, lambda_out0);
-            sigma2_out1_hist[iter] = outcome1.sigma2();
-            sigma2_out0_hist[iter] = outcome0.sigma2();
 
             // update dir_alpha and var_prob
             mh_dir_alpha(iter, num_chain_iter, var_prob,
                          exposure.var_count(), outcome1.var_count(), outcome0.var_count(), 
                          dir_alpha, post_dir_alpha);
-            dir_alpha_hist[iter] = dir_alpha;
             var_prob = rdirichlet(1, post_dir_alpha);
 
             if (iter <= num_burn_in) continue;
             thin_count++;
             if (thin_count == num_thin)
             {
+                // record sigma and dir_alpha
+                dir_alpha_hist[res_id]   = dir_alpha;
+                sigma2_out1_hist[res_id] = outcome1.sigma2();
+                sigma2_out0_hist[res_id] = outcome0.sigma2();
+
                 // record selected variable
                 auto cnt1 = outcome1.var_count(), cnt0 = outcome0.var_count();
                 for (int j = 0; j < P; j++)

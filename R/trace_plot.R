@@ -19,14 +19,13 @@ trace_plot <- function(x, parameter) {
   if (parameter == "alpha")
     parameter <- "dir_alpha"
 
-  outcome <- c("ATE", "Y1", "Y0")
   if (x$model == "separate")
-    params <- c("sigma2_out1", "sigma2_out0", "dir_alpha")
+    params <- c("ATE", "Y1", "Y0", "sigma2_out1", "sigma2_out0", "dir_alpha")
   else if (x$model == "single")
-    params <- c("sigma2_out", "dir_alpha")
+    params <- c("ATE", "Y1", "Y0", "sigma2_out", "dir_alpha")
 
 
-  if (parameter %in% outcome) {
+  if (parameter %in% params) {
     num_post_sample <- x$params$num_post_sample
     num_chain       <- x$params$num_chain
 
@@ -35,17 +34,26 @@ trace_plot <- function(x, parameter) {
       iter   = rep(seq_len(num_post_sample), num_chain),
       chains = rep(paste0("chain", seq_len(num_chain)), each = num_post_sample)
     )
-    df[[parameter]] <- do.call("rbind", x$mcmc_outcome)[, parameter]
+    df[[parameter]] <- do.call("rbind", x$mcmc_list)[, parameter]
 
     # draw plot
     if (parameter == "ATE") {
       title <- "Traceplot of ATE"
       ylab  <- "ATE"
-    } else {
+    } else if (parameter %in% c("Y1", "Y0")) {
       title <- paste0("Traceplot of Potential Outcome ", parameter, sep = "")
       ylab  <- parameter
+    } else {
+      ylab  <- ifelse(parameter == "dir_alpha", "Alpha", "Sigma 2")
+      if (parameter == "sigma2_out")
+        title <- "Traceplot of Sigma2 of Outcome Model"
+      else if (parameter == "sigma2_out1")
+        title <- "Traceplot of Sigma2 of Outcome Model 1"
+      else if (parameter == "sigma2_out0")
+        title <- "Traceplot of Sigma2 of Outcome Model 0"
+      else if (parameter == "dir_alpha")
+        title <- "Traceplot of Alpha"
     }
-
 
     res <- ggplot2::ggplot(data = df) +
       ggplot2::xlim(0, num_post_sample) +
@@ -58,45 +66,35 @@ trace_plot <- function(x, parameter) {
 
     return(res)
 
-  } else if (parameter %in% params) {
-    num_chain_iter <- x$params$num_chain_iter + 1
-    num_chain      <- x$params$num_chain
-    num_burn_in    <- x$params$num_burn_in
+  # } else if (parameter %in% params) {
+  #   num_post_sample <- x$params$num_post_sample
+  #   num_chain       <- x$params$num_chain
+  #   num_burn_in     <- x$params$num_burn_in
 
-    # gather data
-    df <- data.frame(
-      iter   = rep(seq_len(num_chain_iter), num_chain),
-      chains = rep(paste0("chain", seq_len(num_chain)), each = num_chain_iter)
-    )
-    df[[parameter]] <- as.vector(vapply(
-      seq_len(num_chain),
-      function(chain_idx) x$mcmc_param[[chain_idx]][, parameter],
-      numeric(num_chain_iter)
-    ))
-
-    ylab  <- ifelse(parameter == "dir_alpha", "Alpha", "Sigma 2")
-    title <- NULL
-    if (parameter == "sigma2_out")
-      title <- "Traceplot of Sigma2 of Outcome Model"
-    else if (parameter == "sigma2_out1")
-      title <- "Traceplot of Sigma2 of Outcome Model 1"
-    else if (parameter == "sigma2_out0")
-      title <- "Traceplot of Sigma2 of Outcome Model 0"
-    else if (parameter == "dir_alpha")
-      title <- "Traceplot of Alpha"
+  #   # gather data
+  #   df <- data.frame(
+  #     iter   = rep(seq_len(num_post_sample), num_chain),
+  #     chains = rep(paste0("chain", seq_len(num_chain)), each = num_post_sample)
+  #   )
+  #   df[[parameter]] <- as.vector(vapply(
+  #     seq_len(num_chain),
+  #     function(chain_idx) x$mcmc_list[[chain_idx]][, parameter],
+  #     numeric(num_post_sample)
+  #   ))
 
 
-    res <- ggplot2::ggplot(data = df) +
-      ggplot2::xlim(0, num_chain_iter) +
-      ggplot2::labs(y = ylab, x = "Iteration", title = title) +
-      ggplot2::geom_vline(xintercept = num_burn_in, linetype = "dashed") +
-      ggplot2::geom_path(
-        mapping = ggplot2::aes(x     = .data$iter,
-                               y     = .data[[parameter]],
-                               color = .data$chains)
-      )
 
-    return(res)
+  #   res <- ggplot2::ggplot(data = df) +
+  #     ggplot2::xlim(0, num_post_sample) +
+  #     ggplot2::labs(y = ylab, x = "Iteration", title = title) +
+  #     ggplot2::geom_vline(xintercept = num_burn_in, linetype = "dashed") +
+  #     ggplot2::geom_path(
+  #       mapping = ggplot2::aes(x     = .data$iter,
+  #                              y     = .data[[parameter]],
+  #                              color = .data$chains)
+  #     )
+
+  #   return(res)
 
   } else {
     stop(

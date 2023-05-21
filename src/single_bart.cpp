@@ -70,12 +70,10 @@ Rcpp::List csingle_bart(
 
         // create placeholder
         Rcpp::NumericVector POY1 (num_post_sample, 0.0), POY0 (num_post_sample, 0.0);
-        Rcpp::NumericVector sigma2_hist    (num_chain_iter + 1, 0.0);
-        Rcpp::NumericVector dir_alpha_hist (num_chain_iter + 1, 0.0);
+        Rcpp::NumericVector dir_alpha_hist (num_post_sample, 0.0);
+        Rcpp::NumericVector sigma2_hist    (num_post_sample, 0.0);
         Rcpp::IntegerMatrix var_count      (num_post_sample, P + 1);
         Rcpp::NumericVector post_dir_alpha (P + 1, dir_alpha / (P + 1));
-        sigma2_hist[0]    = initial_sigma2_out;
-        dir_alpha_hist[0] = initial_dir_alpha;
 
         for (int iter = 1; iter <= num_chain_iter; iter++)
         {
@@ -93,11 +91,9 @@ Rcpp::List csingle_bart(
             // update sigma
             if (!binary_trt) exposure.draw_sigma2(rinvgamma, Y, nu, lambda_exp);
             outcome.draw_sigma2(rinvgamma, Y, nu, lambda_out);
-            sigma2_hist[iter] = outcome.sigma2();
 
             // update dir_alpha and var_prob
             mh_dir_alpha(var_prob_out, dir_alpha, post_dir_alpha);
-            dir_alpha_hist[iter] = dir_alpha;
             mh_var_prob(rdirichlet, post_dir_alpha, exposure.var_count(), outcome.var_count(), var_prob_out);
             normalize(var_prob_exp, var_prob_out);
 
@@ -105,6 +101,10 @@ Rcpp::List csingle_bart(
             thin_count++;
             if (thin_count == num_thin)
             {
+                // record sigma and dir_alpha
+                dir_alpha_hist[res_id] = dir_alpha;
+                sigma2_hist[res_id]    = outcome.sigma2();
+
                 // record selected variable
                 auto cnt = outcome.var_count();
                 for (int j = 0; j < P + 1; j++)

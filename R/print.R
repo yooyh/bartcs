@@ -5,7 +5,7 @@ print.bartcs <- function(x, ...) {
     "\n\n", sep = ""
   )
 
-  mat <- do.call("rbind", x$mcmc_outcome)
+  mat <- do.call("rbind", x$mcmc_list[, 1:3])
   df <- data.frame(
     mu = apply(mat, 2, mean),
     ci = t(apply(mat, 2, stats::quantile, c(0.025, 0.975)))

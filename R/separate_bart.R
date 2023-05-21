@@ -120,23 +120,22 @@ separate_bart <- function(
 
 
   # ---- post processing ----
-  mcmc_outcome <- list()
-  mcmc_param   <- list()
-  var_prob <- vector(mode = "numeric", length = P)
+  mcmc_list <- list()
+  var_prob  <- vector(mode = "numeric", length = P)
   for (chain in chains) {
-    mcmc_outcome[[length(mcmc_outcome) + 1]] <- coda::mcmc(
-      cbind(ATE = chain$ATE, Y1 = chain$Y1, Y0 = chain$Y0),
-      start = num_burn_in + num_thin, end = num_chain_iter, thin = num_thin
-    )
-    mcmc_param[[length(mcmc_param) + 1]] <- coda::mcmc(cbind(
+    mcmc_list[[length(mcmc_list) + 1]] <- coda::mcmc(
+      cbind(
+        ATE = chain$ATE,
+        Y1 = chain$Y1, Y0 = chain$Y0,
         dir_alpha = chain$dir_alpha,
         sigma2_out1 = chain$sigma2_out1,
         sigma2_out0 = chain$sigma2_out0
-    ))
+      ),
+      start = num_burn_in + num_thin, end = num_chain_iter, thin = num_thin
+    )
     var_prob <- var_prob + chain$var_prob
   }
-  mcmc_outcome    <- coda::mcmc.list(mcmc_outcome)
-  mcmc_param      <- coda::mcmc.list(mcmc_param)
+  mcmc_list       <- coda::mcmc.list(mcmc_list)
   var_prob        <- var_prob / num_chain
   names(var_prob) <- colnames(X)
   var_count       <- lapply(chains, function(x) x$var_count)
@@ -144,14 +143,13 @@ separate_bart <- function(
   # return as bartcs object
   structure(
     list(
-      mcmc_outcome = mcmc_outcome,
-      mcmc_param   = mcmc_param,
-      var_prob     = var_prob,
-      var_count    = var_count,
-      chains       = chains,
-      model        = "separate",
-      label        = colnames(X),
-      params       = list(
+      mcmc_list = mcmc_list,
+      var_prob  = var_prob,
+      var_count = var_count,
+      chains    = chains,
+      model     = "separate",
+      label     = colnames(X),
+      params    = list(
         trt_treated     = trt_treated,
         trt_control     = trt_control,
         num_tree        = num_tree,
