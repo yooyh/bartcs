@@ -56,7 +56,7 @@ mu1 <- mean(ihdp$mu1)
 mu1
 mu0 <- mean(ihdp$mu0)
 mu0
-mse <- mean((unlist(fit$mcmc_outcome[, "ATE"]) - ATE)^2)
+mse <- mean((unlist(fit$mcmc_list[, "ATE"]) - ATE)^2)
 mse
 ```
 
@@ -98,7 +98,7 @@ You can also use functions from `coda` package for components of `bartcs` object
 Components with `mcmc_` prefix are `mcmc.list` object from `coda` package.
 
 ```{r coda}
-coda::gelman.diag(fit$mcmc_outcome[, "ATE"])
+coda::gelman.diag(fit$mcmc_list[, "ATE"])
 ```
 
 ## Multi-threading
