@@ -126,16 +126,12 @@
 #' @return
 #' A `bartcs` object. A list object contains the following components.
 #' 
-#' \item{mcmc_outcome}{A `mcmc.list` object from \pkg{coda} package.
-#'   `mcmc_outcome` contains the following items.}
+#' \item{mcmc_list}{A `mcmc.list` object from \pkg{coda} package.
+#'   `mcmc_list` contains the following items.}
 #'   \itemize{
 #'     \item `ATE`        Posterior sample of average treatment effect \eqn{E[Y(1) - Y(0)]}.
 #'     \item `Y1`         Posterior sample of potential outcome \eqn{E[Y(1)]}.
 #'     \item `Y0`         Posterior sample of potential outcome \eqn{E[Y(0)]}.
-#'   }
-#' \item{mcmc_param}{A `mcmc.list` object from \pkg{coda} package.
-#'   `mcmc_param` contains the following items.}
-#'   \itemize{
 #'     \item `dir_alpha`  Posterior sample of `dir_alpha.`
 #'     \item `sigma2_out` Posterior sample of `sigma2` in the outcome model.
 #'   }

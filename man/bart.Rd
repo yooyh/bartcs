@@ -105,16 +105,12 @@ If \code{FALSE}, message will be suppressed.}
 \value{
 A \code{bartcs} object. A list object contains the following components.
 
-\item{mcmc_outcome}{A \code{mcmc.list} object from \pkg{coda} package.
-\code{mcmc_outcome} contains the following items.}
+\item{mcmc_list}{A \code{mcmc.list} object from \pkg{coda} package.
+\code{mcmc_list} contains the following items.}
 \itemize{
 \item \code{ATE}        Posterior sample of average treatment effect \eqn{E[Y(1) - Y(0)]}.
 \item \code{Y1}         Posterior sample of potential outcome \eqn{E[Y(1)]}.
 \item \code{Y0}         Posterior sample of potential outcome \eqn{E[Y(0)]}.
-}
-\item{mcmc_param}{A \code{mcmc.list} object from \pkg{coda} package.
-\code{mcmc_param} contains the following items.}
-\itemize{
 \item \code{dir_alpha}  Posterior sample of \code{dir_alpha.}
 \item \code{sigma2_out} Posterior sample of \code{sigma2} in the outcome model.
 }
