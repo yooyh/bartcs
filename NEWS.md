@@ -1,3 +1,7 @@
+# bartcs 1.2.0
+
+* Output `mcmc_outcome` and `mcmc_param` are merged into `mcmc_list`.
+
 # bartcs 1.1.0
 
 * Change output format to `mcmc.list` from `coda` package.
