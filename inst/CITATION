@@ -1,0 +1,11 @@
+bibentry(
+  bibtype  = "Article",
+  title    = "Bayesian nonparametric adjustment of confounding",
+  author   = "Chanmin Kim, Tec Mauricio, Zigler Corwin",
+  journal  = "Biometrics",
+  year     = 2023,
+  volume   = "early view",
+  number   = "n/a",
+  pages    = "",
+  doi      = "https://doi.org/10.1111/biom.13833"
+)
