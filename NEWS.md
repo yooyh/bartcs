@@ -1,3 +1,8 @@
+# bartcs 1.2.1
+
+* Add `inst/CITATION`.
+* Updated `vignettes/article.pdf`.
+
 # bartcs 1.2.0
 
 * Output `mcmc_outcome` and `mcmc_param` are merged into `mcmc_list`.
