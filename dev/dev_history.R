@@ -5,11 +5,7 @@ attachment::att_amend_desc()
 
 # Check manual
 devtools::document();
-
-## install LaTeX distribution to build manual
-## https://yihui.org/tinytex/
-# wget -qO- "https://yihui.org/tinytex/install-bin-unix.sh" | sh
-
+# tinytex::install_tinytex()
 # brew install texlive
 devtools::build_manual(path = paste0(getwd(), "/dev"))
 

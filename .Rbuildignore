@@ -10,12 +10,3 @@ dev
 ^\.github$
 ^revdep$
 ^CRAN-SUBMISSION$
-
-Dockerfile
-docker-compose.yaml
-install.sh
-bin/
-.TinyTeX/
-.sh_history
-.wget-hsts
-.sudo_as_admin_successful

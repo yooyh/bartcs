@@ -7,10 +7,3 @@
 .vscode
 revdep/
 CRAN-SUBMISSION
-.config
-.local
-.sh_history
-bin/
-.TinyTeX/
-.wget-hsts
-.sudo_as_admin_successful
