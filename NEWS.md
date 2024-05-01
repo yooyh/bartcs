@@ -1,4 +1,4 @@
-# bartcs 1.2.1
+# bartcs 1.2.2
 
 * Remove `vignettes/article.pdf`.
 
