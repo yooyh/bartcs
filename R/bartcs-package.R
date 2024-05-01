@@ -38,7 +38,7 @@ NULL
 #' Kim, C., Tec, M., & Zigler, C. M. (2023).
 #' Bayesian Nonparametric Adjustment of Confounding, *Biometrics*
 #' \doi{10.1111/biom.13833}
-#' 
-#' @docType package
+#' @keywords internal
+"_PACKAGE"
 #' @name bartcs-package
 NULL

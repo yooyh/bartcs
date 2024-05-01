@@ -2,6 +2,7 @@
 % Please edit documentation in R/bartcs-package.R
 \docType{package}
 \name{bartcs-package}
+\alias{bartcs}
 \alias{bartcs-package}
 \title{bartcs: Bayesian Additive Regression Trees for Confounder Selection}
 \description{
@@ -38,3 +39,16 @@ Kim, C., Tec, M., & Zigler, C. M. (2023).
 Bayesian Nonparametric Adjustment of Confounding, \emph{Biometrics}
 \doi{10.1111/biom.13833}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/yooyh/bartcs}
+  \item Report bugs at \url{https://github.com/yooyh/bartcs/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Yeonghoon Yoo \email{yooyh.stat@gmail.com}
+
+}
+\keyword{internal}

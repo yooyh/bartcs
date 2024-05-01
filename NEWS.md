@@ -1,5 +1,9 @@
 # bartcs 1.2.1
 
+* Remove `vignettes/article.pdf`.
+
+# bartcs 1.2.1
+
 * Add `inst/CITATION`.
 * Updated `vignettes/article.pdf`.
 
