@@ -7,3 +7,8 @@
 .vscode
 revdep/
 CRAN-SUBMISSION
+.config
+.local
+.github
+*.Rproj
+*.sh_history
