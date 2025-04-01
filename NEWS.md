@@ -1,3 +1,7 @@
+# bartcs 1.3.0
+
+* Add `synthetic_data()` to create synthetic data for simulation.
+
 # bartcs 1.2.2
 
 * Remove `vignettes/article.pdf`.
