@@ -4,7 +4,7 @@
 \alias{synthetic_data}
 \title{Synthetic dataset for simulation}
 \usage{
-synthetic_data(N, P, seed = 42)
+synthetic_data(N = 300, P = 100, seed = 42)
 }
 \arguments{
 \item{N}{Number of observations for dataset. The default value is set to 300.}

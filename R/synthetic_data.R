@@ -24,23 +24,23 @@
 #' synthetic_data()
 #'
 #' @export
-synthetic_data <- function(N, P, seed = 42) {
+synthetic_data <- function(N=300, P=100, seed = 42) {
   set.seed(seed)
   cov <- list()
   for (i in 1:P) {
-    cov[[i]] <- rnorm(N, 0, 1)
+    cov[[i]] <- stats::rnorm(N, 0, 1)
   }
   X <- do.call(cbind, cov)
   h1 <- ifelse(X[, 1] < 0, 1, -1)
   h2 <- ifelse(X[, 2] < 0, -1, 1)
-  prob <- pnorm(0.5 + h1 + h2 - 0.5 * abs(X[, 3] - 1) + 1.5 * X[, 4] * X[, 5])
-  Trt <- rbinom(N, 1, prob)
+  prob <- stats::pnorm(0.5 + h1 + h2 - 0.5 * abs(X[, 3] - 1) + 1.5 * X[, 4] * X[, 5])
+  Trt <- stats::rbinom(N, 1, prob)
   mu1 <- 1 * h1 + 1.5 * h2 - 1 + 2 * abs(X[, 3] + 1) + 2 * X[, 4] + exp(0.5 * X[, 5]) -
     0.5 * 1 * abs(X[, 6]) - 1 * 1 * abs(X[, 7] + 1)
   mu0 <- 1 * h1 + 1.5 * h2 - 0 + 2 * abs(X[, 3] + 1) + 2 * X[, 4] + exp(0.5 * X[, 5]) -
     0.5 * 0 * abs(X[, 6]) - 1 * 0 * abs(X[, 7] + 1)
-  Y1 <- rnorm(N, mu1, 0.3)
-  Y0 <- rnorm(N, mu0, 0.3)
+  Y1 <- stats::rnorm(N, mu1, 0.3)
+  Y0 <- stats::rnorm(N, mu0, 0.3)
   Y <- Trt * Y1 + (1 - Trt) * Y0
   
   list(Y = Y, Trt = Trt, X = X)
