@@ -50,13 +50,13 @@ fit
 You can get mean and 95% credible interval of average treatment effect (ATE) and possible outcome Y1 and Y0.
 
 ```{r compare result}
-ATE <- mean(ihdp$mu1 - ihdp$mu0)
-ATE
+SATE <- mean(ihdp$mu1 - ihdp$mu0)
+SATE
 mu1 <- mean(ihdp$mu1)
 mu1
 mu0 <- mean(ihdp$mu0)
 mu0
-mse <- mean((unlist(fit$mcmc_list[, "ATE"]) - ATE)^2)
+mse <- mean((unlist(fit$mcmc_list[, "SATE"]) - SATE)^2)
 mse
 ```
 
@@ -98,7 +98,7 @@ You can also use functions from `coda` package for components of `bartcs` object
 Components with `mcmc_` prefix are `mcmc.list` object from `coda` package.
 
 ```{r coda}
-coda::gelman.diag(fit$mcmc_list[, "ATE"])
+coda::gelman.diag(fit$mcmc_list[, "SATE"])
 ```
 
 ## Multi-threading
