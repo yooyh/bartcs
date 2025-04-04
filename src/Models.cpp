@@ -15,12 +15,11 @@ void SeparateModel::predict(Rcpp::NumericVector& outcome, Rcpp::NumericMatrix& o
     #ifdef _OPENMP
         #pragma omp parallel for reduction(+ : res) if (parallel_)
     #endif
-    for (const auto& x : full_X)
     for (int i = 0; i < N; i++)
     {
         double sum_mu = 0.0;
         for (auto& tree : tree_)
-            sum_mu += tree.assigned_node(Xcut_, x)->mu();
+            sum_mu += tree.assigned_node(Xcut_, full_X[i])->mu();
         outcome_sample(i, id) = sum_mu;
         res += sum_mu;
     }

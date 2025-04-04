@@ -133,6 +133,14 @@ Rcpp::List cseparate_bart(
         // post processing
         POY1 = (POY1 + 0.5) * (Y_max - Y_min) + Y_min;
         POY0 = (POY0 + 0.5) * (Y_max - Y_min) + Y_min;
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < num_post_sample; j++)
+            {
+                y1_sample(i, j) = (y1_sample(i, j) + 0.5) * (Y_max - Y_min) + Y_min;
+                y0_sample(i, j) = (y0_sample(i, j) + 0.5) * (Y_max - Y_min) + Y_min;
+            }
+        }
         Rcpp::NumericVector ATE = POY1 - POY0;
         Rcpp::NumericVector PIP (P, 0.0);
         for (int j = 0; j < P; j++)
