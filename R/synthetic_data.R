@@ -6,12 +6,16 @@
 #' @param N Number of observations for dataset. The default value is set to 300.
 #' @param P Number of potential confounders for dataset. 
 #' Need to set X > 7 for data generation. The default value is set to 100.
-#' @param seed seed value for simulation. The default value is set to 42.
+#' @param seed Seed value for simulation. The default value is set to 42.
 #'
 #' @details
-#' `synthetic_data()` generates synthetic dataset for simulation which was first 
-#' used by Kim et al. (2023) from Scenario 1.
-#' Among possible confounders, X1 - X5 are true confounders.
+#' `synthetic_data()` generates synthetic dataset for Scenario 1 from 
+#' Kim et al. (2023). Among possible confounders, X1 - X5 are true confounders.
+#'
+#' @references
+#' Kim, C., Tec, M., & Zigler, C. M. (2023).
+#' Bayesian Nonparametric Adjustment of Confounding, *Biometrics*
+#' \doi{10.1111/biom.13833}
 #'
 #' @return
 #' Provide list with the following components

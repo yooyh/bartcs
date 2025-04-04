@@ -125,8 +125,9 @@ separate_bart <- function(
   for (chain in chains) {
     mcmc_list[[length(mcmc_list) + 1]] <- coda::mcmc(
       cbind(
-        ATE = chain$ATE,
-        Y1 = chain$Y1, Y0 = chain$Y0,
+        SATE = chain$SATE,
+        Y1 = chain$Y1, 
+        Y0 = chain$Y0,
         dir_alpha = chain$dir_alpha,
         sigma2_out1 = chain$sigma2_out1,
         sigma2_out0 = chain$sigma2_out0

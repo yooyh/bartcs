@@ -12,7 +12,7 @@ synthetic_data(N = 300, P = 100, seed = 42)
 \item{P}{Number of potential confounders for dataset.
 Need to set X > 7 for data generation. The default value is set to 100.}
 
-\item{seed}{seed value for simulation. The default value is set to 42.}
+\item{seed}{Seed value for simulation. The default value is set to 42.}
 }
 \value{
 Provide list with the following components
@@ -25,11 +25,15 @@ Provide list with the following components
 Create synthetic dataset for simulation.
 }
 \details{
-\code{synthetic_data()} generates synthetic dataset for simulation which was first
-used by Kim et al. (2023) from Scenario 1.
-Among possible confounders, X1 - X5 are true confounders.
+\code{synthetic_data()} generates synthetic dataset for Scenario 1 from
+Kim et al. (2023). Among possible confounders, X1 - X5 are true confounders.
 }
 \examples{
 synthetic_data()
 
+}
+\references{
+Kim, C., Tec, M., & Zigler, C. M. (2023).
+Bayesian Nonparametric Adjustment of Confounding, \emph{Biometrics}
+\doi{10.1111/biom.13833}
 }

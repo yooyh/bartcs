@@ -129,20 +129,18 @@
 #' \item{mcmc_list}{A `mcmc.list` object from \pkg{coda} package.
 #'   `mcmc_list` contains the following items.}
 #'   \itemize{
-#'     \item `ATE`        Posterior sample of average treatment effect \eqn{E[Y(1) - Y(0)]}.
+#'     \item `SATE`       Posterior sample of average treatment effect \eqn{E[Y(1) - Y(0)]}.
 #'     \item `Y1`         Posterior sample of potential outcome \eqn{E[Y(1)]}.
 #'     \item `Y0`         Posterior sample of potential outcome \eqn{E[Y(0)]}.
-#'     \item `Y1_samples` Posterior sample of potential outcome \eqn{Y(1)}.
-#'        Its dimension is `nrow(X) * num_post_sample`.
-#'     \item `Y0_samples` Posterior sample of potential outcome \eqn{Y(0)}.
-#'        Its dimension is `nrow(X) * num_post_sample`.
 #'     \item `dir_alpha`  Posterior sample of `dir_alpha.`
 #'     \item `sigma2_out` Posterior sample of `sigma2` in the outcome model.
 #'   }
 #' \item{var_prob}{Aggregated posterior inclusion probability of each variable.}
 #' \item{var_count}{Number of selection of each variable in each MCMC iteration.
 #'   Its dimension is `num_post_sample * ncol(X)`.}
-#' \item{chains}{A list of results from each MCMC chain.}
+#' \item{chains}{A list of results from each MCMC chain. Each chain contains 
+#' every posterior samples in `mcmc_list` object and posterior samples of potential 
+#' outcomes \eqn{Y_i(1)}'s and \eqn{Y_i(0)}'s.}
 #' \item{model}{`separate` or `single`.}
 #' \item{label}{Column names of `X`.}
 #' \item{params}{Parameters used in the model.}

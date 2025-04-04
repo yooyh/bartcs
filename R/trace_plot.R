@@ -20,9 +20,9 @@ trace_plot <- function(x, parameter) {
     parameter <- "dir_alpha"
 
   if (x$model == "separate")
-    params <- c("ATE", "Y1", "Y0", "sigma2_out1", "sigma2_out0", "dir_alpha")
+    params <- c("SATE", "Y1", "Y0", "sigma2_out1", "sigma2_out0", "dir_alpha")
   else if (x$model == "single")
-    params <- c("ATE", "Y1", "Y0", "sigma2_out", "dir_alpha")
+    params <- c("SATE", "Y1", "Y0", "sigma2_out", "dir_alpha")
 
 
   if (parameter %in% params) {
@@ -37,9 +37,9 @@ trace_plot <- function(x, parameter) {
     df[[parameter]] <- do.call("rbind", x$mcmc_list)[, parameter]
 
     # draw plot
-    if (parameter == "ATE") {
-      title <- "Traceplot of ATE"
-      ylab  <- "ATE"
+    if (parameter == "SATE") {
+      title <- "Traceplot of SATE"
+      ylab  <- "SATE"
     } else if (parameter %in% c("Y1", "Y0")) {
       title <- paste0("Traceplot of Potential Outcome ", parameter, sep = "")
       ylab  <- parameter
@@ -66,41 +66,11 @@ trace_plot <- function(x, parameter) {
 
     return(res)
 
-  # } else if (parameter %in% params) {
-  #   num_post_sample <- x$params$num_post_sample
-  #   num_chain       <- x$params$num_chain
-  #   num_burn_in     <- x$params$num_burn_in
-
-  #   # gather data
-  #   df <- data.frame(
-  #     iter   = rep(seq_len(num_post_sample), num_chain),
-  #     chains = rep(paste0("chain", seq_len(num_chain)), each = num_post_sample)
-  #   )
-  #   df[[parameter]] <- as.vector(vapply(
-  #     seq_len(num_chain),
-  #     function(chain_idx) x$mcmc_list[[chain_idx]][, parameter],
-  #     numeric(num_post_sample)
-  #   ))
-
-
-
-  #   res <- ggplot2::ggplot(data = df) +
-  #     ggplot2::xlim(0, num_post_sample) +
-  #     ggplot2::labs(y = ylab, x = "Iteration", title = title) +
-  #     ggplot2::geom_vline(xintercept = num_burn_in, linetype = "dashed") +
-  #     ggplot2::geom_path(
-  #       mapping = ggplot2::aes(x     = .data$iter,
-  #                              y     = .data[[parameter]],
-  #                              color = .data$chains)
-  #     )
-
-  #   return(res)
-
   } else {
     stop(
       "There is no parameter named ", parameter, ". \n",
       "  Please try one of following parameters\n",
-      "  * `ATE`, `Y1`, `Y0`, `sigma2_out`, `sigma2_out1`, `sigma2_out0` or `dir_alpha`."
+      "  * `SATE`, `Y1`, `Y0`, `sigma2_out`, `sigma2_out1`, `sigma2_out0` or `dir_alpha`."
     )
   }
 }

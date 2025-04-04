@@ -40,7 +40,7 @@ draws plot using \code{ggcharts::bar_chart()}.
 \subsection{Traceplot}{
 
 Parameters are recorded for each MCMC iterations.
-Parameters include "\code{ATE}", "\code{Y1}", "\code{Y0}", "\code{dir_alpha}",
+Parameters include "\code{SATE}", "\code{Y1}", "\code{Y0}", "\code{dir_alpha}",
 and either "\code{sigma2_out}" from \code{single_bart()}
 or "\code{sigma2_out1}" and "\code{sigma2_out0}" from \cr
 \code{separate_bart()}.

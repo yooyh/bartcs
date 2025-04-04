@@ -38,7 +38,7 @@
 #'
 #' @exportS3Method
 summary.bartcs <- function(object, ...) {
-  estimand  <- c("ATE", "Y1", "Y0")
+  estimand  <- c("SATE", "Y1", "Y0")
   num_chain <- object$params$num_chain
 
   res <- list()
