@@ -111,6 +111,10 @@ A \code{bartcs} object. A list object contains the following components.
 \item \code{ATE}        Posterior sample of average treatment effect \eqn{E[Y(1) - Y(0)]}.
 \item \code{Y1}         Posterior sample of potential outcome \eqn{E[Y(1)]}.
 \item \code{Y0}         Posterior sample of potential outcome \eqn{E[Y(0)]}.
+\item \code{Y1_samples} Posterior sample of potential outcome \eqn{Y(1)}.
+Its dimension is \code{nrow(X) * num_post_sample}.
+\item \code{Y0_samples} Posterior sample of potential outcome \eqn{Y(0)}.
+Its dimension is \code{nrow(X) * num_post_sample}.
 \item \code{dir_alpha}  Posterior sample of \code{dir_alpha.}
 \item \code{sigma2_out} Posterior sample of \code{sigma2} in the outcome model.
 }

@@ -132,6 +132,10 @@
 #'     \item `ATE`        Posterior sample of average treatment effect \eqn{E[Y(1) - Y(0)]}.
 #'     \item `Y1`         Posterior sample of potential outcome \eqn{E[Y(1)]}.
 #'     \item `Y0`         Posterior sample of potential outcome \eqn{E[Y(0)]}.
+#'     \item `Y1_samples` Posterior sample of potential outcome \eqn{Y(1)}.
+#'        Its dimension is `nrow(X) * num_post_sample`.
+#'     \item `Y0_samples` Posterior sample of potential outcome \eqn{Y(0)}.
+#'        Its dimension is `nrow(X) * num_post_sample`.
 #'     \item `dir_alpha`  Posterior sample of `dir_alpha.`
 #'     \item `sigma2_out` Posterior sample of `sigma2` in the outcome model.
 #'   }

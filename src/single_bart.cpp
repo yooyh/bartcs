@@ -70,6 +70,7 @@ Rcpp::List csingle_bart(
 
         // create placeholder
         Rcpp::NumericVector POY1 (num_post_sample, 0.0), POY0 (num_post_sample, 0.0);
+        Rcpp::NumericMatrix y1_sample (N, num_post_sample), y0_sample (N, num_post_sample);
         Rcpp::NumericVector dir_alpha_hist (num_post_sample, 0.0);
         Rcpp::NumericVector sigma2_hist    (num_post_sample, 0.0);
         Rcpp::IntegerMatrix var_count      (num_post_sample, P + 1);
@@ -115,8 +116,8 @@ Rcpp::List csingle_bart(
                 }
                 
                 // predict effect and potential outcomes
-                outcome.predict(POY1, res_id, trt_treated);
-                outcome.predict(POY0, res_id, trt_control);
+                outcome.predict(POY1, y1_sample, res_id, trt_treated);
+                outcome.predict(POY0, y0_sample, res_id, trt_control);
                 if (res_id == num_post_sample)
                     break;
                 res_id++;
@@ -140,6 +141,8 @@ Rcpp::List csingle_bart(
             Named("ATE")        = ATE,
             Named("Y1")         = POY1,
             Named("Y0")         = POY0,
+            Named("Y1_sample")  = y1_sample,
+            Named("Y0_sample")  = y0_sample,
             Named("var_count")  = var_count,
             Named("var_prob")   = PIP,
             Named("sigma2_out") = sigma2_hist,

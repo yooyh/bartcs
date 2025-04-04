@@ -76,6 +76,7 @@ Rcpp::List cseparate_bart(
 
         // create placeholder
         Rcpp::NumericVector POY1 (num_post_sample, 0.0), POY0 (num_post_sample, 0.0);
+        Rcpp::NumericMatrix y1_sample (N, num_post_sample), y0_sample (N, num_post_sample);
         Rcpp::NumericVector dir_alpha_hist   (num_post_sample, 0.0);
         Rcpp::NumericVector sigma2_out1_hist (num_post_sample, 0.0);
         Rcpp::NumericVector sigma2_out0_hist (num_post_sample, 0.0);
@@ -121,8 +122,8 @@ Rcpp::List cseparate_bart(
                     var_count[res_id + num_post_sample * j] = cnt1[j] + cnt0[j];
                 
                 // predict effect and potential outcomes
-                outcome1.predict(POY1, res_id, X);
-                outcome0.predict(POY0, res_id, X);
+                outcome1.predict(POY1, y1_sample, res_id, X);
+                outcome0.predict(POY0, y0_sample, res_id, X);
                 if (res_id == num_post_sample)
                     break;
                 res_id++;
@@ -146,6 +147,8 @@ Rcpp::List cseparate_bart(
             Named("ATE")         = ATE,
             Named("Y1")          = POY1,
             Named("Y0")          = POY0,
+            Named("Y1_sample")   = y1_sample,
+            Named("Y0_sample")   = y0_sample,
             Named("var_count")   = var_count,
             Named("var_prob")    = PIP,
             Named("sigma2_out1") = sigma2_out1_hist,

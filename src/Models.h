@@ -12,7 +12,7 @@ public:
         const Rcpp::NumericVector& step_prob, const double alpha, const double beta, Rcpp::NumericVector& var_prob, 
         const bool parallel
     );
-    void predict(Rcpp::NumericVector& outcome, const int id, const vector<vector<double>>& full_X) const;
+    void predict(Rcpp::NumericVector& outcome, Rcpp::NumericMatrix& outcome_sample, const int id, const vector<vector<double>>& full_X) const;
 };
 
 class SingleModel: public BART
@@ -26,5 +26,5 @@ public:
         const bool parallel
     );
     void set_prob(const Rcpp::NumericVector& prob);
-    void predict(Rcpp::NumericVector& predicted, const int id, const double trt_value) const;
+    void predict(Rcpp::NumericVector& outcome, Rcpp::NumericMatrix& outcome_sample, const int id, const double trt_value) const;
 };
