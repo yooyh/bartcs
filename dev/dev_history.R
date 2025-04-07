@@ -7,6 +7,8 @@ attachment::att_amend_desc()
 devtools::document();
 # tinytex::install_tinytex()
 # brew install texlive
+# tinytex::tlmgr_install(c("titling", "framed", "inconsolata", "collection-fontsrecommended"))
+tinytex::tlmgr_install("makeindex")
 devtools::build_manual(path = paste0(getwd(), "/dev"))
 
 # Run tests and examples
