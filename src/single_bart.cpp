@@ -135,7 +135,7 @@ Rcpp::List csingle_bart(
                 y0_sample(i, j) = (y0_sample(i, j) + 0.5) * (Y_max - Y_min) + Y_min;
             }
         }
-        Rcpp::NumericVector ATE = POY1 - POY0;
+        Rcpp::NumericVector SATE = POY1 - POY0;
         Rcpp::NumericVector PIP (P + 1, 0.0);
         for (int j = 0; j < P + 1; j++)
         {
@@ -146,7 +146,7 @@ Rcpp::List csingle_bart(
 
         // gather result
         chains[chain] = Rcpp::List::create(
-            Named("ATE")        = ATE,
+            Named("SATE")        = SATE,
             Named("Y1")         = POY1,
             Named("Y0")         = POY0,
             Named("Y1_sample")  = y1_sample,
