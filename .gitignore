@@ -12,3 +12,6 @@ CRAN-SUBMISSION
 .github
 *.Rproj
 *.sh_history
+.TinyTeX
+.cache
+bin

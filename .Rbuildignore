@@ -10,3 +10,7 @@ dev
 ^\.github$
 ^revdep$
 ^CRAN-SUBMISSION$
+
+.TinyTeX
+.cache
+bin
