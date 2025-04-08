@@ -108,7 +108,7 @@ A \code{bartcs} object. A list object contains the following components.
 \item{mcmc_list}{A \code{mcmc.list} object from \pkg{coda} package.
 \code{mcmc_list} contains the following items.}
 \itemize{
-\item \code{ATE}        Posterior sample of average treatment effect \eqn{E[Y(1) - Y(0)]}.
+\item \code{SATE}       Posterior sample of average treatment effect \eqn{E[Y(1) - Y(0)]}.
 \item \code{Y1}         Posterior sample of potential outcome \eqn{E[Y(1)]}.
 \item \code{Y0}         Posterior sample of potential outcome \eqn{E[Y(0)]}.
 \item \code{dir_alpha}  Posterior sample of \code{dir_alpha.}
@@ -117,7 +117,9 @@ A \code{bartcs} object. A list object contains the following components.
 \item{var_prob}{Aggregated posterior inclusion probability of each variable.}
 \item{var_count}{Number of selection of each variable in each MCMC iteration.
 Its dimension is \code{num_post_sample * ncol(X)}.}
-\item{chains}{A list of results from each MCMC chain.}
+\item{chains}{A list of results from each MCMC chain. Each chain contains
+every posterior samples in \code{mcmc_list} object and posterior samples of potential
+outcomes \eqn{Y_i(1)}'s and \eqn{Y_i(0)}'s.}
 \item{model}{\code{separate} or \code{single}.}
 \item{label}{Column names of \code{X}.}
 \item{params}{Parameters used in the model.}

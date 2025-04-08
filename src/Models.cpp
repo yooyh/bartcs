@@ -7,7 +7,7 @@ SeparateModel::SeparateModel(
     const bool parallel
 ) : BART(X, Xcut, X.size(), Xcut.size(), n_tree, step_prob, alpha, beta, var_prob, parallel) {}
 
-void SeparateModel::predict(Rcpp::NumericVector& outcome, const int id, const vector<vector<double>>& full_X) const
+void SeparateModel::predict(Rcpp::NumericVector& outcome, Rcpp::NumericMatrix& outcome_sample, const int id, const vector<vector<double>>& full_X) const
 {
     int N = full_X.size();
     double res = 0.0;
@@ -15,11 +15,12 @@ void SeparateModel::predict(Rcpp::NumericVector& outcome, const int id, const ve
     #ifdef _OPENMP
         #pragma omp parallel for reduction(+ : res) if (parallel_)
     #endif
-    for (const auto& x : full_X)
+    for (int i = 0; i < N; i++)
     {
         double sum_mu = 0.0;
         for (auto& tree : tree_)
-            sum_mu += tree.assigned_node(Xcut_, x)->mu();
+            sum_mu += tree.assigned_node(Xcut_, full_X[i])->mu();
+        outcome_sample(i, id) = sum_mu;
         res += sum_mu;
     }
     outcome(id) = res / N;
@@ -45,7 +46,7 @@ void SingleModel::set_prob(const Rcpp::NumericVector& prob)
         prob_(i) = prob(i) / sum_prob;
 }
 
-void SingleModel::predict(Rcpp::NumericVector& outcome, const int id, const double trt_value) const
+void SingleModel::predict(Rcpp::NumericVector& outcome, Rcpp::NumericMatrix& outcome_sample, const int id, const double trt_value) const
 {
     int N = X_.size();
     int TRT_id = P - 1;
@@ -71,6 +72,7 @@ void SingleModel::predict(Rcpp::NumericVector& outcome, const int id, const doub
             }
             sum_mu += node->mu();
         }
+        outcome_sample(i, id) = sum_mu;
         res += sum_mu;
     }
     outcome(id) = res / N;

@@ -70,6 +70,7 @@ Rcpp::List csingle_bart(
 
         // create placeholder
         Rcpp::NumericVector POY1 (num_post_sample, 0.0), POY0 (num_post_sample, 0.0);
+        Rcpp::NumericMatrix y1_sample (N, num_post_sample), y0_sample (N, num_post_sample);
         Rcpp::NumericVector dir_alpha_hist (num_post_sample, 0.0);
         Rcpp::NumericVector sigma2_hist    (num_post_sample, 0.0);
         Rcpp::IntegerMatrix var_count      (num_post_sample, P + 1);
@@ -115,8 +116,8 @@ Rcpp::List csingle_bart(
                 }
                 
                 // predict effect and potential outcomes
-                outcome.predict(POY1, res_id, trt_treated);
-                outcome.predict(POY0, res_id, trt_control);
+                outcome.predict(POY1, y1_sample, res_id, trt_treated);
+                outcome.predict(POY0, y0_sample, res_id, trt_control);
                 if (res_id == num_post_sample)
                     break;
                 res_id++;
@@ -126,7 +127,15 @@ Rcpp::List csingle_bart(
         // post processing
         POY1 = (POY1 + 0.5) * (Y_max - Y_min) + Y_min;
         POY0 = (POY0 + 0.5) * (Y_max - Y_min) + Y_min;
-        Rcpp::NumericVector ATE = POY1 - POY0;
+        for (int i = 0; i < N; i++)
+        {
+            for (int j = 0; j < num_post_sample; j++)
+            {
+                y1_sample(i, j) = (y1_sample(i, j) + 0.5) * (Y_max - Y_min) + Y_min;
+                y0_sample(i, j) = (y0_sample(i, j) + 0.5) * (Y_max - Y_min) + Y_min;
+            }
+        }
+        Rcpp::NumericVector SATE = POY1 - POY0;
         Rcpp::NumericVector PIP (P + 1, 0.0);
         for (int j = 0; j < P + 1; j++)
         {
@@ -137,9 +146,11 @@ Rcpp::List csingle_bart(
 
         // gather result
         chains[chain] = Rcpp::List::create(
-            Named("ATE")        = ATE,
+            Named("SATE")        = SATE,
             Named("Y1")         = POY1,
             Named("Y0")         = POY0,
+            Named("Y1_sample")  = y1_sample,
+            Named("Y0_sample")  = y0_sample,
             Named("var_count")  = var_count,
             Named("var_prob")   = PIP,
             Named("sigma2_out") = sigma2_hist,

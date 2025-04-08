@@ -114,7 +114,7 @@ single_bart <- function(
   for (chain in chains) {
     mcmc_list[[length(mcmc_list) + 1]] <- coda::mcmc(
       cbind(
-        ATE = chain$ATE, 
+        SATE = chain$SATE, 
         Y1 = chain$Y1, 
         Y0 = chain$Y0, 
         dir_alpha = chain$dir_alpha, 

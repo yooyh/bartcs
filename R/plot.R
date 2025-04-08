@@ -24,7 +24,7 @@
 #'
 #' ## Traceplot
 #' Parameters are recorded for each MCMC iterations.
-#' Parameters include "`ATE`", "`Y1`", "`Y0`", "`dir_alpha`",
+#' Parameters include "`SATE`", "`Y1`", "`Y0`", "`dir_alpha`",
 #' and either "`sigma2_out`" from `single_bart()`
 #' or "`sigma2_out1`" and "`sigma2_out0`" from \cr 
 #' `separate_bart()`.
@@ -75,7 +75,7 @@ plot.bartcs <- function(x, method = NULL, parameter = NULL, ...) {
 
   } else if (method == "trace") {
     if (is.null(parameter))
-      parameter <- "ATE"
+      parameter <- "SATE"
 
     trace_plot(x, parameter)
   }
