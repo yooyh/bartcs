@@ -4,7 +4,7 @@
 \alias{synthetic_data}
 \title{Synthetic dataset for simulation}
 \usage{
-synthetic_data(N = 300, P = 100, seed = 42)
+synthetic_data(N = 300, P = 100, seed = 42, binary_trt = TRUE)
 }
 \arguments{
 \item{N}{Number of observations for dataset. The default value is set to 300.}
@@ -13,6 +13,8 @@ synthetic_data(N = 300, P = 100, seed = 42)
 Need to set X > 7 for data generation. The default value is set to 100.}
 
 \item{seed}{Seed value for simulation. The default value is set to 42.}
+
+\item{binary_trt}{Whether the treatment is binary. The default value is set to TRUE.}
 }
 \value{
 Provide list with the following components
